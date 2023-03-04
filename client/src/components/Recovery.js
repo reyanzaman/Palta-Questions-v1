@@ -1,23 +1,9 @@
 import React from 'react'
 import { Toaster } from 'react-hot-toast'
-import { useFormik} from 'formik'
-import { passwordValidate } from '../helper/validate'
 
 import styles from '../styles/Username.module.css'
 
 export default function Recovery() {
-
-  const formik = useFormik({
-    initialValues: {
-      password: ''
-    },
-    validate: passwordValidate,
-    validateOnBlur: false,
-    validateOnChange: false,
-    onSubmit: async values => {
-      console.log(values)
-    }
-  })
 
   return (
     <div className="container mx-auto">
@@ -34,7 +20,7 @@ export default function Recovery() {
             </span>
           </div>
 
-          <form className="pt-20" onSubmit={formik.handleSubmit}>
+          <form className="pt-20">
 
             <div className="textbox flex flex-col items-center gap-6"> 
 

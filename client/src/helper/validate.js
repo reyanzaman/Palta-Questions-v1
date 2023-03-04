@@ -14,6 +14,29 @@ export async function passwordValidate(values){
     return errors;
 }
 
+/** validate reset password */
+export async function resetPasswordValidation(values){
+    const errors = passwordVerify({}, values);
+
+    if(values.password !== values.confirm_pwd){
+        errors.exists = toast.error("Passwords do not match!")
+    }
+
+    return errors;
+}
+
+/** validate register form */
+export async function registerValidation(values){
+    const errors = usernameVerify({}, values);
+    idVerify(errors, values);
+    passwordVerify(errors, values);
+    emailVerify(errors, values);
+
+    return errors;
+}
+
+/** ************************************** */
+
 /** validate password */
 function passwordVerify(errors = {}, values){
 
@@ -38,6 +61,31 @@ function usernameVerify(error = {}, values){
         error.username = toast.error('Username Required!')
     }else if(values.username.includes(" ")){
         error.username = toast.error('Invalid Username')
+    }
+
+    return error;
+}
+
+/** validate email */
+function emailVerify(error={}, values){
+    if(!values.email){
+        error.email = toast.error("Email Required!");
+    }else if(values.email.includes(" ")){
+        error.email = toast.error("Invalid Email!");
+    }else if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)){
+        error.email = toast.error("Invalid Email Address!")
+    }
+
+    return error;
+}
+
+function idVerify(error={}, values){
+    if(!values.id){
+        error.id = toast.error("ID Required!");
+    }else if(values.id.includes(" ")){
+        error.id = toast.error("Invalid ID");
+    }else if(/^[a-zA-z]*$/i.test(values.id)){
+        error.id = toast.error("Invalid ID")
     }
 
     return error;
