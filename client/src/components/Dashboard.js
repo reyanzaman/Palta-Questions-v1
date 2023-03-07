@@ -1,43 +1,11 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import avatar from '../assets/profile_blank.png'
-import { Toaster } from 'react-hot-toast'
-import { useFormik} from 'formik'
-import { registerValidation } from '../helper/validate'
-import convertToBase64 from '../helper/convert'
 
 import styles from '../styles/Username.module.css'
 
 export default function Dashboard() {
 
-  const [file, setFile] = useState()
-
-  const formik = useFormik({
-    initialValues: {
-      email: '',
-      id: '',
-      username: '',
-      password: '',
-    },
-    validate: registerValidation,
-    validateOnBlur: false,
-    validateOnChange: false,
-    onSubmit: async values => {
-      values = await Object.assign(values, { profile: file || ''})
-      console.log(values)
-    }
-  })
-
-  /** formit doesn't support file upload so we need to create this handler*/
-  const onUpload = async e => {
-    const base64 = await convertToBase64(e.target.files[0]);
-    setFile(base64);
-  }
-
   return (
     <div className="container mx-auto">
-
-      <Toaster position='top-center' reverseOrder={false}></Toaster>
 
       <div className="flex justify-center items-center h-screen">
         <div className={styles.glass} style={{width: "45%", height:"90%"}}>
@@ -47,58 +15,60 @@ export default function Dashboard() {
           </div>
           <br></br>
 
-          <form className="py-" onSubmit={formik.handleSubmit}>
-            <div className="profile flex justify-center py-4">
-              
-              <label htmlFor="profile">
-                <img src={file || avatar } className={styles.profile_img} alt="avatar" />
-              </label>
+          <div className="profile flex justify-center py-4">
+            
+            <label htmlFor="profile">
+              <img src={ avatar } className={styles.profile_img} alt="avatar" />
+            </label>
+          </div>
 
-              <input onChange={onUpload} type="file" id='profile' name='profile'/>
+          <div className="textbox flex flex-col items-center gap-6">
+            <div className="flex justify-center items-center py-4 text-3xl w-2/3 text-center text-gray-500">
+              User Name
             </div>
+            
+            <div style={{border: '1px solid #d3d3d3', width: '100%'}}></div>
 
-            <div className="textbox flex flex-col items-center gap-6">
-              <div className="flex justify-center items-center py-4 text-3xl w-2/3 text-center text-gray-500">
-                User Name
+              <div className="w-100 flex flex-col gap-6 py-2 pt-5">
+                <div className="w-100 flex flex-row gap-6 py-2 pt-5">
+
+                  <a href="#_" class="relative inline-flex items-center justify-center px-14 py-10 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group">
+                    <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-indigo-500 rounded-full group-hover:w-80 group-hover:h-80"></span>
+                    <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
+                    <span class="relative">Pre-Questions</span>
+                  </a>
+
+                  <a href="#_" class="relative inline-flex items-center justify-center px-10 py-10 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group">
+                    <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-indigo-500 rounded-full group-hover:w-80 group-hover:h-80"></span>
+                    <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
+                    <span class="relative">Post-Class Questions</span>
+                  </a>
+
+                </div>
+                <div className="w-100 flex flex-row gap-6 py-2 pt-5">
+
+                  <a href="#_" class="relative inline-flex items-center justify-center px-10 py-10 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group">
+                    <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-indigo-500 rounded-full group-hover:w-80 group-hover:h-80"></span>
+                    <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
+                    <span class="relative">Pre-Questionnaire</span>
+                  </a>
+
+                  <a href="#_" class="relative inline-flex items-center justify-center px-12 py-10 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group">
+                    <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-indigo-500 rounded-full group-hover:w-80 group-hover:h-80"></span>
+                    <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
+                    <span class="relative">Post-Questionnaire</span>
+                  </a>
+
+                </div>
               </div>
-              
-              <div style={{border: '1px solid #d3d3d3', width: '100%'}}></div>
-
-              <div className="w-100 flex gap-6 py-2 pt-5">
-                <a href="#_" class="relative inline-flex items-center justify-center px-10 py-20 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group">
-                <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-indigo-500 rounded-full group-hover:w-80 group-hover:h-80"></span>
-                <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
-                <span class="relative">Pre-Questions</span>
-                </a>
-
-                <a href="#_" class="relative inline-flex items-center justify-center px-10 py-20 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group">
-                <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-indigo-500 rounded-full group-hover:w-80 group-hover:h-80"></span>
-                <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
-                <span class="relative">Pre-Questionnaire</span>
-                </a>
-
-                <a href="#_" class="relative inline-flex items-center justify-center px-10 py-20 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group">
-                <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-indigo-500 rounded-full group-hover:w-80 group-hover:h-80"></span>
-                <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
-                <span class="relative">Post-Class Questions</span>
-                </a>
-
-                <a href="#_" class="relative inline-flex items-center justify-center px-10 py-20 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group">
-                <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-indigo-500 rounded-full group-hover:w-80 group-hover:h-80"></span>
-                <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
-                <span class="relative">Post-Questionnaire</span>
-                </a>
-              </div>
 
             </div>
 
-            <div style={{border: '1px solid #d3d3d3', width: '100%', marginTop: '40px'}}></div>
+          <div style={{border: '1px solid #d3d3d3', width: '100%', marginTop: '40px'}}></div>
 
-            <div className='text-center py-5 pt-20'>
-              <span className='text-gray-500'>© Independent University Bangladesh 2023</span>
-            </div>
-
-          </form>
+          <div className='text-center py-5 pt-10'>
+            <span className='text-gray-500'>© Independent University Bangladesh 2023</span>
+          </div>
 
         </div>
       </div>

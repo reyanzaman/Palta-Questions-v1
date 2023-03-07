@@ -30,9 +30,9 @@ export default function Password() {
         <div className={styles.glass}>
 
           <div className="title flex flex-col items-center">
-            <h4 className="text-5xl font-bold">Good to See You Again!</h4>
-            <span className="py-4 text-xl w-2/3 text-center text-gray-500">
-              I know it is a pain to login everytime, but please allow me to verify your credentials!
+            <h4 className="text-4xl font-bold">Good to See You Again!</h4>
+            <span className="py-4 text-lg w-2/3 text-center text-gray-500">
+              Please allow me to verify your credentials
             </span>
           </div>
 

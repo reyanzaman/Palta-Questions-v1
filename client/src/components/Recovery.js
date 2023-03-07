@@ -14,9 +14,9 @@ export default function Recovery() {
         <div className={styles.glass}>
 
           <div className="title flex flex-col items-center">
-            <h4 className="text-5xl font-bold">Password Recovery</h4>
-            <span className="py-4 text-xl w-2/3 text-center text-gray-500">
-              Let's not forget the password next time! Recovery Process initiated...
+            <h4 className="text-4xl font-bold">Password Recovery</h4>
+            <span className="py-4 text-lg w-2/3 text-center text-gray-500">
+              Let's not forget the password next time!
             </span>
           </div>
 

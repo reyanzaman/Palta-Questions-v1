@@ -11,4 +11,5 @@
 body{
     background: #dcdce6;
     background-image: url('./assets/background.png');
+    background-repeat: no;
 }
