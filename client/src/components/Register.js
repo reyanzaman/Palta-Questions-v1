@@ -1,34 +1,44 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import avatar from '../assets/profile_blank.png'
-import { Toaster } from 'react-hot-toast'
-import { useFormik} from 'formik'
-import { registerValidation } from '../helper/validate'
-import convertToBase64 from '../helper/convert'
+import { Link, useNavigate } from 'react-router-dom'
+import avatar from '../assets/profile.png';
+import toast, { Toaster } from 'react-hot-toast';
+import { useFormik } from 'formik';
+import { registerValidation } from '../helper/validate';
+import convertToBase64 from '../helper/convert';
+import { registerUser } from '../helper/helper'
 
-import styles from '../styles/Username.module.css'
+
+import styles from '../styles/Username.module.css';
 
 export default function Register() {
 
+  const navigate = useNavigate()
   const [file, setFile] = useState()
 
   const formik = useFormik({
-    initialValues: {
+    initialValues : {
       email: '',
-      id: '',
       username: '',
-      password: '',
+      password : '',
+      id: ''
     },
-    validate: registerValidation,
+    validate : registerValidation,
     validateOnBlur: false,
     validateOnChange: false,
-    onSubmit: async values => {
-      values = await Object.assign(values, { profile: file || ''})
-      console.log(values)
+    onSubmit : async values => {
+      values = await Object.assign(values, { profile : file || ''})
+      let registerPromise = registerUser(values)
+      toast.promise(registerPromise, {
+        loading: 'Creating...',
+        success : <b>Register Successfully...!</b>,
+        error : <b>Could not Register.</b>
+      });
+
+      registerPromise.then(function(){ navigate('/')});
     }
   })
 
-  /** formit doesn't support file upload so we need to create this handler*/
+  /** formik doensn't support file upload so we need to create this handler */
   const onUpload = async e => {
     const base64 = await convertToBase64(e.target.files[0]);
     setFile(base64);
@@ -40,7 +50,7 @@ export default function Register() {
       <Toaster position='top-center' reverseOrder={false}></Toaster>
 
       <div className="flex justify-center items-center h-screen">
-        <div className={styles.glass} style={{width: "45%", height:"90%"}}>
+        <div className={styles.glass} style={{height:"90%"}}>
 
           <div className="title flex flex-col items-center">
             <h4 className="text-4xl font-bold">Let's Get You Registered!</h4>

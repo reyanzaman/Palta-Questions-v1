@@ -1,9 +1,19 @@
 import toast from 'react-hot-toast'
+import { authenticate } from './helper'
 
 /** validate login page username */
 export async function usernameValidate(values){
     const errors = usernameVerify({}, values);
     
+    if(values.username){
+        // check user existence
+        const { status } = await authenticate(values.username)
+
+        if(status !== 200){
+            errors.exist = toast.error('User does not exist')
+        }
+    }
+
     return errors;
 }
 
@@ -79,14 +89,14 @@ function emailVerify(error={}, values){
     return error;
 }
 
-function idVerify(error={}, values){
-    if(!values.id){
-        error.id = toast.error("ID Required!");
-    }else if(values.id.includes(" ")){
-        error.id = toast.error("Invalid ID");
-    }else if(/^[a-zA-z]*$/i.test(values.id)){
-        error.id = toast.error("Invalid ID")
+function idVerify(error = {}, values) {
+    if (!values.id) {
+      error.id = toast.error("ID Required!");
+    } else if (typeof values.id === "string" && values.id.includes(" ")) {
+      error.id = toast.error("Invalid ID");
+    } else if (/^[a-zA-z]*$/i.test(values.id)) {
+      error.id = toast.error("Invalid ID");
     }
-
     return error;
-}
+  }
+  

@@ -2,21 +2,22 @@ import UserModel from '../model/User.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import ENV from '../config.js';
+import otpGenerator from 'otp-generator'
 
 
 /** middleware for verify user */
 export async function verifyUser(req, res, next){
-    try{
-
+    try {
+        
         const { username } = req.method == "GET" ? req.query : req.body;
 
-        //check the user existance
+        // check the user existance
         let exist = await UserModel.findOne({ username });
-        if(!exist) return res.status(404).send({ error: "User not found" });
+        if(!exist) return res.status(404).send({ error : "Can't find User!"});
         next();
 
-    }catch(error){
-        return res.status(404).send({ error: "Authentication Error" });
+    } catch (error) {
+        return res.status(404).send({ error: "Authentication Error"});
     }
 }
 
@@ -31,7 +32,7 @@ export async function verifyUser(req, res, next){
 */
 export async function register(req, res) {
     try {
-        const { username, password, id, email } = req.body;
+        const { username, password, id, email , profile} = req.body;
     
         // Check for existing user
         const existUsername = UserModel.exists({ username });
@@ -41,11 +42,15 @@ export async function register(req, res) {
     
         // Check for existing email
         const existEmail = UserModel.exists({ email });
+
+        // Check for profile image
+        const existProfile = UserModel.exists({ profile });
     
-        const [usernameExists, idExists, emailExists] = await Promise.all([
+        const [usernameExists, idExists, emailExists, profileExists] = await Promise.all([
             existUsername,
             existID,
             existEmail,
+            existProfile
     ]);
   
     if (usernameExists) {
@@ -64,6 +69,12 @@ export async function register(req, res) {
         .status(400)
         .json({ error: "Please use unique email" });
     }
+
+    if (profileExists){
+        return res
+        .status(400)
+        .json({ error: "Please upload a photo"});
+    }
   
     const hashedPassword = await bcrypt.hash(password, 10);
   
@@ -72,6 +83,7 @@ export async function register(req, res) {
         password: hashedPassword,
         id,
         email,
+        profile: profile || ''
     });
   
     const result = await user.save();
@@ -123,26 +135,81 @@ export async function login(req, res) {
 
 /** GET: http://localhost:8080/api/user/example123 */
 export async function getUser(req, res){
-    res.json('getUser route');
+    
+    const { username } = req.params;
+
+    if(!username) {
+        return res.status(400).send({ error: "Invalid Username"});
+    }
+
+    try {
+        const user = await UserModel.findOne({ username });
+        
+        if(!user) {
+            return res.status(404).send({ error: "User Not Found"});
+        }
+
+        // remove password from the user
+        // mongoose return unnecessary data with object so convert it to json
+        const { password, ...rest } = Object.assign({}, user.toJSON());
+
+        return res.status(200).send(rest);
+
+    } catch (error) {
+        return res.status(500).send({ error: "Internal Server Error" });
+    }
 }
 
 /** GET http://localhost:8080/api/generateOTP */
 export async function generateOTP(req, res){
-    res.json('generateOTP route');
+    req.app.locals.OTP = await otpGenerator.generate(6, { lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false})
+    res.status(201).send({ code: req.app.locals.OTP })
 }
 
 /** GET http://localhost:8080/api/verifyOTP */
 export async function verifyOTP(req, res){
-    res.json('verifyOTP route');
+    const { code } = req.query;
+    if(parseInt(req.app.locals.OTP) === parseInt(code)){
+        req.app.locals.OTP = null;
+        req.app.locals.resetSession = true;
+        return res.status(201).send({ msg: 'Verified Successfully' })
+    }
+    return res.status(400).send({ error: "Invalid OTP"})
 }
 
 //successfully redirect user when OTP is valid
 /** GET http://localhost:8080/api/createResetSession */
 export async function createResetSession(req, res){
-    res.json('createResetSession route');
+    if(req.app.locals.resetSession){
+        req.app.locals.resetSession = false;
+        return res.status(201).send({ msg: "Access Granted"})
+    }
+    return res.status(440).send({error: "Session expired!"})
 }
 
 /** PUT http://localhost:8080/api/resetPassword */
-export async function resetPassword(req, res){
-    res.json('resetPassword route');
-}
+export async function resetPassword(req, res) {
+    try {
+
+        if(!req.app.locals.resetSession) return res.status(404).send({error: "Session Expired!"});
+    
+        const { username, password } = req.body;
+        const user = await UserModel.findOne({ username });
+
+        if (!user) {
+            return res.status(404).send({ error: "Username Not Found" });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        await UserModel.updateOne(
+            { username: user.username },
+            { password: hashedPassword }
+        );
+
+        return res.status(201).send({ msg: "Record Updated" });
+    } catch (error) {
+      return res.status(500).send({ error });
+    }
+  }
+  
