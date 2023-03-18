@@ -20,7 +20,8 @@ export default function Register() {
       email: '',
       username: '',
       password : '',
-      id: ''
+      id: '',
+      profile: ''
     },
     validate : registerValidation,
     validateOnBlur: false,
@@ -50,11 +51,11 @@ export default function Register() {
       <Toaster position='top-center' reverseOrder={false}></Toaster>
 
       <div className="flex justify-center items-center h-screen">
-        <div className={styles.glass} style={{height:"90%"}}>
+        <div className={styles.glass}>
 
           <div className="title flex flex-col items-center">
             <h4 className="text-4xl font-bold">Let's Get You Registered!</h4>
-            <span className="py-4 text-lg w-2/3 text-center text-gray-500">
+            <span className="py-4 text-lg w-auto text-center text-gray-500">
               Oh don't worry. It's completely Free!
             </span>
           </div>
@@ -68,23 +69,30 @@ export default function Register() {
 
               <input onChange={onUpload} type="file" id='profile' name='profile'/>
             </div>
-            <br></br>
 
-            <div className="textbox flex flex-row items-center gap-6">
+            <div className="textbox flex flex-col items-center gap-6">
+              <span className="py-4 text-sm w-auto h-auto text-center text-purple-500">
+                Upload a cool picture. Let us see you!
+              </span>
               <input {...formik.getFieldProps('email')} type="email" placeholder="Email" className={styles.textbox}/>
               <input {...formik.getFieldProps('id')} type="number" placeholder="IUB ID" className={styles.textbox}/>
-            </div>
-
-            <div className="textbox flex flex-row items-center gap-6 my-6">
               <input {...formik.getFieldProps('username')} type="text" placeholder="Username" className={styles.textbox}/>
               <input {...formik.getFieldProps('password')} type="password" placeholder="Password" className={styles.textbox}/>
+
+              <span className="text-xs w-auto text-center text-red-500">
+                Registration failed?<br></br>
+                <span className="text-xs w-auto text-center text-indigo-500">
+                Then you are probably too shy to upload a picture!
+                </span>
+              </span>
+           
             </div>
 
             <div className="textbox flex flex-col items-center gap-6 my-6">
             <button type="submit" className={styles.btn}>Register</button>
             </div>
 
-            <div className='text-center py-4'>
+            <div className='text-center'>
               <span className='text-gray-500'>Already Registed? <Link className='text-red-500' to="/">Login Now</Link></span>
             </div>
 

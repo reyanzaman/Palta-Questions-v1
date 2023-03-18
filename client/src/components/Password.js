@@ -14,7 +14,7 @@ export default function Password() {
   const navigate = useNavigate()
   const { username } = useAuthStore(state => state.auth)
   const [{ isLoading, apiData, serverError }] = useFetch(`/user/${username}`)
-  console.log(apiData, serverError)
+  // console.log(apiData?.profile)
 
   const formik = useFormik({
     initialValues : {
@@ -28,14 +28,14 @@ export default function Password() {
       let loginPromise = verifyPassword({ username, password : values.password })
       toast.promise(loginPromise, {
         loading: 'Checking...',
-        success : <b>Login Successfully...!</b>,
-        error : <b>Password Not Match!</b>
+        success : <b>Login Successful</b>,
+        error : <b>Password Incorrect!</b>
       });
 
       loginPromise.then(res => {
         let { token } = res.data;
         localStorage.setItem('token', token);
-        navigate('/dashboard')
+        navigate('/Dashboard')
       })
     }
   })
@@ -60,7 +60,7 @@ export default function Password() {
 
           <form className="py-1" onSubmit={formik.handleSubmit}>
             <div className="profile flex justify-center py-4">
-              <img src={apiData?.profile} className={styles.profile_img} alt="avatar" />
+              <img src={apiData?.profile || avatar} className={styles.profile_img} alt="avatar" />
             </div>
             <br></br>
             <div className="textbox flex flex-col items-center gap-6">

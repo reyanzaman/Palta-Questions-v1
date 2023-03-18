@@ -9,6 +9,12 @@ import Recovery from './components/Recovery';
 import Password from './components/Password';
 import PageNotFound from './components/PageNotFound';
 import Dashboard from './components/Dashboard';
+import Questionnaire from './components/Questionnaire';
+import Pre from './components/Pre';
+import Post from './components/Post';
+
+// auth middleware
+import { AuthorizeUser,ProtectRoute } from './middleware/auth';
 
 /** root routes */
 const router = createBrowserRouter([
@@ -22,11 +28,11 @@ const router = createBrowserRouter([
     },
     {
         path: '/password',
-        element: <Password></Password>
+        element: <ProtectRoute><Password/></ProtectRoute>
     },
     {
         path: '/dashboard',
-        element: <Dashboard></Dashboard>
+        element: <AuthorizeUser><Dashboard/></AuthorizeUser>
     },
     {
         path: '/recovery',
@@ -40,6 +46,18 @@ const router = createBrowserRouter([
         path: '*',
         element: <PageNotFound></PageNotFound>
     },
+    {
+        path: '/questionnaire',
+        element: <AuthorizeUser><Questionnaire/></AuthorizeUser>
+    },
+    {
+        path: '/pre',
+        element: <AuthorizeUser><Pre/></AuthorizeUser>
+    },
+    {
+        path: '/post',
+        element: <AuthorizeUser><Post/></AuthorizeUser>
+    }
 ])
 
 export default function App() {

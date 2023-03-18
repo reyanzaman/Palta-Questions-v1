@@ -17,6 +17,15 @@ router.route('/user/:username').get(controller.getUser) //user with username
 router.route('/generateOTP').get(controller.verifyUser, localVariables, controller.generateOTP) //generate random OTP
 router.route('/verifyOTP').get(controller.verifyUser, controller.verifyOTP) //verify generated OTP
 router.route('/createResetSession').get(controller.createResetSession) //reset all the variables
+router.route('/questionnaire').get(controller.verifyUser, (req, res) => {
+    res.render('Questionnaire')
+})
+router.route('/pre').get(controller.verifyUser, (req, res) => {
+    res.render('Pre')
+})
+router.route('/post').get(controller.verifyUser, (req, res) => {
+    res.render('Post')
+})
 
 /** PUT Methods */
 router.route('/resetPassword').put(controller.verifyUser, controller.resetPassword); // used to reset password
