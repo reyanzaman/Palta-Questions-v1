@@ -38,7 +38,10 @@ export default function Reset() {
       }
     })
 
-    if(isLoading) return <h1 className='text-2xl font-bold'>isLoading</h1>
+    if(isLoading) return
+      <div class="flex justify-center items-center h-screen">
+        <h1 class="text-center text-2xl font-bold text-red-500">Page Not Found!</h1>
+      </div>
     if(serverError) return <h1 className='text-xl text-red-500'>{serverError.message}</h1>
     if(status && status !== 201) return <Navigate to={'/password'} replace={true}></Navigate>
 
@@ -51,7 +54,7 @@ export default function Reset() {
         <div className={styles.glass}>
 
           <div className="title flex flex-col items-center">
-            <h4 className="text-5xl font-bold">Reset Password</h4>
+            <h4 className="text-5xl font-bold text-center">Reset Password</h4>
             <span className="py-4 text-xl w-2/3 text-center text-gray-500">
               Enter a new password you defintely won't forget! It better not be password123!
             </span>

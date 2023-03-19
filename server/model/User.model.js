@@ -23,6 +23,9 @@ export const UserSchema = new mongoose.Schema({
     },
     profile: {
         type: String
+    },
+    questions: {
+        type: Number
     }
 });
 

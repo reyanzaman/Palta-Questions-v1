@@ -51,6 +51,32 @@ export async function registerUser(credentials){
     }
 }
 
+// Submit Post-Question
+export async function postQuestion(values){
+    try{
+        const { data: { msg } } = await axios.post(`/api/post`, values);
+
+        return Promise.resolve(msg)
+    }catch(error){
+        console.log("helper function")
+        console.log(error)
+        return Promise.reject({ error });
+    }
+}
+
+// Submit Pre-Question
+export async function preQuestion(values){
+    try{
+        const { data: { msg } } = await axios.post(`/api/pre`, values);
+
+        return Promise.resolve(msg)
+    }catch(error){
+        console.log("helper function")
+        console.log(error)
+        return Promise.reject({ error });
+    }
+}
+
 // Login Function
 export async function verifyPassword({ username, password }){
     try{

@@ -12,6 +12,7 @@ import Dashboard from './components/Dashboard';
 import Questionnaire from './components/Questionnaire';
 import Pre from './components/Pre';
 import Post from './components/Post';
+import Repository from './components/Repository';
 
 // auth middleware
 import { AuthorizeUser,ProtectRoute } from './middleware/auth';
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
     {
         path: '/post',
         element: <AuthorizeUser><Post/></AuthorizeUser>
+    },
+    {
+        path: '/repository',
+        element: <AuthorizeUser><Repository/></AuthorizeUser>
     }
 ])
 

@@ -1,25 +1,52 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Toaster } from 'react-hot-toast'
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import toast, { Toaster } from 'react-hot-toast'
 import { useFormik} from 'formik'
 import { useAuthStore } from '../store/store'
 import styles from '../styles/Username.module.css'
+import { preQuestion } from '../helper/helper';
 
 export default function Pre() {
 
     const navigate = useNavigate();
     const { username } = useAuthStore(state => state.auth);
 
+    const [topics] = useState({
+      CSC101: ['Print', 'If-Else', 'Loops'],
+      CSC203: ['Objects & Classes', 'Stacks', 'Queues'],
+      CSC401: ['SQL', 'ERD', 'XAMP']
+    });
+
+    const handleChange = event => {
+      const selectedCourse = event.target.value;
+      formik.setFieldValue('course', selectedCourse);
+      formik.setFieldValue('topic', topics[selectedCourse][0]);
+    };
+
     const formik = useFormik({
       initialValues: {
-        course: '',
-        topic: '',
+        course: 'CSC101',
+        topic: 'Print',
         question1: '',
         question2: '',
         question3: ''
       },
       onSubmit: async values => {
-        navigate('/dashboard')
+        const currentDate = new Date();
+        const options = { timeZone: 'Asia/Dhaka', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+        const formattedDate = currentDate.toLocaleString('en-US', options);
+        values.date = formattedDate;
+        
+        values.username = username;
+
+        let prePromise = preQuestion(values)
+        toast.promise(prePromise, {
+          loading: 'Posting...',
+          success : <b>Question Posted</b>,
+          error : <b>Something seems wrong!</b>
+        });
+
+        prePromise.then(function(){ navigate('/dashboard')});
       }
     })
 
@@ -44,16 +71,19 @@ export default function Pre() {
                 <br></br>
                 <div className="textbox flex flex-col items-center gap-6">
                   
-                  <select {...formik.getFieldProps('course')} className={styles.textbox}>
+                  <select {...formik.getFieldProps('course')} className={styles.textbox} onChange={handleChange}>
                     <option value="CSC101">CSC101</option>
                     <option value="CSC203">CSC203</option>
                     <option value="CSC401">CSC401</option>
                   </select>
                   <select {...formik.getFieldProps('topic')} className={styles.textbox}>
-                    <option value="CSC101">Python Basic</option>
-                    <option value="CSC203">Loops</option>
-                    <option value="CSC401">If-Else</option>
+                    {topics[formik.values.course].map(topic => (
+                      <option key={topic} value={topic}>
+                        {topic}
+                      </option>
+                    ))}
                   </select>
+
                   <input {...formik.getFieldProps('question1')} type="text" placeholder="Question 1" className={styles.textbox}/>
                   <input {...formik.getFieldProps('question2')} type="text" placeholder="Question 2" className={styles.textbox}/>
                   <input {...formik.getFieldProps('question3')} type="text" placeholder="Question 3" className={styles.textbox}/>
@@ -62,6 +92,10 @@ export default function Pre() {
                 </div>
 
               </form>
+
+              <div className='text-center mt-4'>
+                <span><Link className='text-indigo-500' to="/dashboard">Back to Dashboard</Link></span>
+              </div>
 
             </div>
           </div>

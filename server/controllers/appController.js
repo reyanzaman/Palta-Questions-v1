@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import ENV from '../config.js';
 import otpGenerator from 'otp-generator'
+import QuestionModel from '../model/Question.model.js';
 
 
 /** middleware for verify user */
@@ -21,6 +22,43 @@ export async function verifyUser(req, res, next){
     }
 }
 
+export async function submitQuestion(req, res) {
+    try{
+        const { username, type, course, topic, date, question1, question2, question3, thisclass, nextclass} = req.body;
+
+        let qtype = "";
+        if(question1 || question2 || question3){
+            qtype = "pre"
+        }else if(thisclass || nextclass){
+            qtype = "post"
+        }
+
+        const question = new QuestionModel({
+            username,
+            type: qtype,
+            course,
+            topic,
+            date,
+            question1,
+            question2,
+            question3,
+            thisclass,
+            nextclass
+        });
+      
+        const result = await question.save();
+      
+        res.status(201).json({ msg: `${qtype.toUpperCase()}-Question Posted` });
+
+        await UserModel.updateOne({ username: username }, { $inc: { questions: 1 } });
+
+    }catch(error){
+        console.log("app controller")
+        console.log(error);
+        res.status(500).json({ error: "Failed to post Question!" });
+    }
+}
+
 
 /** POST http://localhost:8080/api/register
  * @param : {
@@ -32,7 +70,7 @@ export async function verifyUser(req, res, next){
 */
 export async function register(req, res) {
     try {
-        const { username, password, id, email , profile} = req.body;
+        const { username, password, id, email , profile, questions} = req.body;
     
         // Check for existing user
         const existUsername = UserModel.exists({ username });
@@ -51,7 +89,7 @@ export async function register(req, res) {
             existID,
             existEmail,
             existProfile
-    ]);
+        ]);
   
     if (usernameExists) {
         return res.status(400).json({ error: "Please use unique username" });
@@ -83,7 +121,8 @@ export async function register(req, res) {
         password: hashedPassword,
         id,
         email,
-        profile: profile || ''
+        profile: profile || '',
+        questions: 0
     });
   
     const result = await user.save();

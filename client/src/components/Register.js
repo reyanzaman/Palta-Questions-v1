@@ -21,7 +21,8 @@ export default function Register() {
       username: '',
       password : '',
       id: '',
-      profile: ''
+      profile: '',
+      questions: 0
     },
     validate : registerValidation,
     validateOnBlur: false,
@@ -54,7 +55,7 @@ export default function Register() {
         <div className={styles.glass}>
 
           <div className="title flex flex-col items-center">
-            <h4 className="text-4xl font-bold">Let's Get You Registered!</h4>
+            <h4 className="text-4xl font-bold text-center">Let's Get You Registered!</h4>
             <span className="py-4 text-lg w-auto text-center text-gray-500">
               Oh don't worry. It's completely Free!
             </span>
