@@ -20,13 +20,17 @@ router.route('/generateOTP').get(controller.verifyUser, localVariables, controll
 router.route('/verifyOTP').get(controller.verifyUser, controller.verifyOTP) //verify generated OTP
 router.route('/createResetSession').get(controller.createResetSession) //reset all the variables
 
+render.route('./your').get(controller.verifyUser, (req,res) => {
+    res.render('Your');
+})
+
 //** Render Methods */
 router.route('/questionnaire').get(controller.verifyUser, (req, res) => {
-    res.render('Questionnaire')
+    res.render('Questionnaire');
 })
 
 router.route('/repository').get(controller.verifyUser, (req, res) => {
-    res.render('Repository')
+    res.render('Repository');
 })
 
 /** PUT Methods */

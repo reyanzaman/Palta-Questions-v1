@@ -27,7 +27,7 @@ export default function Dashboard() {
   return (
     <div className="container mx-auto">
 
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-center">
         <div className={styles.glass}>
 
           <div className="title flex flex-col items-center">
@@ -54,16 +54,22 @@ export default function Dashboard() {
 
               <div className="w-[70%] flex flex-col gap-6 py-2">
 
+                <Link to="/your" className="relative inline-flex items-center justify-center px-14 py-8 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group">
+                  <span className="absolute w-0 h-0 transition-all duration-500 ease-out bg-indigo-500 rounded-full group-hover:w-80 group-hover:h-80 block" style={{'width': '105%'}}></span>
+                  <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
+                  <span className="relative text-center">Your Questions</span>
+                </Link>
+
                 <Link to="/pre" className="relative inline-flex items-center justify-center px-14 py-8 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group">
                   <span className="absolute w-0 h-0 transition-all duration-500 ease-out bg-indigo-500 rounded-full group-hover:w-80 group-hover:h-80 block" style={{'width': '105%'}}></span>
                   <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
-                  <span className="relative text-center">Pre-Class Questions</span>
+                  <span className="relative text-center">Pre Questions</span>
                 </Link>
 
                 <Link to="/post" className="relative inline-flex items-center justify-center px-10 py-8 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group">
                   <span className="absolute w-0 h-0 transition-all duration-500 ease-out bg-indigo-500 rounded-full group-hover:w-80 group-hover:h-80 block" style={{'width': '105%'}}></span>
                   <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
-                  <span className="relative text-center">Post-Class Questions</span>
+                  <span className="relative text-center">Post Questions</span>
                 </Link>
 
                 <Link to="/repository" className="relative inline-flex items-center justify-center px-10 py-8 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-900 rounded-lg group">
