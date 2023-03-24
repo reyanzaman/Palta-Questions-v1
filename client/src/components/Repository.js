@@ -71,7 +71,7 @@ export default function Repository() {
                 <select {...formik.getFieldProps('type')} className={styles.textbox}>
                   <option key="pre" value="pre">Pre-Questions</option>
                   <option key="post" value="post">Post-Questions</option>
-                  <option key="post" value="general">General-Questions</option>
+                  <option key="general" value="general">General-Questions</option>
                   <option disabled key="prequestionnaire" value="prequestionnaire" className="text-gray-200">Pre-Questionnaire</option>
                   <option disabled key="postquestionnaire" value="postquestionnaire" className="text-gray-200">Post-Questionnaire</option>
                 </select>

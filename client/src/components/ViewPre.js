@@ -3,11 +3,19 @@ import styles from '../styles/Username.module.css';
 import { Link } from 'react-router-dom';
 import { useDataStore, useAuthStore } from '../store/store';
 import { useFormik } from 'formik';
+import { useParams } from 'react-router-dom';
 
 export default function ViewPre() {
 
     const data = useDataStore((state) => state.data);
     const { username } = useAuthStore(state => state.auth);
+    const { index } = useParams();
+
+    const question = data.myData[index];
+    console.log("Data: ", data.myData);
+    console.log("Username: ", username);
+    console.log("index: ", index);
+    console.log("question: ", question);
 
     const formik = useFormik({
         initialValues: {
