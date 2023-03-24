@@ -3,19 +3,20 @@ import styles from '../styles/Username.module.css';
 import { Link } from 'react-router-dom';
 import { useDataStore, useAuthStore } from '../store/store';
 import { useFormik } from 'formik';
-import { useParams } from 'react-router-dom';
+import useFetch from '../hooks/fetch.hook';
+import { useLocation } from 'react-router-dom';
 
 export default function ViewPre() {
 
     const data = useDataStore((state) => state.data);
     const { username } = useAuthStore(state => state.auth);
-    const { index } = useParams();
+    const [{ isLoading, apiData, serverError }] = useFetch(username ? `/user/${username}` : null);
+    console.log(data.myData)
 
-    const question = data.myData[index];
-    console.log("Data: ", data.myData);
-    console.log("Username: ", username);
-    console.log("index: ", index);
-    console.log("question: ", question);
+    const location = useLocation();
+    const index = location.state?.index;
+
+    const question = data.myData[0];
 
     const formik = useFormik({
         initialValues: {
@@ -38,11 +39,19 @@ export default function ViewPre() {
         return <div className="h-screen items-center text-red-500 font-bold">No questions found!</div>;
     }
 
+    if(isLoading) return <div className="flex justify-center items-center h-screen">
+        <h1 className="text-center text-2xl font-bold">Loading...</h1>
+      </div>
+    if(serverError) return <h1 className='text-xl text-red-500'>{serverError.message}</h1>
+
     return (
         <div className="container mx-auto">
-          <div className="flex justify-center items-center h-screen max-w-[70%] mx-auto">
+          <div className="flex justify-center items-center max-w-[70%] mx-auto">
             <div className={styles.glass}>
-  
+
+              <p>Username: {apiData?.username || "Undefined"}</p>
+              <p>Index: {index || "Undefined"}</p>
+
               <div className="title flex flex-col items-center p-4">
                 <h4 className="text-2xl font-bold text-center">{data.myData[2]['question1']}</h4>
                 <span className="py-4 w-2/3 text-center text-gray-900">
@@ -55,7 +64,7 @@ export default function ViewPre() {
                 
                 
                 <div className="pt-4">
-                    <h1 className="title text-2xl text-slate-800 font-black text-center">Previous Answers</h1><br></br>
+                    <h1 className="text-2xl text-slate-800 font-black text-center">Previous Answers</h1><br></br>
 
                     <div className="flex flex-col items-center text-center rounded-2xl p-6 bg-slate-700 text-neutral-100">
                         <p>Here lies an answer. This answer is going to be long lorem ipsum very very long text something longer.</p>
@@ -63,7 +72,7 @@ export default function ViewPre() {
                         <p className='text-xs text-indigo-200'>Friday, March 24, 2023 at 2:39 PM</p>
                     </div>
 
-                    <hr className='h-px my-8 border-0 dark:bg-gray-300'></hr>
+                    <hr className='h-px my-6 border-0 dark:bg-gray-300'></hr>
 
                     <form className="py-1 flex flex-col items-center" onSubmit={formik.handleSubmit}>
 
