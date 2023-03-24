@@ -1,9 +1,9 @@
 import UserModel from '../model/User.model.js';
+import QuestionModel from '../model/Question.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import ENV from '../config.js';
 import otpGenerator from 'otp-generator'
-import QuestionModel from '../model/Question.model.js';
 
 
 /** middleware for verify user */
@@ -22,9 +22,21 @@ export async function verifyUser(req, res, next){
     }
 }
 
-export async function submitQuestion(req, res) {
+export async function searchQuestion(req, res){
     try{
-        const { username, type, course, topic, date, question1, question2, question3, thisclass, nextclass} = req.body;
+        console.log("app controller running")
+        const { type, course, topic } = req.query;
+        const questions = await QuestionModel.find({ type, course, topic });
+        return res.json(questions);
+    }catch(error){
+        console.log("Failed to execute searchQuestion function");
+    }
+}
+
+export async function submitQuestion(req, res) {
+    console.log("Submit Question Module Executed")
+    try{
+        const { username, type, course, topic, date, question1, question2, question3, thisclass, nextclass, isAnonymous} = req.body;
 
         let qtype = "";
         if(question1 || question2 || question3){
@@ -43,7 +55,8 @@ export async function submitQuestion(req, res) {
             question2,
             question3,
             thisclass,
-            nextclass
+            nextclass,
+            isAnonymous
         });
       
         const result = await question.save();

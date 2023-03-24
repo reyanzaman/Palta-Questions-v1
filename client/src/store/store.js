@@ -5,5 +5,10 @@ export const useAuthStore = create((set) => ({
         username: '',
         active : false
     },
-    setUsername: (name) => set((state) => ({ auth : { ...state.auth, username : name }}))
+    setUsername: (name) => set((state) => ({ auth : { ...state.auth, username : name }})),
 }))
+
+export const useDataStore = create((set) => ({
+    data: null,
+    setData: (newData) => set(() => ({ data: newData })),
+}));

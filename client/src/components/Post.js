@@ -30,7 +30,8 @@ export default function Post() {
         topic: 'Print',
         thisclass: '',
         nextclass: '',
-        date: ''
+        date: '',
+        isAnonymous: 'false',
       },
       onSubmit: async values => {
         const currentDate = new Date();
@@ -88,6 +89,15 @@ export default function Post() {
                   <textarea cols="30" rows="3" {...formik.getFieldProps('thisclass')} type="text" placeholder="What did you learn today?" className={styles.textbox}/>
                   <textarea cols="30" rows="3" {...formik.getFieldProps('nextclass')} type="text" placeholder="What do you want to learn tomorrow?" className={styles.textbox}/>
                   
+                  <label className="relative inline-flex items-center mr-5 cursor-pointer">
+                    <input type="checkbox" value="" className="sr-only peer" {...formik.getFieldProps('isAnonymous')}></input>
+                    <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full 
+                    peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px]
+                    after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all
+                    dark:border-gray-600 peer-checked:bg-indigo-600"></div>
+                    <span className="ml-3 text-md font-bold text-gray-900 dark:text-gray-700">Anonymous</span>
+                  </label>
+
                   <button type="submit" className={styles.btn}>Post</button>
                 </div>
 

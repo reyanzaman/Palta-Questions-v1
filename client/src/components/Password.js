@@ -41,8 +41,8 @@ export default function Password() {
   })
 
   if(isLoading) return
-    <div class="flex justify-center items-center h-screen">
-      <h1 class="text-center text-2xl font-bold text-red-500">Page Not Found!</h1>
+    <div className="flex justify-center items-center h-screen">
+      <h1 className="text-center text-2xl font-bold text-red-500">Page Not Found!</h1>
     </div>
   if(serverError) return <h1 className='text-xl text-red-500'>{serverError.message}</h1>
 

@@ -16,9 +16,10 @@ router.route('/pre').post(controller.verifyUser, controller.submitQuestion); //s
 
 /** GET Methods */
 router.route('/user/:username').get(controller.getUser) //user with username
-router.route('/generateOTP').get(controller.verifyUser, localVariables, controller.generateOTP) //generate random OTP
-router.route('/verifyOTP').get(controller.verifyUser, controller.verifyOTP) //verify generated OTP
-router.route('/createResetSession').get(controller.createResetSession) //reset all the variables
+router.route('/generateOTP').get(controller.verifyUser, localVariables, controller.generateOTP); //generate random OTP
+router.route('/verifyOTP').get(controller.verifyUser, controller.verifyOTP); //verify generated OTP
+router.route('/createResetSession').get(controller.createResetSession); //reset all the variables
+router.route('/questions').get(controller.searchQuestion); //Repository of Questions
 
 router.route('./your').get(controller.verifyUser, (req,res) => {
     res.render('Your');
@@ -31,6 +32,10 @@ router.route('/questionnaire').get(controller.verifyUser, (req, res) => {
 
 router.route('/repository').get(controller.verifyUser, (req, res) => {
     res.render('Repository');
+})
+
+router.route('/viewPre').get((req,res) => {
+    res.render('ViewPre')
 })
 
 /** PUT Methods */

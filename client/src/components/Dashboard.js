@@ -11,16 +11,14 @@ export default function Dashboard() {
   const [{ isLoading, apiData, serverError }] = useFetch(username ? `/user/${username}` : null);
   const navigate = useNavigate();
 
-  console.log(apiData)
-
   // logout handler function
   function userLogout(){
     localStorage.removeItem('token');
     navigate('/')
   }
 
-  if(isLoading) return <div class="flex justify-center items-center h-screen">
-                         <h1 class="text-center text-2xl font-bold">Loading...</h1>
+  if(isLoading) return <div className="flex justify-center items-center h-screen">
+                         <h1 className="text-center text-2xl font-bold">Loading...</h1>
                        </div>
   if(serverError) return <h1 className='text-xl text-red-500'>{serverError.message}</h1>
 

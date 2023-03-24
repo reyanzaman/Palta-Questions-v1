@@ -50,6 +50,11 @@ export const QuestionSchema = new mongoose.Schema({
         type: String,
         required: [false],
         unique: false
+    },
+    isAnonymous: {
+        type: String,
+        required: [false],
+        unique: false
     }
 });
 

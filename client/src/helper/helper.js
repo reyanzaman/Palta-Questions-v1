@@ -13,6 +13,18 @@ export async function getUsername(){
     return decode;
 }
 
+export async function findQuestions(type, course, topic){
+    try{
+        console.log("Helper Function Running")
+        const response = await axios.get('/api/questions', {
+            params: { type, course, topic }
+        });
+        return response.data;
+    }catch(error){
+        console.log(error)
+    }
+}
+
 // Authenticate Function
 export async function authenticate(username){
     try {

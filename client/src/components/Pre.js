@@ -29,14 +29,14 @@ export default function Pre() {
         topic: 'Print',
         question1: '',
         question2: '',
-        question3: ''
+        question3: '',
+        isAnonymous: 'false',
       },
       onSubmit: async values => {
         const currentDate = new Date();
         const options = { timeZone: 'Asia/Dhaka', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
         const formattedDate = currentDate.toLocaleString('en-US', options);
         values.date = formattedDate;
-        
         values.username = username;
 
         let prePromise = preQuestion(values)
@@ -87,7 +87,16 @@ export default function Pre() {
                   <input {...formik.getFieldProps('question1')} type="text" placeholder="Question 1" className={styles.textbox}/>
                   <input {...formik.getFieldProps('question2')} type="text" placeholder="Question 2" className={styles.textbox}/>
                   <input {...formik.getFieldProps('question3')} type="text" placeholder="Question 3" className={styles.textbox}/>
-                  
+
+                  <label className="relative inline-flex items-center mr-5 cursor-pointer">
+                    <input type="checkbox" value="" className="sr-only peer" {...formik.getFieldProps('isAnonymous')}></input>
+                    <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full 
+                    peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px]
+                    after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all
+                    dark:border-gray-600 peer-checked:bg-indigo-600"></div>
+                    <span className="ml-3 text-md font-bold text-gray-900 dark:text-gray-700">Anonymous</span>
+                  </label>
+
                   <button type="submit" className={styles.btn}>Post</button>
                 </div>
 
