@@ -4,19 +4,16 @@ import { Link } from 'react-router-dom';
 import { useDataStore, useAuthStore } from '../store/store';
 import { useFormik } from 'formik';
 import useFetch from '../hooks/fetch.hook';
-import { useLocation } from 'react-router-dom';
 
-export default function ViewPre() {
+export default function ViewPre(props) {
 
     const data = useDataStore((state) => state.data);
     const { username } = useAuthStore(state => state.auth);
     const [{ isLoading, apiData, serverError }] = useFetch(username ? `/user/${username}` : null);
     console.log(data.myData)
 
-    const location = useLocation();
-    const index = location.state?.index;
-
-    const question = data.myData[0];
+    const index = props.index;
+    console.log(index);
 
     const formik = useFormik({
         initialValues: {

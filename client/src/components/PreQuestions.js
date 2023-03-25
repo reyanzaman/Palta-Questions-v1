@@ -14,8 +14,8 @@ export default function PreQuestions() {
     const navigate = useNavigate();
 
     const handleClick = (index) => {
-      setData({ myData: questions});
-      navigate('/viewPre', { state: { index } });
+      setData({ myData: questions });
+      navigate('/viewPre', { state: { index }, index });
     };
 
     if (!questions) {
