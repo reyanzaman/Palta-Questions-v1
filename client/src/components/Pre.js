@@ -16,7 +16,7 @@ export default function Pre() {
       CSC203: ['Objects & Classes', 'Stacks', 'Queues'],
       CSC401: ['SQL', 'ERD', 'XAMP']
     });
-
+    
     const handleChange = event => {
       const selectedCourse = event.target.value;
       formik.setFieldValue('course', selectedCourse);

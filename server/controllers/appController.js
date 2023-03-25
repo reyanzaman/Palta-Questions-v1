@@ -1,5 +1,6 @@
 import UserModel from '../model/User.model.js';
 import QuestionModel from '../model/Question.model.js';
+import AnswerModel from '../model/Answer.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import ENV from '../config.js';
@@ -30,6 +31,54 @@ export async function searchQuestion(req, res){
         return res.json(questions);
     }catch(error){
         console.log("Failed to execute searchQuestion function");
+    }
+}
+
+export async function searchGeneral(req, res){
+    try{
+        console.log("app controller running")
+        const { course, topic } = req.query;
+        const questions = await AnswerModel.find({ course, topic });
+        return res.json(questions);
+    }catch(error){
+        console.log("Failed to execute searchGeneral function");
+    }
+}
+
+export async function searchAnswer(req, res){
+    console.log("app controller running")
+    try {
+        const { question } = req.query;
+        const answers = await AnswerModel.find({ question });
+        return res.json(answers);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+export async function postAnswer(req, res){
+    try{
+        console.log("Posting Answer...");
+        const { username, date, answer, question, paltaQuestion , course, topic} = req.body;
+
+        const Answer = new AnswerModel({
+            username,
+            date,
+            answer,
+            question,
+            paltaQuestion,
+            course,
+            topic
+        });
+      
+        const result = await Answer.save();
+      
+        res.status(201).json({ msg: `Answer Posted` });
+
+        await UserModel.updateOne({ username: username }, { $inc: { questions: 1 } });
+    }catch(error){
+        console.log(error);
     }
 }
 

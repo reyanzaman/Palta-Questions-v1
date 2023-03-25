@@ -4,10 +4,12 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useFormik} from 'formik';
 import styles from '../styles/Username.module.css';
 import { findQuestions } from '../helper/helper';
+import { useDetailStore } from '../store/store';
 
 export default function Repository() {
 
     const navigate = useNavigate();
+    const setDetail = useDetailStore((state) => state.setDetail);
 
     const [topics] = useState({
       CSC101: ['Print', 'If-Else', 'Loops'],
@@ -31,10 +33,14 @@ export default function Repository() {
         try {
           const { type, course, topic } = values;
           let questions = await findQuestions(type, course, topic)
+          const detail = [type, course, topic];
+          localStorage.setItem('detail', '');
+          console.log("Setting details to: ", detail)
+          setDetail(detail);
           if(type==="pre"){
-            navigate('/questions', { state: { questions } });
+            navigate('/preQuestions', { state: { questions } });
           }else if(type==="post"){
-            navigate()
+            navigate('/postQuestions', { state: { questions } });
           }else if(type==="prequestionnaire"){
             navigate()
           }else if(type==="postquestionnaire"){

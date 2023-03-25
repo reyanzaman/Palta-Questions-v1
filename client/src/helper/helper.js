@@ -21,7 +21,28 @@ export async function findQuestions(type, course, topic){
         });
         return response.data;
     }catch(error){
-        console.log(error)
+        console.log(error);
+    }
+}
+
+export async function findAnswers(question){
+    try{
+        console.log("Helper Function Running")
+        const response = await axios.get('/api/getanswer', {
+            params: { question }
+        });
+        return response.data;
+    }catch(error){
+        console.log(error);
+    }
+}
+
+export async function postAnswer(values){
+    try{
+        const { data: { msg } } = await axios.post(`/api/answer`, values);
+        return Promise.resolve(msg);
+    }catch(error){
+        console.log(error);
     }
 }
 

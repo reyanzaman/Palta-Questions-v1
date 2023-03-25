@@ -1,39 +1,25 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import styles from '../styles/Username.module.css';
 import { Link } from 'react-router-dom';
-import { useDataStore, useDetailStore } from '../store/store';
+import { useDataStore } from '../store/store';
 
-export default function PreQuestions() {
+export default function GeneralQuestions() {
 
     const location = useLocation();
     const questions = location.state?.questions;
-    console.log("Questions: ", questions)
+    console.log(location.state)
 
     const setData = useDataStore((state) => state.setData);
-    const [detail, setDetail] = useDetailStore(state => [state.detail, state.setDetail]);
 
-    useEffect(() => {
-      const storedDetail = localStorage.getItem('detail');
-
-      if(!storedDetail){
-        localStorage.setItem('detail', JSON.stringify(detail));
-      }else if(storedDetail){
-        const myDetail = JSON.parse(storedDetail);
-        // console.log("Stored Detail: ", JSON.parse(storedDetail));
-        setDetail(myDetail);
-      }
-
-    }, []);
-
-    const handleClick = () => {
-      // console.log("Setting data to:", { myData: questions });
+    const handleClick = (index) => {
+      console.log("Setting data to:", { myData: questions });
       localStorage.setItem('myData', '');
       setData({ myData: questions });
     };
 
     if (!questions) {
-      return <div className="h-screen items-center text-red-500 text-2xl">No questions found!</div>;
+      return <div className="h-screen items-center">No questions found!</div>;
     }
 
     return (
@@ -56,7 +42,7 @@ export default function PreQuestions() {
                     <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-4">
                       <div>
                         <h1 className='lg:w-full text-left text-md font-bold hover:text-indigo-500'>
-                          <Link to={`/preQuestions/${questions.length - index - 1}/question1`} onClick={() => handleClick()}>{question['question1']}</Link>
+                          <Link to={`/preQuestions/${questions.length - index - 1}/question1`} onClick={() => handleClick(index)}>{question['question1']}</Link>
                         </h1>
                       </div>
                       <div>
@@ -69,7 +55,7 @@ export default function PreQuestions() {
                     <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-4">
                       <div>
                         <h1 className='lg:w-full text-left text-md font-bold hover:text-indigo-500'>
-                          <Link to={`/preQuestions/${questions.length - index - 1}/question2`} onClick={() => handleClick()}>{question['question2']}</Link>
+                          <Link to={`/preQuestions/${questions.length - index - 1}/question2`} onClick={() => handleClick(index)}>{question['question2']}</Link>
                         </h1>
                       </div>
                       <div>
@@ -82,7 +68,7 @@ export default function PreQuestions() {
                     <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-4">
                       <div>
                         <h1 className='lg:w-full text-left text-md font-bold hover:text-indigo-500'>
-                          <Link to={`/preQuestions/${questions.length - index - 1}/question3`} onClick={() => handleClick()}>{question['question3']}</Link>
+                          <Link to={`/preQuestions/${questions.length - index - 1}/question3`} onClick={() => handleClick(index)}>{question['question3']}</Link>
                         </h1>
                       </div>
                       <div>
@@ -97,7 +83,7 @@ export default function PreQuestions() {
             </div>
 
             <div className='text-center mt-8'>
-              <span><Link className='text-neutral-50 font-bold hover:bg-indigo-700 bg-indigo-500 py-3 px-10 rounded-md' to='/repository'>Go Back</Link></span>
+              <span><Link className='text-neutral-50 font-bold hover:bg-indigo-700 bg-indigo-500 py-3 px-10 rounded-md' to="/repository">Go Back</Link></span>
             </div>
 
           </div>

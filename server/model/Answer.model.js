@@ -11,14 +11,29 @@ export const AnswerSchema = new mongoose.Schema({
         required: [true],
         unique: false
     },
-    Answer: {
+    answer: {
         type: String,
-        required: [false],
+        required: [true, "You must write an answer"],
+        unique: false
+    },
+    question: {
+        type: String,
+        required: [true],
         unique: false
     },
     paltaQuestion: {
         type: String,
-        required: [false],
+        required: [true, "Writing another Question is mandatory!"],
+        unique: false
+    },
+    course: {
+        type: String,
+        required: [true],
+        unique: false
+    },
+    topic: {
+        type: String,
+        required: [true],
         unique: false
     }
 });

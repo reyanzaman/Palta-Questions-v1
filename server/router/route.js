@@ -13,6 +13,7 @@ router.route('/authenticate').post(controller.verifyUser, (req, res) => res.end(
 router.route('/login').post(controller.verifyUser, controller.login); //login to the app
 router.route('/post').post(controller.verifyUser, controller.submitQuestion); //submit post-question
 router.route('/pre').post(controller.verifyUser, controller.submitQuestion); //submit pre-question
+router.route('/answer').post(controller.verifyUser, controller.postAnswer); //post answer and palta
 
 /** GET Methods */
 router.route('/user/:username').get(controller.getUser) //user with username
@@ -20,6 +21,8 @@ router.route('/generateOTP').get(controller.verifyUser, localVariables, controll
 router.route('/verifyOTP').get(controller.verifyUser, controller.verifyOTP); //verify generated OTP
 router.route('/createResetSession').get(controller.createResetSession); //reset all the variables
 router.route('/questions').get(controller.searchQuestion); //Repository of Questions
+router.route('/getanswer').get(controller.searchAnswer); //Question Answer Viewer
+router.route('general').get(controller.searchGeneral); //Search for general question repository
 
 router.route('./your').get(controller.verifyUser, (req,res) => {
     res.render('Your');
@@ -32,10 +35,6 @@ router.route('/questionnaire').get(controller.verifyUser, (req, res) => {
 
 router.route('/repository').get(controller.verifyUser, (req, res) => {
     res.render('Repository');
-})
-
-router.route('/viewPre').get((req,res) => {
-    res.render('ViewPre')
 })
 
 /** PUT Methods */

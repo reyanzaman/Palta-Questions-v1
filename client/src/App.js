@@ -15,7 +15,9 @@ import Post from './components/Post';
 import Repository from './components/Repository';
 import Your from './components/Your';
 import PreQuestions from './components/PreQuestions';
+import PostQuestions from './components/PostQuestions';
 import ViewPre from './components/ViewPre';
+import GeneralQuestions from './components/GeneralQuestions';
 
 // auth middleware
 import { AuthorizeUser,ProtectRoute } from './middleware/auth';
@@ -71,12 +73,20 @@ const router = createBrowserRouter([
         element: <AuthorizeUser><Your/></AuthorizeUser>
     },
     {
-        path: '/questions',
+        path: '/preQuestions',
         element: <AuthorizeUser><PreQuestions/></AuthorizeUser>
     },
     {
-        path: '/viewPre',
+        path: '/postQuestions',
+        element: <AuthorizeUser><PostQuestions/></AuthorizeUser>
+    },
+    {
+        path: '/preQuestions/:questionNo/:questionID',
         element: <AuthorizeUser><ViewPre/></AuthorizeUser>
+    },
+    {
+        path: '/generalQuestions',
+        element: <AuthorizeUser><GeneralQuestions/></AuthorizeUser>
     }
 ])
 

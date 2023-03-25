@@ -1,39 +1,101 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../styles/Username.module.css';
-import { Link } from 'react-router-dom';
-import { useDataStore, useAuthStore } from '../store/store';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDataStore, useAuthStore, useDetailStore } from '../store/store';
 import { useFormik } from 'formik';
 import useFetch from '../hooks/fetch.hook';
+import { useLocation } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast'
+import { postAnswer, findAnswers } from '../helper/helper';
 
-export default function ViewPre(props) {
+export default function ViewPre() {
 
-    const data = useDataStore((state) => state.data);
+    const [data, setData] = useDataStore((state) => [state.data, state.setData]);
     const { username } = useAuthStore(state => state.auth);
+    const [detail, setDetail] = useDetailStore(state => [state.detail, state.setDetail]);
     const [{ isLoading, apiData, serverError }] = useFetch(username ? `/user/${username}` : null);
-    console.log(data.myData)
+    // console.log("Data: ", data?.myData)
+    // console.log("detail: ", detail)
 
-    const index = props.index;
-    console.log(index);
+    const location = useLocation();
+    const index = location.pathname.split('/')[2];
+    const id = location.pathname.split('/')[3];
+    // console.log("Location: ",location)
+
+    const navigate = useNavigate();
+    const [answers, setAnswers] = useState(null);
+
+    useEffect(() => {
+      const storedData = localStorage.getItem('myData');
+      const storedDetail = localStorage.getItem('detail');
+
+      if(!storedData){
+        localStorage.setItem('myData', JSON.stringify(data));
+      }else if(!storedDetail){
+        localStorage.setItem('detail', JSON.stringify(detail));
+      }else if(storedData){
+        const myData = JSON.parse(storedData);
+        setData(myData);
+      }else if(storedDetail){
+        const myDetail = JSON.parse(storedDetail);
+        setDetail(myDetail);
+      }
+      // console.log("Stored Data: ", JSON.parse(storedData));
+      // console.log("Stored Detail: ", JSON.parse(storedDetail));
+
+    });
+
+    useEffect(() => {
+      async function fetchData() {
+        // Add a check for data.myData here
+        if (data?.myData && data?.myData[index] && data?.myData[index][id]) {
+          const answer = await findAnswers(data.myData[index][id]);
+          setAnswers(answer);
+        }
+      }
+      fetchData();
+    }, [data, index, id]); // Add data to the dependencies array
+
+    // console.log("Answers: ", answers);
 
     const formik = useFormik({
         initialValues: {
           username: '',
           date: '',
           answer: '',
-          paltaQuestion: ''
+          question: '',
+          paltaQuestion: '',
+          course: '',
+          topic: ''
         },
         onSubmit: async values => {
           const currentDate = new Date();
           const options = { timeZone: 'Asia/Dhaka', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
           const formattedDate = currentDate.toLocaleString('en-US', options);
           values.date = formattedDate;
-          values.username = username;
+          values.username = apiData?.username;
+          values.course = detail[1];
+          values.topic = detail[2];
 
-        }
+          // Add a check for data.myData here
+          if (data?.myData && data?.myData[index] && data?.myData[index][id]) {
+            values.question = data.myData[index][id];
+          }
+
+          let prePromise = postAnswer(values)
+          toast.promise(prePromise, {
+            loading: 'Posting...',
+            success : <b>Answer Posted</b>,
+            error : <b>Oops something went wrong!</b>
+          });
+
+          prePromise.then(function(){ navigate(`/preQuestions/${index}/id`)});
+          }
     });
 
-    if (!data) {
-        return <div className="h-screen items-center text-red-500 font-bold">No questions found!</div>;
+    // Add a check for data here
+    if (!data || !data.myData) {
+        return <div className="h-screen items-center text-red-500 text-2xl">No questions found!</div>;
     }
 
     if(isLoading) return <div className="flex justify-center items-center h-screen">
@@ -41,19 +103,20 @@ export default function ViewPre(props) {
       </div>
     if(serverError) return <h1 className='text-xl text-red-500'>{serverError.message}</h1>
 
+
     return (
         <div className="container mx-auto">
+
+          <Toaster position='top-center' reverseOrder={false}></Toaster>
+
           <div className="flex justify-center items-center max-w-[70%] mx-auto">
             <div className={styles.glass}>
 
-              <p>Username: {apiData?.username || "Undefined"}</p>
-              <p>Index: {index || "Undefined"}</p>
-
               <div className="title flex flex-col items-center p-4">
-                <h4 className="text-2xl font-bold text-center">{data.myData[2]['question1']}</h4>
+                <h4 className="text-2xl font-bold text-center">{data.myData[index][id]}</h4>
                 <span className="py-4 w-2/3 text-center text-gray-900">
-                    <p className='text-sm'>Posted by <b>{data.myData[2]['username']}</b></p>
-                    <p className='text-sm'>{data.myData[2]['date']}</p>
+                    <p className='text-sm'>Posted by <b>{data.myData[index]['isAnonymous']==='true' ? 'Anonymous User' : data.myData[index]['username']}</b></p>
+                    <p className='text-sm'>{data.myData[index]['date']}</p>
                 </span>
               </div>
   
@@ -62,12 +125,14 @@ export default function ViewPre(props) {
                 
                 <div className="pt-4">
                     <h1 className="text-2xl text-slate-800 font-black text-center">Previous Answers</h1><br></br>
-
-                    <div className="flex flex-col items-center text-center rounded-2xl p-6 bg-slate-700 text-neutral-100">
-                        <p>Here lies an answer. This answer is going to be long lorem ipsum very very long text something longer.</p>
-                        <p className='text-sm pt-4 text-indigo-200'>Answered by username</p>
-                        <p className='text-xs text-indigo-200'>Friday, March 24, 2023 at 2:39 PM</p>
-                    </div>
+                    
+                    {answers && answers.map(answer => (
+                      <div key={answer._id} className="mb-6 flex flex-col items-center text-center rounded-2xl p-6 bg-slate-700 text-neutral-100">
+                        <p>{answer.answer}</p>
+                        <p className='text-sm pt-4 text-indigo-200'>{answer.username}</p>
+                        <p className='text-xs text-indigo-200'>{answer.date}</p>
+                      </div>
+                    ))}
 
                     <hr className='h-px my-6 border-0 dark:bg-gray-300'></hr>
 

@@ -12,3 +12,8 @@ export const useDataStore = create((set) => ({
     data: null,
     setData: (newData) => set(() => ({ data: newData })),
 }));
+
+export const useDetailStore = create((set) => ({
+    detail: null,
+    setDetail: (newDetail) => set(() => ({ detail: newDetail })),
+}));
