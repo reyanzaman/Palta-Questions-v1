@@ -2,7 +2,7 @@
   "name": "question-based-learning",
   "version": "1.0.0",
   "description": "Question Based Learning App For IUB",
-  "main": "server/server.js.js",
+  "main": "server/server.js",
   "scripts": {
     "test": "npm start"
   },
