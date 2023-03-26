@@ -4,7 +4,32 @@
   "description": "Question Based Learning App For IUB",
   "main": "server/server.js",
   "scripts": {
-    "test": "npm start"
+    "start": "concurrently \"npm run start-react\" \"npm run start-server\"",
+    "start-react": "react-scripts start",
+    "start-server": "nodemon server.js",
+    "build": "react-scripts build",
+    "test": "concurrently \"npm run test-react\" \"npm run test-server\"",
+    "test-react": "react-scripts test",
+    "test-server": "mocha server/test.js",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "repository": {
     "type": "git",
@@ -18,5 +43,8 @@
   "bugs": {
     "url": "https://github.com/reyanzaman/Question-Based-Learning/issues"
   },
-  "homepage": "https://github.com/reyanzaman/Question-Based-Learning#readme"
+  "homepage": "https://github.com/reyanzaman/Question-Based-Learning#readme",
+  "devDependencies": {
+    "mocha": "^10.2.0"
+  }
 }
