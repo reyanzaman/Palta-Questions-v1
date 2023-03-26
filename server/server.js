@@ -3,6 +3,11 @@ import cors from 'cors';
 import morgan from 'morgan';
 import connect from './database/connection.js';
 import router from './router/route.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -14,7 +19,7 @@ app.use(cors());
 app.use(morgan('tiny'));
 app.disable('x-powered-by');
 
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 /** HTTP GET Request */
 app.get('/', (req, res) => {
@@ -23,6 +28,17 @@ app.get('/', (req, res) => {
 
 /** api routes */
 app.use('/api', router)
+
+// Serving the frontend
+app.use(express.static(path.join(__dirname, "./frontend/build")))
+
+app.get("*",(req,res)=>{
+    res.sendFile(
+        path.join(__dirname, "./frontend/build/index.html"),
+        function(err){
+        }
+    )
+})
 
 /** Start Server only when we have valid connection*/
 connect().then(() => {
