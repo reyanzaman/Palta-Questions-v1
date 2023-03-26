@@ -1,20 +1,30 @@
-import { Navigate } from "react-router-dom";
-import { useAuthStore } from "../store/store";
+import jwt from 'jsonwebtoken';
+import ENV from '../config.js'
 
-export const AuthorizeUser = ({ children }) => {
-    const token = localStorage.getItem('token');
+/** auth middleware */
+export default async function Auth(req, res, next){
+    try {
+        
+        // access authorize header to validate request
+        const token = req.headers.authorization.split(" ")[1];
 
-    if(!token){
-        return <Navigate to={'/'} replace={true}></Navigate>
+        // retrive the user details fo the logged in user
+        const decodedToken = await jwt.verify(token, ENV.JWT_SECRET);
+
+        req.user = decodedToken;
+
+        next()
+
+    } catch (error) {
+        res.status(401).json({ error : "Authentication Failed!"})
     }
-
-    return children;
 }
 
-export const ProtectRoute = ({ children }) => {
-    const username = useAuthStore.getState().auth.username;
-    if(!username){
-        return <Navigate to={'/'} replace={true}></Navigate>
+
+export function localVariables(req, res, next){
+    req.app.locals = {
+        OTP : null,
+        resetSession : false
     }
-    return children;
+    next()
 }
