@@ -1,0 +1,22 @@
+{
+  "name": "question-based-learning",
+  "version": "1.0.0",
+  "description": "Question Based Learning App For IUB",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reyanzaman/Question-Based-Learning.git"
+  },
+  "keywords": [
+    "QBL"
+  ],
+  "author": "Khandoker Ashik Uz Zaman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/reyanzaman/Question-Based-Learning/issues"
+  },
+  "homepage": "https://github.com/reyanzaman/Question-Based-Learning#readme"
+}
