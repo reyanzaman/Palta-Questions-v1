@@ -22,12 +22,9 @@ app.disable('x-powered-by');
 const port = process.env.PORT || 8080;
 
 /** HTTP GET Request */
-app.get('/', (req, res) => {
-    res.status(201).json("Home GET Request");
-})
-
-/** api routes */
-app.use('/api', router)
+// app.get('/', (req, res) => {
+//     res.status(201).json("Home GET Request");
+// })
 
 // Serving the frontend
 app.use(express.static(path.join(__dirname, "./frontend/build")))
@@ -39,6 +36,9 @@ app.get("*",(req,res)=>{
         }
     )
 })
+
+/** api routes */
+app.use('/api', router)
 
 /** Start Server only when we have valid connection*/
 connect().then(() => {
