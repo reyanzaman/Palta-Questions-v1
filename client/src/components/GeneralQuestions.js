@@ -7,7 +7,7 @@ import { useDataStore } from '../store/store';
 export default function GeneralQuestions() {
 
     const location = useLocation();
-    const questions = location.state?.questions;
+    const questions = location.state?.generalQuestions;
     console.log(location.state)
 
     const setData = useDataStore((state) => state.setData);
@@ -28,7 +28,7 @@ export default function GeneralQuestions() {
           <div className={styles.glass}>
 
             <div className="title flex flex-col items-center">
-              <h4 className="text-4xl font-bold text-center">Pre-Questions Repository</h4>
+              <h4 className="text-4xl font-bold text-center">General-Questions Repository</h4>
               <span className="py-4 text-lg w-2/3 text-center text-gray-500">
                 Take your pick!
               </span>
@@ -42,39 +42,13 @@ export default function GeneralQuestions() {
                     <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-4">
                       <div>
                         <h1 className='lg:w-full text-left text-md font-bold hover:text-indigo-500'>
-                          <Link to={`/preQuestions/${questions.length - index - 1}/question1`} onClick={() => handleClick(index)}>{question['question1']}</Link>
+                          <Link to={`/generalQuestions/${questions.length - index - 1}`} onClick={() => handleClick()}>{question['paltaQuestion']}</Link>
                         </h1>
                       </div>
                       <div>
                         <h1 className='w-fit text-sm lg:float-right sm:float-left'>{question['date']}</h1>
                       </div>
-                      <p className='text-sm pt-2'>Posted by <b>{question['isAnonymous']==='true' ? 'Anonymous User' : question['username']}</b></p>
-                    </div>
-                    <hr className='h-px my-8 border-0 dark:bg-gray-300'></hr>
-
-                    <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-4">
-                      <div>
-                        <h1 className='lg:w-full text-left text-md font-bold hover:text-indigo-500'>
-                          <Link to={`/preQuestions/${questions.length - index - 1}/question2`} onClick={() => handleClick(index)}>{question['question2']}</Link>
-                        </h1>
-                      </div>
-                      <div>
-                        <h1 className='w-fit text-sm lg:float-right sm:float-left'>{question['date']}</h1>
-                      </div>
-                      <p className='text-sm pt-2'>Posted by <b>{question['isAnonymous']==='true' ? 'Anonymous User' : question['username']}</b></p>
-                    </div>
-                    <hr className='h-px my-8 border-0 dark:bg-gray-300'></hr>
-
-                    <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-4">
-                      <div>
-                        <h1 className='lg:w-full text-left text-md font-bold hover:text-indigo-500'>
-                          <Link to={`/preQuestions/${questions.length - index - 1}/question3`} onClick={() => handleClick(index)}>{question['question3']}</Link>
-                        </h1>
-                      </div>
-                      <div>
-                        <h1 className='w-fit text-sm lg:float-right sm:float-left'>{question['date']}</h1>
-                      </div>
-                      <p className='text-sm pt-2'>Posted by <b>{question['isAnonymous']==='true' ? 'Anonymous User' : question['username']}</b></p>
+                      <p className='text-sm pt-2'>Posted by <b>{question['username']}</b></p>
                     </div>
                     <hr className='h-px my-8 border-0 dark:bg-gray-300'></hr>
                   </div>

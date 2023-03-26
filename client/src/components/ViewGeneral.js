@@ -8,19 +8,18 @@ import { useLocation } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast'
 import { postAnswer, findAnswers } from '../helper/helper';
 
-export default function ViewPre() {
-
+export default function ViewGeneral() {
+  
     const [data, setData] = useDataStore((state) => [state.data, state.setData]);
     const { username } = useAuthStore(state => state.auth);
     const [detail, setDetail] = useDetailStore(state => [state.detail, state.setDetail]);
     const [{ isLoading, apiData, serverError }] = useFetch(username ? `/user/${username}` : null);
-    // console.log("Data: ", data?.myData)
-    // console.log("detail: ", detail)
+    console.log("Data: ", data?.myData)
+    console.log("detail: ", detail)
 
     const location = useLocation();
     const index = location.pathname.split('/')[2];
-    const id = location.pathname.split('/')[3];
-    // console.log("Location: ",location)
+    console.log("Location: ",location)
 
     const navigate = useNavigate();
     const [answers, setAnswers] = useState(null);
@@ -48,13 +47,13 @@ export default function ViewPre() {
     useEffect(() => {
       async function fetchData() {
         // Add a check for data.myData here
-        if (data?.myData && data?.myData[index] && data?.myData[index][id]) {
-          const answer = await findAnswers(data.myData[index][id]);
+        if (data?.myData && data?.myData[index] && data?.myData[index]['paltaQuestion']) {
+          const answer = await findAnswers(data.myData[index]['paltaQuestion']);
           setAnswers(answer);
         }
       }
       fetchData();
-    }, [data, index, id]); // Add data to the dependencies array
+    }, [data, index]); // Add data to the dependencies array
 
     // console.log("Answers: ", answers);
 
@@ -79,8 +78,8 @@ export default function ViewPre() {
           values.topic = detail[2];
 
           // Add a check for data.myData here
-          if (data?.myData && data?.myData[index] && data?.myData[index][id]) {
-            values.question = data.myData[index][id];
+          if (data?.myData && data?.myData[index] && data?.myData[index]['paltaQuestion']) {
+            values.question = data.myData[index]['paltaQuestion'];
           }
 
           let prePromise = postAnswer(values)
@@ -90,7 +89,7 @@ export default function ViewPre() {
             error : <b>Oops something went wrong!</b>
           });
 
-          prePromise.then(function(){ navigate(`/preQuestions/${index}/id`)});
+          prePromise.then(function(){ window.location.reload() });
           }
     });
 
@@ -114,9 +113,9 @@ export default function ViewPre() {
             <div className={styles.glass}>
 
               <div className="title flex flex-col items-center p-4">
-                <h4 className="text-2xl font-bold text-center">{data.myData[index][id]}</h4>
+                <h4 className="text-2xl font-bold text-center">{data.myData[index]['paltaQuestion']}</h4>
                 <span className="py-4 w-2/3 text-center text-gray-900">
-                    <p className='text-sm'>Posted by <b>{data.myData[index]['isAnonymous']==='true' ? 'Anonymous User' : data.myData[index]['username']}</b></p>
+                    <p className='text-sm'>Posted by {data.myData[index]['isAnonymous']==='true' ? 'Anonymous User' : data.myData[index]['username']}</p>
                     <p className='text-sm'>{data.myData[index]['date']}</p>
                 </span>
               </div>

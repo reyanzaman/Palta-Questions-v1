@@ -19,9 +19,9 @@ export default function PostQuestions() {
           <div className={styles.glass}>
 
             <div className="title flex flex-col items-center">
-              <h4 className="text-4xl font-bold text-center">Post-Questions Repository</h4>
+              <h4 className="text-4xl font-bold text-center">Feedback Repository</h4>
               <span className="py-4 text-lg w-2/3 text-center text-gray-500">
-                Take your pick!
+                Take a peek at everyone's progress!
               </span>
             </div>
 

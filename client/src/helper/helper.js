@@ -25,6 +25,18 @@ export async function findQuestions(type, course, topic){
     }
 }
 
+export async function findGeneral(course, topic){
+    try{
+        console.log("Helper Function Running")
+        const response = await axios.get('/api/general', {
+            params: { course, topic }
+        });
+        return response.data;
+    }catch(error){
+        console.log(error);
+    }
+}
+
 export async function findAnswers(question){
     try{
         console.log("Helper Function Running")

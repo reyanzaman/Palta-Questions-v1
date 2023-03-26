@@ -13,7 +13,7 @@ export const AnswerSchema = new mongoose.Schema({
     },
     answer: {
         type: String,
-        required: [true, "You must write an answer"],
+        required: [false],
         unique: false
     },
     question: {
@@ -23,7 +23,7 @@ export const AnswerSchema = new mongoose.Schema({
     },
     paltaQuestion: {
         type: String,
-        required: [true, "Writing another Question is mandatory!"],
+        required: [false],
         unique: false
     },
     course: {
@@ -34,6 +34,11 @@ export const AnswerSchema = new mongoose.Schema({
     topic: {
         type: String,
         required: [true],
+        unique: false
+    },
+    isAnonymous: {
+        type: String,
+        required: [false],
         unique: false
     }
 });

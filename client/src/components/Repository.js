@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { useFormik} from 'formik';
 import styles from '../styles/Username.module.css';
-import { findQuestions } from '../helper/helper';
+import { findQuestions, findGeneral } from '../helper/helper';
 import { useDetailStore } from '../store/store';
 
 export default function Repository() {
@@ -32,7 +32,8 @@ export default function Repository() {
       onSubmit: async (values) => {
         try {
           const { type, course, topic } = values;
-          let questions = await findQuestions(type, course, topic)
+          let questions = await findQuestions(type, course, topic);
+          let generalQuestions = await findGeneral(course, topic);
           const detail = [type, course, topic];
           localStorage.setItem('detail', '');
           console.log("Setting details to: ", detail)
@@ -41,6 +42,8 @@ export default function Repository() {
             navigate('/preQuestions', { state: { questions } });
           }else if(type==="post"){
             navigate('/postQuestions', { state: { questions } });
+          }else if(type==="general"){
+            navigate('/generalQuestions', { state: { generalQuestions } });
           }else if(type==="prequestionnaire"){
             navigate()
           }else if(type==="postquestionnaire"){
@@ -76,7 +79,7 @@ export default function Repository() {
                 
                 <select {...formik.getFieldProps('type')} className={styles.textbox}>
                   <option key="pre" value="pre">Pre-Questions</option>
-                  <option key="post" value="post">Post-Questions</option>
+                  <option key="post" value="post">Feedback</option>
                   <option key="general" value="general">General-Questions</option>
                   <option disabled key="prequestionnaire" value="prequestionnaire" className="text-gray-200">Pre-Questionnaire</option>
                   <option disabled key="postquestionnaire" value="postquestionnaire" className="text-gray-200">Post-Questionnaire</option>

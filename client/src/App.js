@@ -18,6 +18,8 @@ import PreQuestions from './components/PreQuestions';
 import PostQuestions from './components/PostQuestions';
 import ViewPre from './components/ViewPre';
 import GeneralQuestions from './components/GeneralQuestions';
+import ViewGeneral from './components/ViewGeneral.js';
+import Ask from './components/Ask';
 
 // auth middleware
 import { AuthorizeUser,ProtectRoute } from './middleware/auth';
@@ -87,6 +89,14 @@ const router = createBrowserRouter([
     {
         path: '/generalQuestions',
         element: <AuthorizeUser><GeneralQuestions/></AuthorizeUser>
+    },
+    {
+        path: '/generalQuestions/:indexNo',
+        element: <AuthorizeUser><ViewGeneral/></AuthorizeUser>
+    },
+    {
+        path: '/ask',
+        element: <AuthorizeUser><Ask/></AuthorizeUser>
     }
 ])
 

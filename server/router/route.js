@@ -22,20 +22,7 @@ router.route('/verifyOTP').get(controller.verifyUser, controller.verifyOTP); //v
 router.route('/createResetSession').get(controller.createResetSession); //reset all the variables
 router.route('/questions').get(controller.searchQuestion); //Repository of Questions
 router.route('/getanswer').get(controller.searchAnswer); //Question Answer Viewer
-router.route('general').get(controller.searchGeneral); //Search for general question repository
-
-router.route('./your').get(controller.verifyUser, (req,res) => {
-    res.render('Your');
-})
-
-//** Render Methods */
-router.route('/questionnaire').get(controller.verifyUser, (req, res) => {
-    res.render('Questionnaire');
-})
-
-router.route('/repository').get(controller.verifyUser, (req, res) => {
-    res.render('Repository');
-})
+router.route('/general').get(controller.searchGeneral); //Search for general question repository
 
 /** PUT Methods */
 router.route('/resetPassword').put(controller.verifyUser, controller.resetPassword); // used to reset password

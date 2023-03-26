@@ -5,11 +5,13 @@ import { useFormik} from 'formik'
 import { useAuthStore } from '../store/store'
 import styles from '../styles/Username.module.css'
 import { preQuestion } from '../helper/helper';
+import useFetch from '../hooks/fetch.hook';
 
 export default function Pre() {
 
     const navigate = useNavigate();
     const { username } = useAuthStore(state => state.auth);
+    const [{ isLoading, apiData, serverError }] = useFetch(username ? `/user/${username}` : null);
 
     const [topics] = useState({
       CSC101: ['Print', 'If-Else', 'Loops'],
@@ -37,7 +39,7 @@ export default function Pre() {
         const options = { timeZone: 'Asia/Dhaka', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
         const formattedDate = currentDate.toLocaleString('en-US', options);
         values.date = formattedDate;
-        values.username = username;
+        values.username = apiData.username;
 
         let prePromise = preQuestion(values)
         toast.promise(prePromise, {

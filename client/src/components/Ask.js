@@ -4,10 +4,10 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useFormik} from 'formik';
 import { useAuthStore } from '../store/store';
 import styles from '../styles/Username.module.css';
-import { postQuestion } from '../helper/helper';
+import { postAnswer } from '../helper/helper';
 import useFetch from '../hooks/fetch.hook';
 
-export default function Post() {
+export default function Ask() {
 
     const navigate = useNavigate();
     const { username } = useAuthStore(state => state.auth);
@@ -30,8 +30,7 @@ export default function Post() {
         username: '',
         course: 'CSC101',
         topic: 'Print',
-        thisclass: '',
-        nextclass: '',
+        question: '',
         date: '',
         isAnonymous: 'false',
       },
@@ -43,12 +42,12 @@ export default function Post() {
         
         values.username = apiData.username;
 
-        let postPromise = postQuestion(values)
-        toast.promise(postPromise, {
-          loading: 'Posting...',
-          success : <b>Question Posted</b>,
-          error : <b>Something seems wrong!</b>
-        });
+        let postPromise = postAnswer(values)
+          toast.promise(postPromise, {
+            loading: 'Posting...',
+            success : <b>Answer Posted</b>,
+            error : <b>Oops something went wrong!</b>
+          });
 
         postPromise.then(function(){ navigate('/dashboard')});
       }
@@ -69,9 +68,9 @@ export default function Post() {
             <div className={styles.glass}>
 
               <div className="title flex flex-col items-center">
-                <h4 className="text-4xl font-bold">Post-Class Feedback</h4>
-                <span className="py-4 text-lg w-4/5 text-center text-gray-500">
-                  Let us help you learn better. Share your thoughts!
+                <h4 className="text-4xl font-bold text-center">Ask a Question!</h4>
+                <span className="py-4 text-lg w-5/6 text-center text-gray-500">
+                  Don't hold it in. Ask away!
                 </span>
               </div>
 
@@ -93,8 +92,7 @@ export default function Post() {
                     ))}
                   </select>
 
-                  <textarea cols="30" rows="3" {...formik.getFieldProps('thisclass')} type="text" placeholder="What did you learn today?" className={styles.textbox}/>
-                  <textarea cols="30" rows="3" {...formik.getFieldProps('nextclass')} type="text" placeholder="What do you want to learn tomorrow?" className={styles.textbox}/>
+                  <textarea cols="30" rows="3" {...formik.getFieldProps('paltaQuestion')} type="text" placeholder="Write your question here..." className={styles.textbox}/>
                   
                   <label className="relative inline-flex items-center mr-5 cursor-pointer">
                     <input type="checkbox" value="" className="sr-only peer" {...formik.getFieldProps('isAnonymous')}></input>
