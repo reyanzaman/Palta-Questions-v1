@@ -13,6 +13,7 @@ export default function PreQuestions() {
     const setData = useDataStore((state) => state.setData);
     const [detail, setDetail] = useDetailStore(state => [state.detail, state.setDetail]);
 
+<<<<<<< HEAD
     useEffect(() => {
       const storedDetail = localStorage.getItem('detail');
 
@@ -30,6 +31,11 @@ export default function PreQuestions() {
       // console.log("Setting data to:", { myData: questions });
       localStorage.setItem('myData', '');
       setData({ myData: questions });
+=======
+    const handleClick = (index) => {
+      setData({ myData: questions});
+      navigate('/viewPre', { state: { index } });
+>>>>>>> parent of d92bc0c (small changes)
     };
 
     if (!questions) {

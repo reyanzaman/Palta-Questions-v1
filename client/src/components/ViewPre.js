@@ -5,8 +5,11 @@ import { useDataStore, useAuthStore, useDetailStore } from '../store/store';
 import { useFormik } from 'formik';
 import useFetch from '../hooks/fetch.hook';
 import { useLocation } from 'react-router-dom';
+<<<<<<< HEAD
 import toast, { Toaster } from 'react-hot-toast'
 import { postAnswer, findAnswers } from '../helper/helper';
+=======
+>>>>>>> parent of d92bc0c (small changes)
 
 export default function ViewPre() {
 
@@ -18,6 +21,7 @@ export default function ViewPre() {
     // console.log("detail: ", detail)
 
     const location = useLocation();
+<<<<<<< HEAD
     const index = location.pathname.split('/')[2];
     const id = location.pathname.split('/')[3];
     // console.log("Location: ",location)
@@ -57,6 +61,11 @@ export default function ViewPre() {
     }, [data, index, id]); // Add data to the dependencies array
 
     // console.log("Answers: ", answers);
+=======
+    const index = location.state?.index;
+
+    const question = data.myData[0];
+>>>>>>> parent of d92bc0c (small changes)
 
     const formik = useFormik({
         initialValues: {
