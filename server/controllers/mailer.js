@@ -1,14 +1,14 @@
 import nodemailer from 'nodemailer';
 import Mailgen from 'mailgen';
 
-// import ENV from '../config.js';
+import ENV from '../config.js';
 
 // https://ethereal.email/create
 let nodeConfig = {
     service: "gmail",
     auth: {
-      user: process.env.EMAIL,
-      pass: process.env.PASSWORD,
+      user: ENV.EMAIL || process.env.EMAIL,
+      pass: ENV.EMAIL || process.env.PASSWORD,
     }
 }
 
@@ -45,7 +45,7 @@ export const registerMail = async(req, res) => {
     var emailBody = MailGenerator.generate(email);
 
     let message = {
-        from : process.env.EMAIL,
+        from : ENV.EMAIL || process.env.EMAIL,
         to: userEmail,
         subject: subject || "Signed Up Successfully",
         html: emailBody
