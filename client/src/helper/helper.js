@@ -60,8 +60,6 @@ export async function postAnswer(values){
 
 // Authenticate Function
 export async function authenticate(username){
-    console.log(process.env)
-    console.log(axios.defaults.baseURL + "/api/authenticate")
     try {
         return await axios.post('/api/authenticate', { username })
     } catch (error){
