@@ -3,7 +3,6 @@ import QuestionModel from '../model/Question.model.js';
 import AnswerModel from '../model/Answer.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import ENV from '../config.js';
 import otpGenerator from 'otp-generator'
 
 
@@ -224,7 +223,7 @@ export async function login(req, res) {
 
         const token = jwt.sign(
             { userId: user._id, username: user.username },
-            ENV.JWT_SECRET || process.env.JWT_SECRET,
+            process.env.JWT_SECRET,
             { expiresIn: "24h" }
         );
 
