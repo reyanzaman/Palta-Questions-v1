@@ -2,6 +2,7 @@ import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
 axios.defaults.baseURL = 'https://iub-qbl.onrender.com';
+// axios.defaults.baseURL = 'http://localhost:8080/';
 
 // Make API Requests
 
@@ -63,6 +64,7 @@ export async function authenticate(username){
     try {
         return await axios.post('/api/authenticate', { username })
     } catch (error){
+        console.log(error)
         return { error: "Username doesn't exist"}
     }
 }

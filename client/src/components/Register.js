@@ -73,19 +73,12 @@ export default function Register() {
 
             <div className="textbox flex flex-col items-center gap-6">
               <span className="py-4 text-sm w-auto h-auto text-center text-purple-500">
-                Upload a cool picture. Let us see you!
+                You can upload a picture here if you want!
               </span>
               <input {...formik.getFieldProps('email')} type="email" placeholder="Email" className={styles.textbox}/>
               <input {...formik.getFieldProps('id')} type="number" placeholder="IUB ID" className={styles.textbox}/>
               <input {...formik.getFieldProps('username')} type="text" placeholder="Username" className={styles.textbox}/>
               <input {...formik.getFieldProps('password')} type="password" placeholder="Password" className={styles.textbox}/>
-
-              <span className="text-xs w-auto text-center text-red-500">
-                Registration failed?<br></br>
-                <span className="text-xs w-auto text-center text-indigo-500">
-                Then you are probably too shy to upload a picture!
-                </span>
-              </span>
            
             </div>
 

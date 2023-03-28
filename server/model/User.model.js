@@ -22,7 +22,9 @@ export const UserSchema = new mongoose.Schema({
         unique: [true, "Email already exists"],
     },
     profile: {
-        type: String
+        type: String,
+        required: [false],
+        unique: [false],
     },
     questions: {
         type: Number

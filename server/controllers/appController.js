@@ -144,15 +144,11 @@ export async function register(req, res) {
     
         // Check for existing email
         const existEmail = UserModel.exists({ email });
-
-        // Check for profile image
-        const existProfile = UserModel.exists({ profile });
     
-        const [usernameExists, idExists, emailExists, profileExists] = await Promise.all([
+        const [usernameExists, idExists, emailExists] = await Promise.all([
             existUsername,
             existID,
             existEmail,
-            existProfile
         ]);
   
     if (usernameExists) {
@@ -170,12 +166,6 @@ export async function register(req, res) {
         return res
         .status(400)
         .json({ error: "Please use unique email" });
-    }
-
-    if (profileExists){
-        return res
-        .status(400)
-        .json({ error: "Please upload a photo"});
     }
   
     const hashedPassword = await bcrypt.hash(password, 10);
