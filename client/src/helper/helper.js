@@ -1,7 +1,7 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
-axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN;
+axios.defaults.baseURL = 'https://iub-qbl.onrender.com';
 
 // Make API Requests
 
@@ -60,6 +60,8 @@ export async function postAnswer(values){
 
 // Authenticate Function
 export async function authenticate(username){
+    console.log(process.env)
+    console.log(axios.defaults.baseURL + "/api/authenticate")
     try {
         return await axios.post('/api/authenticate', { username })
     } catch (error){
