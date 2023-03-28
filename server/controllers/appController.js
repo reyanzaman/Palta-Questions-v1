@@ -89,9 +89,12 @@ export async function submitQuestion(req, res) {
 
         let qtype = "";
         if(question1 || question2 || question3){
-            qtype = "pre"
+            qtype = "pre";
+            await UserModel.updateOne({ username: username }, { $inc: { questions: 3 } });
         }else if(thisclass || nextclass){
             qtype = "post"
+        }else{
+            await UserModel.updateOne({ username: username }, { $inc: { questions: 1 } });
         }
 
         const question = new QuestionModel({
@@ -112,7 +115,7 @@ export async function submitQuestion(req, res) {
       
         res.status(201).json({ msg: `${qtype.toUpperCase()}-Question Posted` });
 
-        await UserModel.updateOne({ username: username }, { $inc: { questions: 1 } });
+        
 
     }catch(error){
         console.log("app controller")
