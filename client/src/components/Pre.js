@@ -33,12 +33,25 @@ export default function Pre() {
         question2: '',
         question3: '',
         isAnonymous: 'false',
+        section: '',
+        semester: 'Spring',
+        year: ''
       },
       onSubmit: async values => {
         const currentDate = new Date();
-        const options = { timeZone: 'Asia/Dhaka', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+        const options = { 
+          timeZone: 'Asia/Dhaka', 
+          weekday: 'long', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric', 
+          hour: 'numeric', 
+          minute: 'numeric' 
+        };
         const formattedDate = currentDate.toLocaleString('en-US', options);
-        values.date = formattedDate;
+        const year = currentDate.getFullYear(); // Get the current year
+        values.date = formattedDate.replace(/,\s\d{4}/, ''); // Remove the year from the formatted date
+        values.year = year.toString(); // Set the year in the year variable
         values.username = apiData.username;
 
         let prePromise = preQuestion(values)
@@ -51,6 +64,11 @@ export default function Pre() {
         prePromise.then(function(){ navigate('/dashboard')});
       }
     })
+
+    if(isLoading) return <div className="flex justify-center items-center h-screen">
+      <h1 className="text-center text-2xl font-bold">Loading...</h1>
+    </div>
+    if(serverError) return <h1 className='text-xl text-red-500'>{serverError.message}</h1>
 
     return (
       <div className="container mx-auto">
@@ -79,11 +97,19 @@ export default function Pre() {
                     <option value="CSC401">CSC401</option>
                   </select>
                   <select {...formik.getFieldProps('topic')} className={styles.textbox}>
-                    {topics[formik.values.course].map(topic => (
+                    {topics[formik.values.course] && topics[formik.values.course].map(topic => (
                       <option key={topic} value={topic}>
                         {topic}
                       </option>
                     ))}
+                  </select>
+
+                  <input {...formik.getFieldProps('section')} type="number" placeholder="Section" className={styles.textbox}/>
+                  
+                  <select {...formik.getFieldProps('semester')} className={styles.textbox}>
+                    <option value="Spring">Spring {new Date().getFullYear()}</option>
+                    <option value="Summer">Summer {new Date().getFullYear()}</option>
+                    <option value="Autumn">Autumn {new Date().getFullYear()}</option>
                   </select>
 
                   <input {...formik.getFieldProps('question1')} type="text" placeholder="Question 1" className={styles.textbox}/>

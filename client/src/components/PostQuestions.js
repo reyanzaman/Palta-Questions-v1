@@ -32,12 +32,12 @@ export default function PostQuestions() {
                   <div key={index} className="pt-4">
                     <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-4">
                       <div>
-                        <h1 className='lg:w-full text-left'>
+                        <div className='lg:w-full text-left'>
                           <h1 className='text-md text-indigo-500 font-bold'>What I learned this class:</h1>
                           <p className='text-md'>{question['thisclass']}</p>
                           <h1 className='text-md text-indigo-500 font-bold'>What I want to learn next class:</h1>
                           <p className='text-md'>{question['nextclass']}</p>
-                        </h1>
+                        </div>
                       </div>
                       <div>
                         <h1 className='w-fit text-sm lg:float-right sm:float-left'>{question['date']}</h1>

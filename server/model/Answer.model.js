@@ -18,7 +18,7 @@ export const AnswerSchema = new mongoose.Schema({
     },
     question: {
         type: String,
-        required: [true],
+        required: [false],
         unique: false
     },
     paltaQuestion: {

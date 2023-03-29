@@ -30,7 +30,7 @@ export default function Ask() {
         username: '',
         course: 'CSC101',
         topic: 'Print',
-        question: '',
+        paltaQuestion: '',
         date: '',
         isAnonymous: 'false',
       },

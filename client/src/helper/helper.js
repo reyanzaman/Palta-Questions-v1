@@ -1,8 +1,8 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
-axios.defaults.baseURL = 'https://iub-qbl.onrender.com';
-// axios.defaults.baseURL = 'http://localhost:8080/';
+// axios.defaults.baseURL = 'https://iub-qbl.onrender.com';
+axios.defaults.baseURL = 'http://localhost:8080/';
 
 // Make API Requests
 
@@ -14,11 +14,11 @@ export async function getUsername(){
     return decode;
 }
 
-export async function findQuestions(type, course, topic){
+export async function findQuestions(type, course, topic, section, semester, year){
     try{
         console.log("Helper Function Running")
         const response = await axios.get('/api/questions', {
-            params: { type, course, topic }
+            params: { type, course, topic, section, semester, year }
         });
         return response.data;
     }catch(error){
@@ -118,7 +118,6 @@ export async function preQuestion(values){
 
         return Promise.resolve(msg)
     }catch(error){
-        console.log("helper function")
         console.log(error)
         return Promise.reject({ error });
     }

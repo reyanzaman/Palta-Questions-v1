@@ -47,8 +47,9 @@ export default function Dashboard() {
             <div className="flex justify-center items-center pt-4 text-3xl w-2/3 text-center text-gray-500">
               <b>{ apiData?.username || "User Name" }</b>
             </div>
-            <div className="flex justify-center items-center text-md w-2/3 text-center text-indigo-500">
-              <b>Questions Asked: { apiData?.questions}</b>
+            <div className="flex flex-col justify-center items-center text-md w-2/3 text-center text-indigo-500">
+              <b>Score: { apiData?.questions}</b>
+              <b>{ apiData?.rank || "Novice Questioneer" }</b>
             </div>
             
             <div style={{border: '1px solid #d3d3d3', width: '100%'}}></div>

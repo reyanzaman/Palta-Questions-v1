@@ -89,7 +89,7 @@ export default function ViewGeneral() {
             error : <b>Oops something went wrong!</b>
           });
 
-          prePromise.then(function(){ window.location.reload() });
+          prePromise.then(function(){ navigate('/generalQuestions') });
           }
     });
 

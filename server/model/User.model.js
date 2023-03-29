@@ -28,6 +28,9 @@ export const UserSchema = new mongoose.Schema({
     },
     questions: {
         type: Number
+    },
+    rank: {
+        type: String
     }
 });
 

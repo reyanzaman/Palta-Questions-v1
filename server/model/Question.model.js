@@ -55,7 +55,22 @@ export const QuestionSchema = new mongoose.Schema({
         type: String,
         required: [false],
         unique: false
-    }
+    },
+    section: {
+        type: Number,
+        required: [true],
+        unique: false
+    },
+    semester: {
+        type: String,
+        required: [true],
+        unique: false
+    },
+    year: {
+        type: String,
+        required: [true],
+        unique: false
+    },
 });
 
 export default mongoose.model.Questions || mongoose.model('Question', QuestionSchema);

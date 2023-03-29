@@ -34,12 +34,26 @@ export default function Post() {
         nextclass: '',
         date: '',
         isAnonymous: 'false',
+        section: '',
+        semester: 'Spring',
+        year: ''
       },
       onSubmit: async values => {
         const currentDate = new Date();
-        const options = { timeZone: 'Asia/Dhaka', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+        const options = { 
+          timeZone: 'Asia/Dhaka', 
+          weekday: 'long', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric', 
+          hour: 'numeric', 
+          minute: 'numeric' 
+        };
         const formattedDate = currentDate.toLocaleString('en-US', options);
-        values.date = formattedDate;
+        const year = currentDate.getFullYear(); // Get the current year
+        values.date = formattedDate.replace(/,\s\d{4}/, ''); // Remove the year from the formatted date
+        values.year = year.toString(); // Set the year in the year variable
+        values.username = apiData.username;
         
         values.username = apiData.username;
 
@@ -91,6 +105,14 @@ export default function Post() {
                         {topic}
                       </option>
                     ))}
+                  </select>
+
+                  <input {...formik.getFieldProps('section')} type="number" placeholder="Section" className={styles.textbox}/>
+                  
+                  <select {...formik.getFieldProps('semester')} className={styles.textbox}>
+                    <option value="Spring">Spring {new Date().getFullYear()}</option>
+                    <option value="Summer">Summer {new Date().getFullYear()}</option>
+                    <option value="Autumn">Autumn {new Date().getFullYear()}</option>
                   </select>
 
                   <textarea cols="30" rows="3" {...formik.getFieldProps('thisclass')} type="text" placeholder="What did you learn today?" className={styles.textbox}/>

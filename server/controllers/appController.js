@@ -22,11 +22,34 @@ export async function verifyUser(req, res, next){
     }
 }
 
+export async function updateRank(req, res){
+    try{
+        const score = await UserModel.findOne({ questions });
+        const { username } = req.body()
+
+        if(score<50){
+            await UserModel.updateOne({ username: username }, { rank: "Novice Questioneer" });
+        }else if(score>=50 && score<100){
+            await UserModel.updateOne({ username: username }, { rank: "Apprentice Questioneer" });
+        }else if(score>=100 && score<150){
+            await UserModel.updateOne({ username: username }, { rank: "Adept Questioneer" });
+        }else if(score>=150 && score<200){
+            await UserModel.updateOne({ username: username }, { rank: "Expert Questioneer" });
+        }else if(score>=200){
+            await UserModel.updateOne({ username: username }, { rank: "Master Questioneer" });
+        }
+
+        res.status(201).json({ msg: `Rank Updated` });
+    }catch(error){
+        console.log(error);
+    }
+}
+
 export async function searchQuestion(req, res){
     try{
         console.log("app controller running")
-        const { type, course, topic } = req.query;
-        const questions = await QuestionModel.find({ type, course, topic });
+        const { type, course, topic, section, semester, year } = req.query;
+        const questions = await QuestionModel.find({ type, course, topic, section, semester, year });
         return res.json(questions);
     }catch(error){
         console.log("Failed to execute searchQuestion function");
@@ -84,7 +107,7 @@ export async function postAnswer(req, res){
 export async function submitQuestion(req, res) {
     console.log("Submit Question Module Executed")
     try{
-        const { username, type, course, topic, date, question1, question2, question3, thisclass, nextclass, isAnonymous} = req.body;
+        const { username, type, course, topic, date, question1, question2, question3, thisclass, nextclass, isAnonymous, section, semester, year} = req.body;
 
         let qtype = "";
         if(question1 || question2 || question3){
@@ -107,14 +130,15 @@ export async function submitQuestion(req, res) {
             question3,
             thisclass,
             nextclass,
-            isAnonymous
+            isAnonymous,
+            section,
+            semester,
+            year
         });
       
         const result = await question.save();
       
         res.status(201).json({ msg: `${qtype.toUpperCase()}-Question Posted` });
-
-        
 
     }catch(error){
         console.log("app controller")
@@ -134,7 +158,7 @@ export async function submitQuestion(req, res) {
 */
 export async function register(req, res) {
     try {
-        const { username, password, id, email , profile, questions} = req.body;
+        const { username, password, id, email , profile, questions, rank} = req.body;
     
         // Check for existing user
         const existUsername = UserModel.exists({ username });
@@ -176,7 +200,8 @@ export async function register(req, res) {
         id,
         email,
         profile: profile || '',
-        questions: 0
+        questions: 0,
+        rank: 'Novice Questioneer'
     });
   
     const result = await user.save();

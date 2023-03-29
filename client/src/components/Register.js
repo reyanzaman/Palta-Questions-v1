@@ -22,7 +22,8 @@ export default function Register() {
       password : '',
       id: '',
       profile: '',
-      questions: 0
+      questions: 0,
+      rank: 'Novice Questioneer'
     },
     validate : registerValidation,
     validateOnBlur: false,
@@ -32,8 +33,8 @@ export default function Register() {
       let registerPromise = registerUser(values)
       toast.promise(registerPromise, {
         loading: 'Creating...',
-        success : <b>Register Successfully...!</b>,
-        error : <b>Could not Register.</b>
+        success : <b>Registered Successfully!</b>,
+        error : <b>Registration Failed!</b>
       });
 
       registerPromise.then(function(){ navigate('/')});

@@ -27,22 +27,26 @@ export default function Repository() {
       initialValues: {
         type: 'pre',
         course: 'CSC101',
-        topic: 'Print'
+        topic: 'Print',
+        section: '',
+        semester: 'Spring',
+        year: ''
       },
       onSubmit: async (values) => {
         try {
-          const { type, course, topic } = values;
-          let questions = await findQuestions(type, course, topic);
-          let generalQuestions = await findGeneral(course, topic);
-          const detail = [type, course, topic];
+          const { type, course, topic, section, semester, year} = values;
+          const detail = [type, course, topic, section, semester, year];
           localStorage.setItem('detail', '');
           console.log("Setting details to: ", detail)
           setDetail(detail);
           if(type==="pre"){
+            let questions = await findQuestions(type, course, topic, section, semester, year);
             navigate('/preQuestions', { state: { questions } });
           }else if(type==="post"){
+            let questions = await findQuestions(type, course, topic, section, semester, year);
             navigate('/postQuestions', { state: { questions } });
           }else if(type==="general"){
+            let generalQuestions = await findGeneral(course, topic);
             navigate('/generalQuestions', { state: { generalQuestions } });
           }else if(type==="prequestionnaire"){
             navigate()
@@ -73,10 +77,8 @@ export default function Repository() {
             </div>
 
             <form className="py-1" onSubmit={formik.handleSubmit}>
-
               <br></br>
               <div className="textbox flex flex-col items-center gap-6">
-                
                 <select {...formik.getFieldProps('type')} className={styles.textbox}>
                   <option key="pre" value="pre">Pre-Questions</option>
                   <option key="post" value="post">Feedback</option>
@@ -89,6 +91,17 @@ export default function Repository() {
                   <option value="CSC203">CSC203</option>
                   <option value="CSC401">CSC401</option>
                 </select>
+                {formik.values.type !== "general" ? (
+                  <>
+                    <input {...formik.getFieldProps('section')} type="number" placeholder="Section" className={styles.textbox}/>
+                    <select {...formik.getFieldProps('semester')} className={styles.textbox}>
+                      <option value="Spring">Spring</option>
+                      <option value="Summer">Summer</option>
+                      <option value="Autumn">Autumn</option>
+                    </select>
+                    <input {...formik.getFieldProps('year')} type="string" placeholder="Year" className={styles.textbox}/>
+                  </>
+                ) : null}
                 <select {...formik.getFieldProps('topic')} className={styles.textbox}>
                   {topics[formik.values.course].map(topic => (
                     <option key={topic} value={topic}>
@@ -96,10 +109,8 @@ export default function Repository() {
                     </option>
                   ))}
                 </select>
-                
                 <button type="submit" className={styles.btn}>Search</button>
               </div>
-
             </form>
 
             <div className='text-center mt-4'>
