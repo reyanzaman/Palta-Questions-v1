@@ -40,7 +40,22 @@ export const AnswerSchema = new mongoose.Schema({
         type: String,
         required: [false],
         unique: false
-    }
+    },
+    section: {
+        type: Number,
+        required: [false],
+        unique: false
+    },
+    semester: {
+        type: String,
+        required: [false],
+        unique: false
+    },
+    year: {
+        type: String,
+        required: [false],
+        unique: false
+    },
 });
 
 export default mongoose.model.Answers || mongoose.model('Answer', AnswerSchema);

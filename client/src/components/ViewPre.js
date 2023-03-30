@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/Username.module.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDataStore, useAuthStore, useDetailStore } from '../store/store';
+import { useDataStore, useAuthStore } from '../store/store';
 import { useFormik } from 'formik';
 import useFetch from '../hooks/fetch.hook';
 import { useLocation } from 'react-router-dom';
@@ -12,10 +12,9 @@ export default function ViewPre() {
 
     const [data, setData] = useDataStore((state) => [state.data, state.setData]);
     const { username } = useAuthStore(state => state.auth);
-    const [detail, setDetail] = useDetailStore(state => [state.detail, state.setDetail]);
     const [{ isLoading, apiData, serverError }] = useFetch(username ? `/user/${username}` : null);
-    // console.log("Data: ", data?.myData)
-    // console.log("detail: ", detail)
+    console.log("Data: ", data?.myData)
+    let questions = data?.myData;
 
     const location = useLocation();
     const index = location.pathname.split('/')[2];
@@ -27,28 +26,19 @@ export default function ViewPre() {
 
     useEffect(() => {
       const storedData = localStorage.getItem('myData');
-      const storedDetail = localStorage.getItem('detail');
-
       if(!storedData){
         localStorage.setItem('myData', JSON.stringify(data));
-      }else if(!storedDetail){
-        localStorage.setItem('detail', JSON.stringify(detail));
       }else if(storedData){
         const myData = JSON.parse(storedData);
         setData(myData);
-      }else if(storedDetail){
-        const myDetail = JSON.parse(storedDetail);
-        setDetail(myDetail);
       }
       // console.log("Stored Data: ", JSON.parse(storedData));
-      // console.log("Stored Detail: ", JSON.parse(storedDetail));
-
     }, []);
 
     useEffect(() => {
       async function fetchData() {
         // Add a check for data.myData here
-        if (data?.myData && data?.myData[index] && data?.myData[index][id]) {
+        if (questions && questions[index] && questions[index][id]) {
           const answer = await findAnswers(data.myData[index][id]);
           setAnswers(answer);
         }
@@ -67,7 +57,10 @@ export default function ViewPre() {
           paltaQuestion: '',
           course: '',
           topic: '',
-          isAnonymous: ''
+          isAnonymous: '',
+          section: '',
+          semester: '',
+          year: '',
         },
         onSubmit: async values => {
           const currentDate = new Date();
@@ -75,11 +68,14 @@ export default function ViewPre() {
           const formattedDate = currentDate.toLocaleString('en-US', options);
           values.date = formattedDate;
           values.username = apiData?.username;
-          values.course = detail[1];
-          values.topic = detail[2];
+          values.course = data.myData[index]['course']
+          values.topic = data.myData[index]['topic']
+          values.section = data.myData[index]['section']
+          values.semester = data.myData[index]['semester']
+          values.year = data.myData[index]['year']
 
           // Add a check for data.myData here
-          if (data?.myData && data?.myData[index] && data?.myData[index][id]) {
+          if (questions && questions[index] && questions[index][id]) {
             values.question = data.myData[index][id];
           }
 
@@ -115,9 +111,10 @@ export default function ViewPre() {
 
               <div className="title flex flex-col items-center p-4">
                 <h4 className="text-2xl font-bold text-center">{data.myData[index][id]}</h4>
-                <span className="py-4 w-2/3 text-center text-gray-900">
-                    <p className='text-sm'>Posted by <b>{data.myData[index]['isAnonymous']==='true' ? 'Anonymous User' : data.myData[index]['username']}</b></p>
+                <span className="py-4 w-5/6 text-center text-gray-900">
+                    <p className='text-sm text-indigo-500'>Posted by <b>{data.myData[index]['isAnonymous']==='true' ? 'Anonymous User' : data.myData[index]['username']}</b></p>
                     <p className='text-sm'>{data.myData[index]['date']}</p>
+                    <p className='text-sm'>{data.myData[index]['semester'] + " " + data.myData[index]['year'] + " " + "Section: " + data.myData[index]['section']}</p>
                 </span>
               </div>
   
@@ -163,7 +160,7 @@ export default function ViewPre() {
               </div>
   
               <div className='text-center mt-8'>
-                <span><Link className='text-slate-800 font-bold text-xl border-2 border-slate-400 hover:border-indigo-500 rounded-md py-1 px-6 hover:text-indigo-500' to="/repository">Go Back</Link></span>
+              <span><Link className='text-slate-800 font-bold text-xl border-2 border-slate-400 hover:border-indigo-500 rounded-md py-1 px-6 hover:text-indigo-500' to="/preQuestions" state={{ questions }}>Go Back</Link></span>
               </div>
   
             </div>

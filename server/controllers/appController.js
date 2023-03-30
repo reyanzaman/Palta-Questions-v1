@@ -49,9 +49,43 @@ export async function searchQuestion(req, res){
     try{
         console.log("app controller running")
         const { type, course, topic, section, semester, year } = req.query;
-        const questions = await QuestionModel.find({ type, course, topic, section, semester, year });
+
+        let questions = null;
+        if(semester==="All"){
+            console.log("All running")
+            if(section && year){
+                console.log("All section && year running")
+                questions = await QuestionModel.find({ type, course, topic, section, year });
+            }else if(section){
+                console.log("All section running")
+                questions = await QuestionModel.find({ type, course, topic, section });
+            }else if(year){
+                console.log("All year running")
+                questions = await QuestionModel.find({ type, course, topic, year });
+            }else{
+                console.log("All else running")
+                questions = await QuestionModel.find({ type, course, topic });
+            }
+        }else{
+            console.log("NOT All running")
+            if(section && year){
+                console.log("section && year running")
+                questions = await QuestionModel.find({ type, course, topic, section, semester, year });
+            }else if(section){
+                console.log("Section running")
+                questions = await QuestionModel.find({ type, course, topic, section, semester });
+            }else if(year){
+                console.log("Year running")
+                questions = await QuestionModel.find({ type, course, topic, semester, year });
+            }else{
+                console.log("Else running")
+                questions = await QuestionModel.find({ type, course, topic, semester });
+            }
+        }
+
         return res.json(questions);
     }catch(error){
+        console.log(error)
         console.log("Failed to execute searchQuestion function");
     }
 }
@@ -82,7 +116,7 @@ export async function searchAnswer(req, res){
 export async function postAnswer(req, res){
     try{
         console.log("Posting Answer...");
-        const { username, date, answer, question, paltaQuestion , course, topic} = req.body;
+        const { username, date, answer, question, paltaQuestion , course, topic, section, semester, year} = req.body;
 
         const Answer = new AnswerModel({
             username,
@@ -91,7 +125,10 @@ export async function postAnswer(req, res){
             question,
             paltaQuestion,
             course,
-            topic
+            topic,
+            section,
+            semester,
+            year
         });
       
         const result = await Answer.save();

@@ -4,12 +4,10 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useFormik} from 'formik';
 import styles from '../styles/Username.module.css';
 import { findQuestions, findGeneral } from '../helper/helper';
-import { useDetailStore } from '../store/store';
 
 export default function Repository() {
 
     const navigate = useNavigate();
-    const setDetail = useDetailStore((state) => state.setDetail);
 
     const [topics] = useState({
       CSC101: ['Print', 'If-Else', 'Loops'],
@@ -29,16 +27,12 @@ export default function Repository() {
         course: 'CSC101',
         topic: 'Print',
         section: '',
-        semester: 'Spring',
-        year: ''
+        semester: 'All',
+        year: '2023'
       },
       onSubmit: async (values) => {
         try {
           const { type, course, topic, section, semester, year} = values;
-          const detail = [type, course, topic, section, semester, year];
-          localStorage.setItem('detail', '');
-          console.log("Setting details to: ", detail)
-          setDetail(detail);
           if(type==="pre"){
             let questions = await findQuestions(type, course, topic, section, semester, year);
             navigate('/preQuestions', { state: { questions } });
@@ -79,6 +73,7 @@ export default function Repository() {
             <form className="py-1" onSubmit={formik.handleSubmit}>
               <br></br>
               <div className="textbox flex flex-col items-center gap-6">
+
                 <select {...formik.getFieldProps('type')} className={styles.textbox}>
                   <option key="pre" value="pre">Pre-Questions</option>
                   <option key="post" value="post">Feedback</option>
@@ -94,11 +89,14 @@ export default function Repository() {
                 {formik.values.type !== "general" ? (
                   <>
                     <input {...formik.getFieldProps('section')} type="number" placeholder="Section" className={styles.textbox}/>
+                    
                     <select {...formik.getFieldProps('semester')} className={styles.textbox}>
+                      <option value="All">All</option>
                       <option value="Spring">Spring</option>
                       <option value="Summer">Summer</option>
                       <option value="Autumn">Autumn</option>
                     </select>
+
                     <input {...formik.getFieldProps('year')} type="string" placeholder="Year" className={styles.textbox}/>
                   </>
                 ) : null}

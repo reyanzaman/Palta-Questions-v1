@@ -40,7 +40,7 @@ export default function PostQuestions() {
                         </div>
                       </div>
                       <div>
-                        <h1 className='w-fit text-sm lg:float-right sm:float-left'>{question['date']}</h1>
+                        <h1 className='w-fit text-sm lg:float-right sm:float-left'>{question['date'] + " " + question['semester'] + " " + question['year'] + " " + "Section: " + question['section']}</h1>
                       </div>
                       <p className='text-sm pt-2'>Posted by <b>{question['isAnonymous']==='true' ? 'Anonymous User' : question['username']}</b></p>
                     </div>

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import styles from '../styles/Username.module.css';
 import { Link } from 'react-router-dom';
-import { useDataStore, useDetailStore } from '../store/store';
+import { useDataStore } from '../store/store';
 
 export default function PreQuestions() {
 
@@ -11,20 +11,6 @@ export default function PreQuestions() {
     console.log("Questions: ", questions)
 
     const setData = useDataStore((state) => state.setData);
-    const [detail, setDetail] = useDetailStore(state => [state.detail, state.setDetail]);
-
-    useEffect(() => {
-      const storedDetail = localStorage.getItem('detail');
-
-      if(!storedDetail){
-        localStorage.setItem('detail', JSON.stringify(detail));
-      }else if(storedDetail){
-        const myDetail = JSON.parse(storedDetail);
-        // console.log("Stored Detail: ", JSON.parse(storedDetail));
-        setDetail(myDetail);
-      }
-
-    }, []);
 
     const handleClick = () => {
       // console.log("Setting data to:", { myData: questions });
@@ -60,7 +46,9 @@ export default function PreQuestions() {
                         </h1>
                       </div>
                       <div>
-                        <h1 className='w-fit text-sm lg:float-right sm:float-left'>{question['date']}</h1>
+                        <h1 className='w-fit text-sm lg:float-right sm:float-left'>{question['date']} </h1>
+                        <br></br>
+                        <h1 className='w-fit text-sm lg:float-right sm:float-left'>{question['semester'] + " " + question['year'] + " " + "Section: " + question['section']}</h1>
                       </div>
                       <p className='text-sm pt-2'>Posted by <b>{question['isAnonymous']==='true' ? 'Anonymous User' : question['username']}</b></p>
                     </div>
@@ -74,6 +62,8 @@ export default function PreQuestions() {
                       </div>
                       <div>
                         <h1 className='w-fit text-sm lg:float-right sm:float-left'>{question['date']}</h1>
+                        <br></br>
+                        <h1 className='w-fit text-sm lg:float-right sm:float-left'>{question['semester'] + " " + question['year'] + " " + "Section: " + question['section']}</h1>
                       </div>
                       <p className='text-sm pt-2'>Posted by <b>{question['isAnonymous']==='true' ? 'Anonymous User' : question['username']}</b></p>
                     </div>
@@ -87,6 +77,8 @@ export default function PreQuestions() {
                       </div>
                       <div>
                         <h1 className='w-fit text-sm lg:float-right sm:float-left'>{question['date']}</h1>
+                        <br></br>
+                        <h1 className='w-fit text-sm lg:float-right sm:float-left'>{question['semester'] + " " + question['year'] + " " + "Section: " + question['section']}</h1>
                       </div>
                       <p className='text-sm pt-2'>Posted by <b>{question['isAnonymous']==='true' ? 'Anonymous User' : question['username']}</b></p>
                     </div>

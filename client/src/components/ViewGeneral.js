@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/Username.module.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDataStore, useAuthStore, useDetailStore } from '../store/store';
+import { useDataStore, useAuthStore } from '../store/store';
 import { useFormik } from 'formik';
 import useFetch from '../hooks/fetch.hook';
 import { useLocation } from 'react-router-dom';
@@ -12,43 +12,35 @@ export default function ViewGeneral() {
   
     const [data, setData] = useDataStore((state) => [state.data, state.setData]);
     const { username } = useAuthStore(state => state.auth);
-    const [detail, setDetail] = useDetailStore(state => [state.detail, state.setDetail]);
     const [{ isLoading, apiData, serverError }] = useFetch(username ? `/user/${username}` : null);
     console.log("Data: ", data?.myData)
-    console.log("detail: ", detail)
+    let questions = data?.myData;
 
     const location = useLocation();
     const index = location.pathname.split('/')[2];
-    console.log("Location: ",location)
+    // console.log("Location: ",location)
 
     const navigate = useNavigate();
     const [answers, setAnswers] = useState(null);
 
     useEffect(() => {
       const storedData = localStorage.getItem('myData');
-      const storedDetail = localStorage.getItem('detail');
 
       if(!storedData){
         localStorage.setItem('myData', JSON.stringify(data));
-      }else if(!storedDetail){
-        localStorage.setItem('detail', JSON.stringify(detail));
       }else if(storedData){
         const myData = JSON.parse(storedData);
         setData(myData);
-      }else if(storedDetail){
-        const myDetail = JSON.parse(storedDetail);
-        setDetail(myDetail);
       }
       // console.log("Stored Data: ", JSON.parse(storedData));
-      // console.log("Stored Detail: ", JSON.parse(storedDetail));
 
     }, []);
 
     useEffect(() => {
       async function fetchData() {
         // Add a check for data.myData here
-        if (data?.myData && data?.myData[index] && data?.myData[index]['paltaQuestion']) {
-          const answer = await findAnswers(data.myData[index]['paltaQuestion']);
+        if (questions && questions[index] && questions[index]['paltaQuestion']) {
+          const answer = await findAnswers(questions[index]['paltaQuestion']);
           setAnswers(answer);
         }
       }
@@ -74,12 +66,12 @@ export default function ViewGeneral() {
           const formattedDate = currentDate.toLocaleString('en-US', options);
           values.date = formattedDate;
           values.username = apiData?.username;
-          values.course = detail[1];
-          values.topic = detail[2];
+          values.course = questions[index]['course'];
+          values.topic = questions[index]['topic'];
 
           // Add a check for data.myData here
-          if (data?.myData && data?.myData[index] && data?.myData[index]['paltaQuestion']) {
-            values.question = data.myData[index]['paltaQuestion'];
+          if (questions && questions[index] && questions[index]['paltaQuestion']) {
+            values.question = questions[index]['paltaQuestion'];
           }
 
           let prePromise = postAnswer(values)
@@ -94,7 +86,7 @@ export default function ViewGeneral() {
     });
 
     // Add a check for data here
-    if (!data || !data.myData) {
+    if (!data || !questions) {
         return <div className="h-screen items-center text-red-500 text-2xl">No questions found!</div>;
     }
 
@@ -113,10 +105,10 @@ export default function ViewGeneral() {
             <div className={styles.glass}>
 
               <div className="title flex flex-col items-center p-4">
-                <h4 className="text-2xl font-bold text-center">{data.myData[index]['paltaQuestion']}</h4>
+                <h4 className="text-2xl font-bold text-center">{questions[index]['paltaQuestion']}</h4>
                 <span className="py-4 w-2/3 text-center text-gray-900">
-                    <p className='text-sm'>Posted by {data.myData[index]['isAnonymous']==='true' ? 'Anonymous User' : data.myData[index]['username']}</p>
-                    <p className='text-sm'>{data.myData[index]['date']}</p>
+                    <p className='text-sm'>Posted by {questions[index]['isAnonymous']==='true' ? 'Anonymous User' : data.myData[index]['username']}</p>
+                    <p className='text-sm'>{questions[index]['date']}</p>
                 </span>
               </div>
   
@@ -162,7 +154,7 @@ export default function ViewGeneral() {
               </div>
   
               <div className='text-center mt-8'>
-                <span><Link className='text-slate-800 font-bold text-xl border-2 border-slate-400 hover:border-indigo-500 rounded-md py-1 px-6 hover:text-indigo-500' to="/repository">Go Back</Link></span>
+                <span><Link className='text-slate-800 font-bold text-xl border-2 border-slate-400 hover:border-indigo-500 rounded-md py-1 px-6 hover:text-indigo-500' to="/generalQuestions" state={{ questions }}>Go Back</Link></span>
               </div>
   
             </div>

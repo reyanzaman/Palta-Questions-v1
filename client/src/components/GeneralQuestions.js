@@ -7,8 +7,9 @@ import { useDataStore } from '../store/store';
 export default function GeneralQuestions() {
 
     const location = useLocation();
-    const questions = location.state?.generalQuestions;
-    console.log(location.state)
+    const questions = location.state?.generalQuestions || location.state?.questions;
+    // console.log("Location State: ", location.state)
+    // console.log("Questions: ",questions)
 
     const setData = useDataStore((state) => state.setData);
 
