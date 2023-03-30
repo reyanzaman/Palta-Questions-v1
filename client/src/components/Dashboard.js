@@ -1,13 +1,24 @@
+import React, { useEffect } from 'react'
 import avatar from '../assets/profile_blank.png';
 import { useAuthStore } from '../store/store';
 import styles from '../styles/Username.module.css';
 import { Link } from 'react-router-dom';
 import useFetch from '../hooks/fetch.hook';
 import { useNavigate } from 'react-router-dom';
+import { updateRank } from '../helper/helper';
 
 export default function Dashboard() {
 
   const { username } = useAuthStore(state => state.auth);
+
+  useEffect(() => {
+    async function fetchRank() {
+      const rank = await updateRank(username);
+      console.log("Rank: ", rank)
+    }
+    fetchRank();
+  }, [username]);
+
   const [{ isLoading, apiData, serverError }] = useFetch(username ? `/user/${username}` : null);
   const navigate = useNavigate();
 

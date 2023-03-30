@@ -27,7 +27,8 @@ export const UserSchema = new mongoose.Schema({
         unique: [false],
     },
     questions: {
-        type: Number
+        type: Number,
+        default: 0
     },
     rank: {
         type: String

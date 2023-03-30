@@ -22,24 +22,32 @@ export async function verifyUser(req, res, next){
     }
 }
 
-export async function updateRank(req, res){
+export async function changeRank(req, res){
     try{
-        const score = await UserModel.findOne({ questions });
-        const { username } = req.body()
 
-        if(score<50){
-            await UserModel.updateOne({ username: username }, { rank: "Novice Questioneer" });
-        }else if(score>=50 && score<100){
-            await UserModel.updateOne({ username: username }, { rank: "Apprentice Questioneer" });
-        }else if(score>=100 && score<150){
-            await UserModel.updateOne({ username: username }, { rank: "Adept Questioneer" });
-        }else if(score>=150 && score<200){
-            await UserModel.updateOne({ username: username }, { rank: "Expert Questioneer" });
-        }else if(score>=200){
-            await UserModel.updateOne({ username: username }, { rank: "Master Questioneer" });
+        const { username } = req.body;
+
+        if(username){
+            const score = await UserModel.findOne({ username }, { questions: 1 });
+            console.log(`The score for ${username} is ${score}`);
+
+            if(score.questions < 50){
+                await UserModel.updateOne({ username: username }, { rank: "Novice Questioneer" });
+            }else if(score.questions >= 50 && score.questions < 100){
+                await UserModel.updateOne({ username: username }, { rank: "Apprentice Questioneer" });
+            }else if(score.questions >= 100 && score.questions < 150){
+                await UserModel.updateOne({ username: username }, { rank: "Adept Questioneer" });
+            }else if(score.questions >= 150 && score.questions < 200){
+                await UserModel.updateOne({ username: username }, { rank: "Expert Questioneer" });
+            }else if(score.questions >= 200){
+                await UserModel.updateOne({ username: username }, { rank: "Master Questioneer" });
+            }
+
+            res.status(201).json({ msg: `Rank Updated` });
+        }else{
+            console.log(username)
         }
 
-        res.status(201).json({ msg: `Rank Updated` });
     }catch(error){
         console.log(error);
     }

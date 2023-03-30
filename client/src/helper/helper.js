@@ -60,6 +60,16 @@ export async function postAnswer(values){
     }
 }
 
+// Update Rank
+export async function updateRank(username){
+    try{
+        const { data: {msg} } = await axios.post(`/api/rank`, { username });
+        return Promise.resolve(msg);
+    }catch(error){
+        console.log(error);
+    }
+}
+
 // Authenticate Function
 export async function authenticate(username){
     try {

@@ -11,9 +11,10 @@ router.route('/register').post(controller.register); //register user
 router.route('/registerMail').post(registerMail); //send email
 router.route('/authenticate').post(controller.verifyUser, (req, res) => res.end()); //authenticate user
 router.route('/login').post(controller.verifyUser, controller.login); //login to the app
-router.route('/post').post(controller.verifyUser, controller.submitQuestion, controller.updateRank); //submit post-question
-router.route('/pre').post(controller.verifyUser, controller.submitQuestion, controller.updateRank); //submit pre-question
-router.route('/answer').post(controller.verifyUser, controller.postAnswer, controller.updateRank); //post answer and palta
+router.route('/post').post(controller.verifyUser, controller.submitQuestion); //submit post-question
+router.route('/pre').post(controller.verifyUser, controller.submitQuestion); //submit pre-question
+router.route('/answer').post(controller.verifyUser, controller.postAnswer); //post answer and palta
+router.route('/rank').post(controller.changeRank) //update rank based on score
 
 /** GET Methods */
 router.route('/user/:username').get(controller.getUser) //user with username
