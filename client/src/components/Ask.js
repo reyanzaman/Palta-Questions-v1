@@ -43,13 +43,13 @@ export default function Ask() {
         values.username = apiData.username;
 
         let postPromise = postAnswer(values)
-          toast.promise(postPromise, {
-            loading: 'Posting...',
-            success : <b>Answer Posted</b>,
-            error : <b>Oops something went wrong!</b>
-          });
-
-        postPromise.then(function(){ navigate('/dashboard')});
+        toast.promise(postPromise, {
+          loading: "Posting...",
+          success: <b>Question Posted</b>,
+          error: (err) => {
+            return <b>{err.error.response.data.error}</b>
+          },
+        });
       }
     })
 

@@ -58,10 +58,10 @@ export default function Pre() {
         toast.promise(prePromise, {
           loading: 'Posting...',
           success : <b>Question Posted</b>,
-          error : <b>Something seems wrong!</b>
+          error: (err) => {
+            return <b>{err.error.response.data.error}</b>
+          },
         });
-
-        prePromise.then(function(){ navigate('/dashboard')});
       }
     })
 

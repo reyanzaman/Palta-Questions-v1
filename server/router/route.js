@@ -12,8 +12,9 @@ router.route('/registerMail').post(registerMail); //send email
 router.route('/authenticate').post(controller.verifyUser, (req, res) => res.end()); //authenticate user
 router.route('/login').post(controller.verifyUser, controller.login); //login to the app
 router.route('/post').post(controller.verifyUser, controller.submitQuestion); //submit post-question
-router.route('/pre').post(controller.verifyUser, controller.submitQuestion); //submit pre-question
-router.route('/answer').post(controller.verifyUser, controller.postAnswer); //post answer and palta
+router.route('/pre').post(controller.verifyUser, controller.validateQuestion, controller.submitQuestion); //submit pre-question
+// router.route('/answer').post(controller.verifyUser, controller.validateQuestion); //just for testing
+router.route('/answer').post(controller.verifyUser, controller.validateQuestion, controller.postAnswer); //post answer and palta
 router.route('/rank').post(controller.changeRank) //update rank based on score
 
 /** GET Methods */

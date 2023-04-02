@@ -1,6 +1,7 @@
 import UserModel from '../model/User.model.js';
 import QuestionModel from '../model/Question.model.js';
 import AnswerModel from '../model/Answer.model.js';
+import TypeModel from '../model/Type.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import otpGenerator from 'otp-generator'
@@ -183,12 +184,568 @@ export async function submitQuestion(req, res) {
       
         const result = await question.save();
       
-        res.status(201).json({ msg: `${qtype.toUpperCase()}-Question Posted` });
+        return res.status(201).json({ msg: `${qtype.toUpperCase()}-Question Posted` });
 
     }catch(error){
         console.log("app controller")
         console.log(error);
-        res.status(500).json({ error: "Failed to post Question!" });
+        return res.status(500).json({ error: "Failed to post Question!" });
+    }
+}
+
+const incrementTypeField = async (fieldToUpdate) => {
+    try {
+      const filter = {}; // empty filter to match all documents
+      const update = { $inc: { [fieldToUpdate]: 1 } }; // increment the specific field by 1
+      const options = { upsert: true, new: true, setDefaultsOnInsert: true }; // if the document doesn't exist, create a new one with the field initialized to 0
+      const result = await TypeModel.findOneAndUpdate(filter, update, options);
+      console.log(result); // log the updated document
+    } catch (error) {
+      console.log(error); // handle the error
+    }
+};
+
+export async function questionType(type, values){
+    // Identifying Question Types
+    // Knowledge-Recall Questions
+    const bloom_knowledge = [
+    "define",
+    "identify",
+    "describe",
+    "label",
+    "list",
+    "name",
+    "state",
+    "match",
+    "recognize",
+    "select",
+    "examine",
+    "locate",
+    "memorize",
+    "quote",
+    "recall",
+    "reproduce",
+    "tabulate",
+    "tell",
+    "copy",
+    "discover",
+    "duplicate",
+    "enumerate",
+    "listen",
+    "observe",
+    "omit",
+    "read",
+    "recite",
+    "record",
+    "repeat",
+    "retell",
+    "visualize",
+    "who",
+    "what",
+    "why",
+    "when",
+    "where",
+    "which",
+    "choose",
+    "find",
+    "how",
+    "show",
+    "spell",
+    "relate",
+    ];
+    // Understand / Comprehension-Explain
+    const bloom_understand = [
+    "explain",
+    "describe",
+    "interpret",
+    "paraphrase",
+    "summarize",
+    "classify",
+    "compare",
+    "differentiate",
+    "discuss",
+    "distinguish",
+    "extend",
+    "predict",
+    "associate",
+    "contrast",
+    "convert",
+    "demonstrate",
+    "estimate",
+    "express",
+    "identify",
+    "indicate",
+    "infer",
+    "relate",
+    "restate",
+    "select",
+    "translate",
+    "ask",
+    "cite",
+    "discover",
+    "generalize",
+    "group",
+    "illustrate",
+    "judge",
+    "observe",
+    "order",
+    "report",
+    "represent",
+    "research",
+    "review",
+    "rewrite",
+    "show",
+    "trace",
+    "outline",
+    "rephrase",
+    ];
+    // Application-Use
+    const bloom_application = [
+    "solve",
+    "apply",
+    "illustrate",
+    "modify",
+    "use",
+    "calculate",
+    "change",
+    "choose",
+    "demonstrate",
+    "discover",
+    "experiment",
+    "relate",
+    "show",
+    "sketch",
+    "complete",
+    "construct",
+    "dramatize",
+    "interpret",
+    "manipulate",
+    "paint",
+    "prepare",
+    "teach",
+    "act",
+    "collect",
+    "compute",
+    "explain",
+    "list",
+    "operate",
+    "practice",
+    "simulate",
+    "transfer",
+    "write",
+    "build",
+    "develop",
+    "interview",
+    "make use of",
+    "organize",
+    "experiment with",
+    "plan",
+    "select",
+    "utilize",
+    "model",
+    "identify",
+    ];
+    // Analysis-Take Apart
+    const bloom_analysis = [
+    "analyze",
+    "compare",
+    "classify",
+    "contrast",
+    "distinguish",
+    "infer",
+    "separate",
+    "explain",
+    "select",
+    "categorize",
+    "connect",
+    "differentiate",
+    "divide",
+    "order",
+    "prioritize",
+    "survey",
+    "calculate",
+    "conclude",
+    "correlate",
+    "deduce",
+    "devise",
+    "diagram",
+    "estimate",
+    "evaluate",
+    "experiment",
+    "focus",
+    "illustrate",
+    "organize",
+    "outline",
+    "plan",
+    "question",
+    "test",
+    "discover",
+    "examine",
+    "inspect",
+    "simplify",
+    "take part in",
+    "test for",
+    "list",
+    "distinction",
+    "theme",
+    "relationships",
+    "function",
+    "motive",
+    "inference",
+    "assumption",
+    "conclusion",
+    ];
+    // Synthesis/Creation-Make it new
+    const bloom_creation = [
+    "design",
+    "compose",
+    "create",
+    "plan",
+    "combine",
+    "formulate",
+    "invent",
+    "hypothesize",
+    "substitute",
+    "write",
+    "compile",
+    "construct",
+    "develop",
+    "generalize",
+    "integrate",
+    "modify",
+    "organize",
+    "prepare",
+    "produce",
+    "rearrange",
+    "rewrite",
+    "adapt",
+    "anticipate",
+    "arrange",
+    "assemble",
+    "choose",
+    "collaborate",
+    "facilitate",
+    "imagine",
+    "intervene",
+    "make",
+    "manage",
+    "originate",
+    "propose",
+    "simulate",
+    "solve",
+    "support",
+    "test",
+    "validate",
+    "build",
+    "predict",
+    "suppose",
+    "discuss",
+    "change",
+    "improve",
+    "minimize",
+    "maximize",
+    "delete",
+    "theorize",
+    "elaborate",
+    "happen",
+    "estimate",
+    ];          
+    // Evaluation-Judge It
+    const bloom_evaluation = [
+    "reframe",
+    "criticize",
+    "evaluate",
+    "order",
+    "appraise",
+    "judge",
+    "support",
+    "compare",
+    "decide",
+    "discriminate",
+    "recommend",
+    "summarize",
+    "assess",
+    "choose",
+    "convince",
+    "defend",
+    "estimate",
+    "grade",
+    "measure",
+    "predict",
+    "rank",
+    "score",
+    "select",
+    "test",
+    "argue",
+    "consider",
+    "critique",
+    "debate",
+    "distinguish",
+    "editorialize",
+    "justify",
+    "persuade",
+    "weigh",
+    "award",
+    "determine",
+    "dispute",
+    "rule on",
+    "agree",
+    "prioritize",
+    "opinion",
+    "interpret",
+    "importance",
+    "criteria",
+    "prove",
+    "disprove",
+    "influence",
+    "perceive",
+    "value",
+    "deduct",
+    "mark",
+    ];
+
+    let fieldToUpdate = "";
+
+    if(type==="general"){
+        if (bloom_knowledge.some((word) => values.paltaQuestion.toLowerCase().includes(word))) {
+            fieldToUpdate = "knowledge";
+            incrementTypeField(fieldToUpdate);
+          }if (bloom_understand.some((word) => values.paltaQuestion.toLowerCase().includes(word))) {
+            fieldToUpdate = "comprehensive";
+            incrementTypeField(fieldToUpdate);
+          }if (bloom_application.some((word) => values.paltaQuestion.toLowerCase().includes(word))) {
+            fieldToUpdate = "application";
+            incrementTypeField(fieldToUpdate);
+          }if (bloom_analysis.some((word) => values.paltaQuestion.toLowerCase().includes(word))) {
+            fieldToUpdate = "analytical";
+            incrementTypeField(fieldToUpdate);
+          }if (bloom_creation.some((word) => values.paltaQuestion.toLowerCase().includes(word))) {
+            fieldToUpdate = "synthetic";
+            incrementTypeField(fieldToUpdate);
+          }if (bloom_evaluation.some((word) => values.paltaQuestion.toLowerCase().includes(word))) {
+            fieldToUpdate = "evaluative";
+            incrementTypeField(fieldToUpdate);
+          }
+    }else if(type==="pre"){
+        // Question1
+        if (bloom_knowledge.some((word) => values.question1.toLowerCase().includes(word))) {
+            fieldToUpdate = "knowledge";
+            incrementTypeField(fieldToUpdate);
+          } if (bloom_understand.some((word) => values.question1.toLowerCase().includes(word))) {
+            fieldToUpdate = "comprehensive";
+            incrementTypeField(fieldToUpdate);
+          } if (bloom_application.some((word) => values.question1.toLowerCase().includes(word))) {
+            fieldToUpdate = "application";
+            incrementTypeField(fieldToUpdate);
+          } if (bloom_analysis.some((word) => values.question1.toLowerCase().includes(word))) {
+            fieldToUpdate = "analytical";
+            incrementTypeField(fieldToUpdate);
+          } if (bloom_creation.some((word) => values.question1.toLowerCase().includes(word))) {
+            fieldToUpdate = "synthetic";
+            incrementTypeField(fieldToUpdate);
+          } if (bloom_evaluation.some((word) => values.question1.toLowerCase().includes(word))) {
+            fieldToUpdate = "evaluative";
+            incrementTypeField(fieldToUpdate);
+          }
+        // Question2
+        if (bloom_knowledge.some((word) => values.question2.toLowerCase().includes(word))) {
+            fieldToUpdate = "knowledge";
+            incrementTypeField(fieldToUpdate);
+          } if (bloom_understand.some((word) => values.question2.toLowerCase().includes(word))) {
+            fieldToUpdate = "comprehensive";
+            incrementTypeField(fieldToUpdate);
+          } if (bloom_application.some((word) => values.question2.toLowerCase().includes(word))) {
+            fieldToUpdate = "application";
+            incrementTypeField(fieldToUpdate);
+          } if (bloom_analysis.some((word) => values.question2.toLowerCase().includes(word))) {
+            fieldToUpdate = "analytical";
+            incrementTypeField(fieldToUpdate);
+          } if (bloom_creation.some((word) => values.question2.toLowerCase().includes(word))) {
+            fieldToUpdate = "synthetic";
+            incrementTypeField(fieldToUpdate);
+          } if (bloom_evaluation.some((word) => values.question2.toLowerCase().includes(word))) {
+            fieldToUpdate = "evaluative";
+            incrementTypeField(fieldToUpdate);
+          }
+        // Question3
+        if (bloom_knowledge.some((word) => values.question3.toLowerCase().includes(word))) {
+            fieldToUpdate = "knowledge";
+            incrementTypeField(fieldToUpdate);
+          } if (bloom_understand.some((word) => values.question3.toLowerCase().includes(word))) {
+            fieldToUpdate = "comprehensive";
+            incrementTypeField(fieldToUpdate);
+          } if (bloom_application.some((word) => values.question3.toLowerCase().includes(word))) {
+            fieldToUpdate = "application";
+            incrementTypeField(fieldToUpdate);
+          } if (bloom_analysis.some((word) => values.question3.toLowerCase().includes(word))) {
+            fieldToUpdate = "analytical";
+            incrementTypeField(fieldToUpdate);
+          } if (bloom_creation.some((word) => values.question3.toLowerCase().includes(word))) {
+            fieldToUpdate = "synthetic";
+            incrementTypeField(fieldToUpdate);
+          } if (bloom_evaluation.some((word) => values.question3.toLowerCase().includes(word))) {
+            fieldToUpdate = "evaluative";
+            incrementTypeField(fieldToUpdate);
+          }
+    }else{
+        return res.status(500).send({ error : "Question Type Not Found"});
+    }
+}
+
+export async function validateQuestion(req, res){
+    try{
+        const values = req.body;
+        console.log("Values:: ", values);
+        console.log("PaltaQ: ", values.paltaQuestion);
+        console.log("Pre Questions: ", values.question1, values.question2, values.question3)
+
+        if(values.paltaQuestion){
+            // const Question = values.paltaQuestion.trim().toLowerCase();
+            
+            // const existQuestion = AnswerModel.exists({ paltaQuestion: Question });
+            // const existQuestion1 = QuestionModel.exists({ question1: Question });
+            // const existQuestion2 = QuestionModel.exists({ question2: Question });
+            // const existQuestion3 = QuestionModel.exists({ question3: Question });
+            
+            // if(existQuestion){
+            //     console.log("existQuestion")
+            // }if(existQuestion1){
+            //     console.log("existQuestion1")
+            // }if(existQuestion2){
+            //     console.log("existQuestion2")
+            // }if(existQuestion3){
+            //     console.log("existQuestion3")
+            // }
+
+            // if(existQuestion || existQuestion1 || existQuestion2 || existQuestion3){
+            //     return res.status(500).send({ error : "Duplicate Question!"});
+            // }
+
+            // General Question
+            // Identifying Question
+            const bloom_question = [
+                "who",
+                "what",
+                "why",
+                "when",
+                "omit",
+                "where",
+                "which",
+                "choose",
+                "find",
+                "how",
+                "define",
+                "show",
+                "spell",
+                "list",
+                "match",
+                "name",
+                "relate",
+                "tell",
+                "recall",
+                "select",
+                "label",
+                "am",
+                "is",
+                "are"
+            ];
+            console.log("Length of Question: ", values.paltaQuestion.length)
+            const lowercaseQuestion = values.paltaQuestion.toLowerCase();
+            const containsBloomQuestion = bloom_question.some(questionWord => lowercaseQuestion.includes(questionWord));
+
+            if(values.paltaQuestion.length < 10){
+                return res.status(500).send({ error : "Question too Short!"});
+            }else if(containsBloomQuestion){
+                questionType("general", values);
+                return res.status(200).send("Question Posted");
+            }else{
+                return res.status(500).send({ error : "Invalid Question!"});
+            }
+        }else if(values.question1 && values.question2 && values.question3){
+            // Pre Question
+            // const question1 = values.question1;
+            // const question2 = values.question2;
+            // const question3 = values.question3;
+
+            // const existQuestion1 = AnswerModel.exists({ paltaQuestion: question1 });
+            // const existQuestion11 = QuestionModel.exists({ question1: question1 });
+            // const existQuestion12 = QuestionModel.exists({ question2: question1 });
+            // const existQuestion13 = QuestionModel.exists({ question3: question1 });
+
+            // const existQuestion2 = AnswerModel.exists({ paltaQuestion: question2 });
+            // const existQuestion21 = QuestionModel.exists({ question1: question2 });
+            // const existQuestion22 = QuestionModel.exists({ question2: question2 });
+            // const existQuestion23 = QuestionModel.exists({ question3: question2 });
+
+            // const existQuestion3 = AnswerModel.exists({ paltaQuestion: question3 });
+            // const existQuestion31 = QuestionModel.exists({ question1: question3 });
+            // const existQuestion32 = QuestionModel.exists({ question2: question3 });
+            // const existQuestion33 = QuestionModel.exists({ question3: question3 });
+
+            // if(existQuestion1 || existQuestion11 || existQuestion12 || existQuestion13){
+            //     return res.status(500).send({ error : "Question-1 is Duplicate!" });
+            // }else if(existQuestion2 || existQuestion21 || existQuestion22 || existQuestion23){
+            //     return res.status(500).send({ error : "Question-2 is Duplicate!"})
+            // }else if(existQuestion3 || existQuestion31 || existQuestion32 || existQuestion33){
+            //     return res.status(500).send({ error : "Question-3 is Duplicate!"})
+            // }
+
+            const bloom_question = [
+                "who",
+                "what",
+                "why",
+                "when",
+                "omit",
+                "where",
+                "which",
+                "choose",
+                "find",
+                "how",
+                "define",
+                "show",
+                "spell",
+                "list",
+                "match",
+                "name",
+                "relate",
+                "tell",
+                "recall",
+                "select",
+                "label",
+                "am",
+                "is",
+                "are"
+            ];
+            console.log("Length of Questions: ", values.question1.length, values.question2.length, values.question3.length)
+            const lowercaseQuestion1 = values.question1.toLowerCase();
+            const lowercaseQuestion2 = values.question2.toLowerCase();
+            const lowercaseQuestion3 = values.question3.toLowerCase();
+            const containsBloomQuestion1 = bloom_question.some(questionWord => lowercaseQuestion1.includes(questionWord));
+            const containsBloomQuestion2 = bloom_question.some(questionWord => lowercaseQuestion2.includes(questionWord));
+            const containsBloomQuestion3 = bloom_question.some(questionWord => lowercaseQuestion3.includes(questionWord));
+
+            if(values.question1.length < 10){
+                return res.status(500).send({ error : "Question 1 too Short!"});
+            }else if(values.question2.length < 10){
+                return res.status(500).send({ error : "Question 2 too Short!"});
+            }else if(values.question3.length < 10){
+                return res.status(500).send({ error : "Question 3 too Short!"});
+            }else if(!containsBloomQuestion1){
+                return res.status(500).send({error : "Question-1 Invalid"});
+            }else if(!containsBloomQuestion2){
+                return res.status(500).send({error : "Question-2 Invalid"});
+            }else if(!containsBloomQuestion3){
+                return res.status(500).send({error : "Question-3 Invalid"});
+            }else{
+                questionType("pre", values);
+                return res.status(200).send("Question Posted");
+            }
+        }else{
+            return res.status(500).json({ error: "Questions Missing!"});
+        }
+    }catch(error){
+        console.log(error);
+        return res.status(500).json({ error: "Something strange has happened!"});
     }
 }
 

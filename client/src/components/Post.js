@@ -63,8 +63,6 @@ export default function Post() {
           success : <b>Question Posted</b>,
           error : <b>Something seems wrong!</b>
         });
-
-        postPromise.then(function(){ navigate('/dashboard')});
       }
     })
 

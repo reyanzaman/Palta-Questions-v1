@@ -57,6 +57,7 @@ export async function postAnswer(values){
         return Promise.resolve(msg);
     }catch(error){
         console.log(error);
+        return Promise.reject({ error })
     }
 }
 
