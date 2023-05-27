@@ -35,7 +35,7 @@ export default function Username() {
         <div className={styles.glass}>
 
           <div className="title flex flex-col items-center">
-            <h4 className="text-4xl font-bold">Welcome to QBL</h4>
+            <h4 className="text-4xl font-bold">Welcome to Palta-Q</h4>
             <span className="py-4 text-lg w-2/3 text-center text-gray-500">
               Kindle your brain through questioning
             </span>
