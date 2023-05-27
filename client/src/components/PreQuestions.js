@@ -144,7 +144,7 @@ export default function PreQuestions() {
   return (
     <div className="container mx-auto">
       <div className="flex justify-center items-center">
-        <div className={styles.glass}>
+        <div className={styles.glass} style={{minWidth: '70%'}}>
           <div className="title flex flex-col items-center">
             <h4 className="text-4xl font-bold text-center">Pre-Questions Repository</h4>
             <span className="py-4 text-lg w-2/3 text-center text-gray-500">Take your pick!</span>
@@ -315,13 +315,21 @@ export default function PreQuestions() {
 
           </div>
 
-          <div className="text-center mt-8">
+          <div className="text-center mt-8 flex flex-row justify-center gap-6">
             <span>
               <Link
                 className="text-neutral-50 font-bold hover:bg-indigo-700 bg-indigo-500 py-3 px-10 rounded-md"
                 to="/repository"
               >
                 Go Back
+              </Link>
+            </span>
+            <span>
+              <Link
+                className="text-neutral-50 font-bold hover:bg-indigo-700 bg-indigo-500 py-3 px-10 rounded-md"
+                to="/dashboard"
+              >
+                Go Home
               </Link>
             </span>
           </div>

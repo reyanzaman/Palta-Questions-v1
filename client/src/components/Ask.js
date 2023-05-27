@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
-import { useFormik} from 'formik';
+import { useFormik, resetForm } from 'formik';
 import { useAuthStore } from '../store/store';
 import styles from '../styles/Username.module.css';
 import { postGeneral } from '../helper/helper';
@@ -13,6 +13,9 @@ export default function Ask() {
     const [{ isLoading, apiData, serverError }] = useFetch(username ? `/user/${username}` : null);
 
     const [topics] = useState({
+      CIS101: ['Thinking', 'Documentation', 'Data', 'Graphs', 'Ideas', 'G-Slides',
+       'Questionnaire', 'Referencing', 'Computing Mechanism', 'Python Coding',
+       'Final Project'],
       CSC101: ['Print', 'If-Else', 'Loops'],
       CSC203: ['Objects & Classes', 'Stacks', 'Queues'],
       CSC401: ['SQL', 'ERD', 'XAMP']
@@ -33,7 +36,7 @@ export default function Ask() {
         month: '',
         year: ''
       },
-      onSubmit: async values => {
+      onSubmit: async (values, { resetForm }) => {
         const currentDate = new Date();
         const options = { 
           timeZone: 'Asia/Dhaka', 
@@ -61,6 +64,8 @@ export default function Ask() {
             return <b>{err.error.response.data.error}</b>
           },
         });
+
+        resetForm();
       }
     })
 
@@ -93,6 +98,7 @@ export default function Ask() {
                     className={styles.textbox}
                     onChange={handleChange}
                   >
+                    <option value="CIS101">CIS101</option>
                     <option value="CSC101">CSC101</option>
                     <option value="CSC203">CSC203</option>
                     <option value="CSC401">CSC401</option>

@@ -297,9 +297,9 @@ export async function submitComment(req, res) {
 			year,
 		} = req.body;
 
-		await UserModel.updateOne(
+		var response_update = await UserModel.updateOne(
 			{ username: usernames },
-			{ $inc: { question: 1 } }
+			{ $inc: { questions: 1 } }
 		);
 		var cScore = await questionQuality(course, section, comments);
 

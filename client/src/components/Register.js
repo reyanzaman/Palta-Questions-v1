@@ -34,8 +34,10 @@ export default function Register() {
       let registerPromise = registerUser(values)
       toast.promise(registerPromise, {
         loading: 'Creating...',
-        success : <b>Registered Successfully!</b>,
-        error : <b>Registration Failed!</b>
+        success : (response) => <b>{response}</b>,
+          error: (err) => {
+            return <b>{err.error.response.data.error}</b>
+          },
       });
 
       registerPromise.then(function(){ navigate('/')});
@@ -78,7 +80,7 @@ export default function Register() {
                 You can upload a picture here if you want!
               </span>
               <input {...formik.getFieldProps('email')} type="email" placeholder="Email" className={styles.textbox}/>
-              <input {...formik.getFieldProps('id')} type="number" placeholder="IUB ID" className={styles.textbox}/>
+              <input {...formik.getFieldProps('id')} type="number" placeholder="IUB ID" className={styles.textbox} min="1000" max="9999999"/>
               <input {...formik.getFieldProps('username')} type="text" placeholder="Username" className={styles.textbox}/>
               <input {...formik.getFieldProps('password')} type="password" placeholder="Password" className={styles.textbox}/>
            

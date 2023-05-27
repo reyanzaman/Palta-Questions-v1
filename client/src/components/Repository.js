@@ -12,6 +12,9 @@ export default function Repository() {
     const currentYear = new Date().getFullYear();
 
     const [topics] = useState({
+      CIS101: ['All Topics',' Thinking', 'Documentation', 'Data', 'Graphs', 'Ideas', 'G-Slides',
+       'Questionnaire', 'Referencing', 'Computing Mechanism', 'Python Coding',
+       'Final Project'],
       CSC101: ['All Topics','Print', 'If-Else', 'Loops'],
       CSC203: ['All Topics','Objects & Classes', 'Stacks', 'Queues'],
       CSC401: ['All Topics','SQL', 'ERD', 'XAMP'],
@@ -31,7 +34,7 @@ export default function Repository() {
     const formik = useFormik({
       initialValues: {
         type: 'pre',
-        course: 'CSC101',
+        course: 'CIS101',
         topic: 'All Topics',
         section: '',
         month: monthIndex,
@@ -49,10 +52,9 @@ export default function Repository() {
           }else if(type==="general"){
             let data = {type, course, topic, month, year};
             navigate('/generalQuestions', { state: { data } });
-          }else if(type==="prequestionnaire"){
-            navigate()
-          }else if(type==="postquestionnaire"){
-            navigate()
+          }else if(type==="prequestionnaire" || type==="postquestionnaire"){
+            let data = {type, course, topic, month, year};
+            navigate('/viewQuestionnaire', { state: { data } });
           }else{
             return toast.error('Some Random Error has occured!')
           }
@@ -94,6 +96,7 @@ export default function Repository() {
                     <input {...formik.getFieldProps('section')} type="number" placeholder="Section" className={styles.textbox}/>
                   
                     <select {...formik.getFieldProps('course')} className={styles.textbox} onChange={handleChange}>
+                      <option value="CIS101">CIS101</option>
                       <option value="CSC101">CSC101</option>
                       <option value="CSC203">CSC203</option>
                       <option value="CSC401">CSC401</option>
@@ -111,6 +114,7 @@ export default function Repository() {
                 {formik.values.type === "general" ? (
                   <>
                     <select {...formik.getFieldProps('course')} className={styles.textbox} onChange={handleChange}>
+                      <option value="CIS101">CIS101</option>
                       <option value="CSC101">CSC101</option>
                       <option value="CSC203">CSC203</option>
                       <option value="CSC401">CSC401</option>

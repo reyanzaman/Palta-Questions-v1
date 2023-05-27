@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/Username.module.css';
 import { Link, useNavigate } from 'react-router-dom';
-import { useFormik } from 'formik';
+import { useFormik, resetForm } from 'formik';
 import toast, { Toaster } from 'react-hot-toast';
 import { postGeneral, findGeneralAll } from '../helper/helper';
 import avatar from '../assets/profile_blank.png';
@@ -70,7 +70,7 @@ export default function Homepage() {
       month: '',
       year: '',
     },
-    onSubmit: async (values) => {
+    onSubmit: async (values, { resetForm }) => {
       values.date = formattedDate.replace(/,\s\d{4}/, '');
       values.year = year.toString();
       values.month = month.toString();
@@ -90,6 +90,7 @@ export default function Homepage() {
 
       const updatedQuestions = await findGeneralAll('general', month, year);
       setQuestions(updatedQuestions);
+      resetForm();
     },
   });
 
@@ -136,7 +137,7 @@ export default function Homepage() {
             <img src={apiData?.username? apiData?.profile ? apiData?.profile : avatar : avatar} className={styles.profile_img_small} alt="avatar" />
           </div>
 
-          <h1 className={styles.logo}>Question Based Learning</h1>
+          <h1 className={styles.logo}>Palta Questions</h1>
 
           <div className="w-[100%] mx-auto drop-shadow-sm rounded-lg p-1 py-5 md:p-6">
             <form className="py-1 flex flex-col items-center" onSubmit={formik.handleSubmit}>

@@ -13,6 +13,9 @@ export default function Post() {
     const [{ isLoading, apiData, serverError }] = useFetch(username ? `/user/${username}` : null);
 
     const [topics] = useState({
+      CIS101: ['Thinking', 'Documentation', 'Data', 'Graphs', 'Ideas', 'G-Slides',
+       'Questionnaire', 'Referencing', 'Computing Mechanism', 'Python Coding',
+       'Final Project'],
       CSC101: ['Print', 'If-Else', 'Loops'],
       CSC203: ['Objects & Classes', 'Stacks', 'Queues'],
       CSC401: ['SQL', 'ERD', 'XAMP']
@@ -27,14 +30,14 @@ export default function Post() {
     const formik = useFormik({
       initialValues: {
         username: '',
-        course: 'CSC101',
-        topic: 'Print',
+        course: 'CIS101',
+        topic: 'Thinking',
         thisclass: '',
         nextclass: '',
         date: '',
         isAnonymous: 'false',
         section: '',
-        semester: 'Spring',
+        semester: 'Summer',
         month: '',
         year: ''
       },
@@ -95,6 +98,7 @@ export default function Post() {
                 <div className="textbox flex flex-col items-center gap-6">
                   
                   <select {...formik.getFieldProps('course')} className={styles.textbox} onChange={handleChange}>
+                    <option value="CIS101">CIS101</option>
                     <option value="CSC101">CSC101</option>
                     <option value="CSC203">CSC203</option>
                     <option value="CSC401">CSC401</option>

@@ -4,7 +4,7 @@ import styles from '../styles/Username.module.css';
 import { Link } from 'react-router-dom';
 import { findQuestions } from "../helper/helper";
 
-export default function PostQuestions() {
+export default function ViewQuestionnaire() {
 
     const location = useLocation();
     const [state, setState] = useState({

@@ -23,6 +23,7 @@ import ViewGeneral from './components/ViewGeneral';
 import Ask from './components/Ask';
 import Homepage from './components/Homepage';
 import Rules from './components/Rules';
+import ViewQuestionnaire from "./components/ViewQuestionnaire";
 
 // auth middleware
 import { AuthorizeUser,ProtectRoute } from './middleware/auth';
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
     {
         path: '/questionnaire',
         element: <AuthorizeUser><Questionnaire/></AuthorizeUser>
+    },
+    {
+        path: '/viewQuestionnaire',
+        element: <ViewQuestionnaire></ViewQuestionnaire>
     },
     {
         path: '/pre',

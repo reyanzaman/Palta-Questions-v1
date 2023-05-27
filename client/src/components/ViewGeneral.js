@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from '../styles/Username.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDataStore, useAuthStore } from '../store/store';
-import { useFormik } from 'formik';
+import { useFormik, resetForm } from 'formik';
 import useFetch from '../hooks/fetch.hook';
 import { useLocation } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast'
@@ -81,7 +81,7 @@ export default function ViewGeneral() {
           month: '',
           year: '',
         },
-        onSubmit: async values => {
+        onSubmit: async (values, { resetForm }) => {
           const currentDate = new Date();
           const options = { timeZone: 'Asia/Dhaka', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
           const formattedDate = currentDate.toLocaleString('en-US', options);
@@ -109,6 +109,7 @@ export default function ViewGeneral() {
           });
           const comments = await findComments(data.myData[index][id]);
           setState({ ...state, comments: comments });
+          resetForm();
           }
     });
 
@@ -187,7 +188,7 @@ export default function ViewGeneral() {
                 
                 
                 <div className="pt-4">
-                    <h1 className="text-xl text-slate-800 font-black text-center">Follow-up Questions</h1><br></br>
+                    <h1 className="text-xl text-slate-800 font-black text-center">Palta Questions</h1><br></br>
                     
                     {comments && comments.map((comment, index) => {
                       const reversedComments = [...comment.comments].reverse();
@@ -255,8 +256,9 @@ export default function ViewGeneral() {
 
               </div>
   
-              <div className='text-center mt-8'>
-              <span><Link className='text-slate-800 font-bold text-xl border-2 border-slate-400 hover:border-indigo-500 rounded-md py-1 px-6 hover:text-indigo-500' onClick={goPrevious}>Go Back</Link></span>
+              <div className='text-center mt-8 flex flex-row justify-center gap-4'>
+                <span><Link className='text-slate-800 font-bold text-xl border-2 border-slate-400 hover:border-indigo-500 rounded-md py-1 px-6 hover:text-indigo-500' onClick={goPrevious}>Go Back</Link></span>
+                <span><Link className='text-slate-800 font-bold text-xl border-2 border-slate-400 hover:border-indigo-500 rounded-md py-1 px-6 hover:text-indigo-500' to="/dashboard">Go Home</Link></span>
               </div>
   
             </div>

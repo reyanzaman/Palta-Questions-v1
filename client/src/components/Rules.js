@@ -128,7 +128,7 @@ export default function Rules() {
 
                 <ul className='grid lg:grid-cols-5 gap-4 p-4 md:text-center text-justify'>
                   <li>
-                    <h1 className='text-lg md:mb-11 mb-2 text-center'>Pre Questions</h1>
+                    <h1 className='text-lg md:mb-4 mb-2 text-center'>Pre Questions</h1>
                     <p>Through this functionality, students will ask questions before their class starts on the
                       topic they will study on that day. This will help them plan out the questions
                       on their mind which they can reflect back to later on and check if the lecture
@@ -136,28 +136,28 @@ export default function Rules() {
                     </p>
                   </li>
                   <li>
-                    <h1 className='text-lg md:mb-11 mb-2 text-center'>Post Questions</h1>
+                    <h1 className='text-lg md:mb-4 mb-2 text-center'>Post Questions</h1>
                     <p>Using post questions, students will provide feedback on the class about what they learned in that
                       class and what they want to learn further in their next class. This will provide
                       insights for the teachers helping them to plan out their future lectures accordingly.
                     </p>
                   </li>
                   <li>
-                    <h1 className='text-lg md:mb-11 mb-2 text-center'>General Questions</h1>
+                    <h1 className='text-lg md:mb-4 mb-2 text-center'>General Questions</h1>
                     <p>Students have the freedom to ask questions generally on any topic to improve their question
                       formulating skills. The questions are scored same as pre-questions however, as a warning, please
                       refrain from asking inappropriate questions.
                     </p>
                   </li>
                   <li>
-                    <h1 className='text-lg md:mb-4 mb-2 text-center'>Follow-Up Questions</h1>
+                    <h1 className='text-lg md:mb-4 mb-2 text-center'>Palta Questions</h1>
                     <p>Questions develops your brain and by asking more questions on top of another question, it is
                       said that you will ultimately reach the answer. So, this functionality lets you ask more questions on 
                       top of previous questions, similar to how comments work.
                     </p>
                   </li>
                   <li>
-                    <h1 className='text-lg md:mb-11 mb-2 text-center'>Questionnaire</h1>
+                    <h1 className='text-lg md:mb-4 mb-2 text-center'>Questionnaire</h1>
                     <p>In order to judge the effectiveness of this method. You will be required to fill up a questionnaire
                       when your couse starts and also just after your final exams end. This survey will provide us with insights
                       about if this method of learning should be implemented or not. 
