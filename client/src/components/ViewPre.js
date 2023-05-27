@@ -61,7 +61,7 @@ export default function ViewPre() {
       }
       fetchData();
 
-      const intervalId = setInterval(fetchData, 7000); // Fetch data every 7 seconds
+      const intervalId = setInterval(fetchData, 10000); // Fetch data every 10 seconds
 
       return () => {
         clearInterval(intervalId); // Clean up the interval on component unmount

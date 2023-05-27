@@ -51,7 +51,7 @@ export default function Homepage() {
 
     fetchData();
 
-    const intervalId = setInterval(fetchData, 5000); // Fetch data every 4 seconds
+    const intervalId = setInterval(fetchData, 10000); // Fetch data every 10 seconds
 
     return () => {
       clearInterval(intervalId); // Clean up the interval on component unmount
