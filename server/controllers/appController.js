@@ -84,6 +84,83 @@ export async function getUser(req, res) {
 	}
 }
 
+/** POST http://localhost:8080/api/register
+ * @param : {
+ * "username" : "example123",
+ * "password" : "admin123",
+ * "id" : "2021065",
+ * "email" : "example@gmail.com"
+ * }
+ */
+export async function register(req, res) {
+	try {
+		const { username, password, id, email, profile, questions, rank } =
+			req.body;
+
+		// Check for existing user
+		const existUsername = UserModel.exists({ username });
+
+		// Check for existing id
+		const existID = UserModel.exists({ id });
+
+		// Check for existing email
+		const existEmail = UserModel.exists({ email });
+
+		const [usernameExists, idExists, emailExists] = await Promise.all([
+			existUsername,
+			existID,
+			existEmail,
+		]);
+
+		if (usernameExists) {
+			return res.status(400).json({ error: "Please use unique username" });
+		}
+
+		if (idExists) {
+			return res.status(400).json({
+				error: "This ID already exists. Please login with your IUB ID.",
+			});
+		}
+
+		if (emailExists) {
+			return res.status(400).json({ error: "Please use unique email" });
+		}
+
+		const hashedPassword = await bcrypt.hash(password, 10);
+
+		const user = new UserModel({
+			username,
+			password: hashedPassword,
+			id,
+			email,
+			profile: profile || "",
+			questions: 0,
+			rank: "Novice Questioneer",
+		});
+
+		const result = await user.save();
+
+		res.status(201).json({ msg: "User Registration Succesful" });
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({ error: "Reg error" });
+	}
+}
+
+export async function postPhoto(req, res) {
+	try{
+		const { username, profile } = req.body;
+		await UserModel.updateOne(
+		{ username: username },
+		{ profile: profile }
+		);
+		res.sendStatus(200);
+	}catch(error){
+		console.log(error);
+		res.sendStatus(500);
+	}
+}
+
 export async function changeRank(req, res) {
 	try {
 		const { username } = req.body;
@@ -297,7 +374,7 @@ export async function submitComment(req, res) {
 			year,
 		} = req.body;
 
-		var response_update = await UserModel.updateOne(
+		await UserModel.updateOne(
 			{ username: usernames },
 			{ $inc: { questions: 1 } }
 		);
@@ -1795,69 +1872,6 @@ export async function validateQuestion(req, res, next) {
 	} catch (error) {
 		console.log(error);
 		return res.status(500).json({ error: "Something strange has happened!" });
-	}
-}
-
-/** POST http://localhost:8080/api/register
- * @param : {
- * "username" : "example123",
- * "password" : "admin123",
- * "id" : "2021065",
- * "email" : "example@gmail.com"
- * }
- */
-export async function register(req, res) {
-	try {
-		const { username, password, id, email, profile, questions, rank } =
-			req.body;
-
-		// Check for existing user
-		const existUsername = UserModel.exists({ username });
-
-		// Check for existing id
-		const existID = UserModel.exists({ id });
-
-		// Check for existing email
-		const existEmail = UserModel.exists({ email });
-
-		const [usernameExists, idExists, emailExists] = await Promise.all([
-			existUsername,
-			existID,
-			existEmail,
-		]);
-
-		if (usernameExists) {
-			return res.status(400).json({ error: "Please use unique username" });
-		}
-
-		if (idExists) {
-			return res.status(400).json({
-				error: "This ID already exists. Please login with your IUB ID.",
-			});
-		}
-
-		if (emailExists) {
-			return res.status(400).json({ error: "Please use unique email" });
-		}
-
-		const hashedPassword = await bcrypt.hash(password, 10);
-
-		const user = new UserModel({
-			username,
-			password: hashedPassword,
-			id,
-			email,
-			profile: profile || "",
-			questions: 0,
-			rank: "Novice Questioneer",
-		});
-
-		const result = await user.save();
-
-		res.status(201).json({ msg: "User Registration Succesful" });
-	} catch (error) {
-		console.log(error);
-		res.status(500).json({ error: "Reg error" });
 	}
 }
 

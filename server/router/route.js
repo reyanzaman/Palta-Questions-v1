@@ -16,6 +16,7 @@ router.route('/pre').post(controller.verifyUser, controller.validateQuestion, co
 router.route('/comments').post(controller.validateQuestion, controller.submitComment); //submit comments
 router.route('/rank').post(controller.changeRank) //update rank based on score
 router.route('/questionnaire').post(controller.postQuestionnaire); //submit questionnaire
+router.route('/photo').post(controller.postPhoto); //submit photo
 
 /** GET Methods */
 router.route('/user/:username').get(controller.getUser) //user with username

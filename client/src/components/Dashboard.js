@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import avatar from '../assets/profile_blank.png';
 import home_icon from '../assets/home.png';
 import info_icon from '../assets/info.png';
@@ -7,11 +7,13 @@ import styles from '../styles/Username.module.css';
 import { Link } from 'react-router-dom';
 import useFetch from '../hooks/fetch.hook';
 import { useNavigate } from 'react-router-dom';
-import { updateRank } from '../helper/helper';
+import { updateRank, uploadPhoto } from '../helper/helper';
+import convertToBase64 from '../helper/convert';
 
 export default function Dashboard() {
 
   const { username } = useAuthStore(state => state.auth);
+  const [file, setFile] = useState();
 
   //Getting User Data
   const [{ isLoading, apiData, serverError }] = useFetch(username ? `/user/${username}` : null);
@@ -34,6 +36,20 @@ export default function Dashboard() {
     localStorage.removeItem('token');
     navigate('/')
   }
+
+  const onUpload = async e => {
+    try {
+        const base64 = await convertToBase64(e.target.files[0]);
+        setFile(base64);
+        await uploadPhoto(apiData?.username, base64);
+        
+        // Reload the current page
+        window.location.reload();
+    } catch (error) {
+        console.log(error);
+    }
+  };
+
 
   if(isLoading) return <div className="flex justify-center items-center h-screen">
                          <h1 className="text-center text-2xl font-bold">Loading...</h1>
@@ -58,6 +74,8 @@ export default function Dashboard() {
             <label htmlFor="profile">
               <img src={ apiData?.profile || avatar } className={styles.profile_img} alt="avatar" />
             </label>
+
+            <input onChange={(e) => onUpload(e)} type="file" id="profile" name="profile" />
 
           </div>
 

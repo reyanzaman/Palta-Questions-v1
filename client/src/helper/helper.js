@@ -36,6 +36,18 @@ export async function getUsername(){
     return decode;
 }
 
+export async function uploadPhoto(username, profile){
+    try{
+        const response = await axios.post('/api/photo', {
+            username,
+            profile
+        });
+        return response.data;
+    }catch(error){
+        console.log(error);
+    }
+}
+
 export async function findQuestions(type, course, topic, section, month, year){
     try{
         const response = await axios.get('/api/questions', {
