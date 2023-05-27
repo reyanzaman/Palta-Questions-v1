@@ -1,10 +1,32 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
-axios.defaults.baseURL = 'https://iub-qbl.onrender.com';
-// axios.defaults.baseURL = 'http://localhost:8080/';
+// axios.defaults.baseURL = 'https://iub-qbl.onrender.com';
+axios.defaults.baseURL = 'http://localhost:8081/';
 
 // Make API Requests
+
+// Authenticate Function
+export async function authenticate(username){
+    try {
+        return await axios.post('/api/authenticate', { username })
+    } catch (error){
+        console.log(error)
+        return { error: "Username doesn't exist"}
+    }
+}
+
+// Login Function
+export async function verifyPassword({ username, password }){
+    try{
+        if(username){
+            const { data } = await axios.post('/api/login', { username, password })
+            return Promise.resolve({ data })
+        }
+    }catch(error){
+        return Promise.reject({ error : "Password doesn't match."})
+    }
+}
 
 /** To get username from Token */
 export async function getUsername(){
@@ -14,12 +36,10 @@ export async function getUsername(){
     return decode;
 }
 
-export async function findQuestions(type, course, topic, section, semester, year){
+export async function findQuestions(type, course, topic, section, month, year){
     try{
-        console.log("Helper Function Running")
-        console.log("Section: ", section, " Semester: ", semester, " Year: ", year)
         const response = await axios.get('/api/questions', {
-            params: { type, course, topic, section, semester, year }
+            params: { type, course, topic, section, month, year }
         });
         return response.data;
     }catch(error){
@@ -27,11 +47,10 @@ export async function findQuestions(type, course, topic, section, semester, year
     }
 }
 
-export async function findGeneral(course, topic){
+export async function findGeneral(type, course, topic, month, year){
     try{
-        console.log("Helper Function Running")
-        const response = await axios.get('/api/general', {
-            params: { course, topic }
+        const response = await axios.get('/api/generalAll', {
+            params: { type, course, topic, month, year }
         });
         return response.data;
     }catch(error){
@@ -39,10 +58,20 @@ export async function findGeneral(course, topic){
     }
 }
 
-export async function findAnswers(question){
+export async function findGeneralAll(type, month, year){
     try{
-        console.log("Helper Function Running")
-        const response = await axios.get('/api/getanswer', {
+        const response = await axios.get('/api/generalAll', {
+            params: { type, month, year }
+        });
+        return response.data;
+    }catch(error){
+        console.log(error);
+    }
+}
+
+export async function findComments(question){
+    try{
+        const response = await axios.get('/api/getComment', {
             params: { question }
         });
         return response.data;
@@ -51,9 +80,19 @@ export async function findAnswers(question){
     }
 }
 
-export async function postAnswer(values){
+export async function postGeneral(values){
     try{
-        const { data: { msg } } = await axios.post(`/api/answer`, values);
+        const { data: { msg } } = await axios.post(`/api/pre`, values);
+        return Promise.resolve(msg);
+    }catch(error){
+        console.log(error);
+        return Promise.reject({ error })
+    }
+}
+
+export async function postComments(values){
+    try{
+        const { data: { msg } } = await axios.post(`/api/comments`, values);
         return Promise.resolve(msg);
     }catch(error){
         console.log(error);
@@ -68,16 +107,6 @@ export async function updateRank(username){
         return Promise.resolve(msg);
     }catch(error){
         console.log(error);
-    }
-}
-
-// Authenticate Function
-export async function authenticate(username){
-    try {
-        return await axios.post('/api/authenticate', { username })
-    } catch (error){
-        console.log(error)
-        return { error: "Username doesn't exist"}
     }
 }
 
@@ -117,7 +146,6 @@ export async function postQuestion(values){
 
         return Promise.resolve(msg)
     }catch(error){
-        console.log("helper function")
         console.log(error)
         return Promise.reject({ error });
     }
@@ -132,18 +160,6 @@ export async function preQuestion(values){
     }catch(error){
         console.log(error)
         return Promise.reject({ error });
-    }
-}
-
-// Login Function
-export async function verifyPassword({ username, password }){
-    try{
-        if(username){
-            const { data } = await axios.post('/api/login', { username, password })
-            return Promise.resolve({ data })
-        }
-    }catch(error){
-        return Promise.reject({ error : "Password doesn't match."})
     }
 }
 
@@ -170,6 +186,7 @@ export async function verifyOTP({ username, code }){
         const { data, status } = await axios.get('/api/verifyOTP', { params : { username, code }})
         return { data, status }
     }catch(error){
+        console.log(error);
         return Promise.reject(error);
     }
 }
@@ -181,5 +198,17 @@ export async function resetPassword({ username, password }){
         return Promise.resolve({ data, status })
     }catch(error){
         return Promise.reject({ error })
+    }
+}
+
+export async function postQuestionnaire(values){
+    try{
+        console.log(values);
+        const { data: { msg } } = await axios.post(`/api/questionnaire`, values);
+
+        return Promise.resolve(msg)
+    }catch(error){
+        console.log(error)
+        return Promise.reject({ error });
     }
 }

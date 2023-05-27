@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { useFormik} from 'formik';
 import { useAuthStore } from '../store/store';
@@ -9,7 +9,6 @@ import useFetch from '../hooks/fetch.hook';
 
 export default function Post() {
 
-    const navigate = useNavigate();
     const { username } = useAuthStore(state => state.auth);
     const [{ isLoading, apiData, serverError }] = useFetch(username ? `/user/${username}` : null);
 
@@ -36,6 +35,7 @@ export default function Post() {
         isAnonymous: 'false',
         section: '',
         semester: 'Spring',
+        month: '',
         year: ''
       },
       onSubmit: async values => {
@@ -51,17 +51,19 @@ export default function Post() {
         };
         const formattedDate = currentDate.toLocaleString('en-US', options);
         const year = currentDate.getFullYear(); // Get the current year
+        const month = currentDate.getMonth();
         values.date = formattedDate.replace(/,\s\d{4}/, ''); // Remove the year from the formatted date
         values.year = year.toString(); // Set the year in the year variable
-        values.username = apiData.username;
-        
+        values.month = month.toString();
         values.username = apiData.username;
 
         let postPromise = postQuestion(values)
         toast.promise(postPromise, {
           loading: 'Posting...',
-          success : <b>Question Posted</b>,
-          error : <b>Something seems wrong!</b>
+          success : (response) => <b>{response}</b>,
+          error: (err) => {
+            return <b>{err.error.response.data.error}</b>
+          }
         });
       }
     })
@@ -77,7 +79,7 @@ export default function Post() {
 
           <Toaster position='top-center' reverseOrder={false}></Toaster>
 
-          <div className="flex justify-center items-center h-screen">
+          <div className="flex justify-center items-center">
             <div className={styles.glass}>
 
               <div className="title flex flex-col items-center">
@@ -105,12 +107,38 @@ export default function Post() {
                     ))}
                   </select>
 
-                  <input {...formik.getFieldProps('section')} type="number" placeholder="Section" className={styles.textbox}/>
+                  <input
+                    {...formik.getFieldProps('section')}
+                    type="number"
+                    placeholder="Section"
+                    className={styles.textbox}
+                    min={1}
+                    max={30}
+                    onKeyDown={(e) => {
+                      const { key } = e;
+
+                      if (key === '-' || key === '+' || key === 'e') {
+                        e.preventDefault();
+                      }
+                    }}
+                    onChange={(e) => {
+                      const { value, min, max } = e.target;
+                      const numValue = parseInt(value);
+
+                      if (numValue < min) {
+                        formik.setFieldValue('section', min);
+                      } else if (numValue > max) {
+                        formik.setFieldValue('section', max);
+                      } else {
+                        formik.setFieldValue('section', numValue);
+                      }
+                    }}
+                  />
                   
                   <select {...formik.getFieldProps('semester')} className={styles.textbox}>
-                    <option value="Spring">Spring {new Date().getFullYear()}</option>
-                    <option value="Summer">Summer {new Date().getFullYear()}</option>
-                    <option value="Autumn">Autumn {new Date().getFullYear()}</option>
+                    <option value="Spring">Spring</option>
+                    <option value="Summer">Summer</option>
+                    <option value="Autumn">Autumn</option>
                   </select>
 
                   <textarea cols="30" rows="3" {...formik.getFieldProps('thisclass')} type="text" placeholder="What did you learn today?" className={styles.textbox}/>

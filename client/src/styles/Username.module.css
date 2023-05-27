@@ -1,3 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Tangerine:wght@700&display=swap');
+
+.logo{
+  font-family: 'Tangerine', cursive;
+  @apply text-6xl text-center
+}
+
+.hyper{
+  @apply text-indigo-500;
+}
+
 .glass{
     background: rgba(255, 255, 255, 0.55);
     border-radius: 16px;
@@ -8,14 +19,24 @@
 }
 
 .profile_img{
-
     @apply border-4 border-gray-100 w-[135px] rounded-full shadow-lg cursor-pointer;
     @apply hover:border-indigo-400;
 }
 
+.profile_img_small{
+  @apply border-2 border-gray-100 w-[50px] h-[50px] rounded-full shadow-md cursor-pointer;
+  @apply hover:border-indigo-300;
+}
+
+.icon{
+  @apply border-2 border-gray-100 w-[60px] h-[60px] rounded-full shadow-md cursor-pointer;
+  @apply hover:border-indigo-300 p-2 mx-4;
+}
+
 .textbox{
     @apply border-0 px-5 py-4 rounded-xl w-3/4 shadow-sm text-lg text-gray-500;
-    @apply focus:outline-none;  
+    @apply focus:outline-none;
+    @apply h-[100px] md:h-auto
 }
 
 .btn{
@@ -47,3 +68,34 @@ input[type='file']{
 	border-radius: 10px;
 	background-color: #F5F5F5;
   }
+
+  .truncateLines {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color:rgb(36, 46, 81);
+  }
+
+  .truncateLines:hover {
+    @apply text-indigo-500;
+  }
+
+  .truncateLines2 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+@media(max-width: 1000px){
+    .glass{
+        background: rgba(255, 255, 255, 0.55);
+        border: 0;
+        border-radius: 0;
+        backdrop-filter: blur(7.1px);
+        @apply  h-[100%] min-w-[100%] py-12 px-6 m-0;
+    }
+}

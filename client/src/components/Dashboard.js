@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
 import avatar from '../assets/profile_blank.png';
+import home_icon from '../assets/home.png';
+import info_icon from '../assets/info.png';
 import { useAuthStore } from '../store/store';
 import styles from '../styles/Username.module.css';
 import { Link } from 'react-router-dom';
@@ -11,19 +13,24 @@ export default function Dashboard() {
 
   const { username } = useAuthStore(state => state.auth);
 
+  //Getting User Data
+  const [{ isLoading, apiData, serverError }] = useFetch(username ? `/user/${username}` : null);
+
+  //storing username in local storage
+  localStorage.setItem('username', apiData?.username);
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     async function fetchRank() {
-      const rank = await updateRank(username);
-      console.log("Rank: ", rank)
+      await updateRank(apiData?.username);
     }
-    fetchRank();
-  }, [username]);
-
-  const [{ isLoading, apiData, serverError }] = useFetch(username ? `/user/${username}` : null);
-  const navigate = useNavigate();
+      fetchRank();
+  });
 
   // logout handler function
   function userLogout(){
+    localStorage.removeItem('username');
     localStorage.removeItem('token');
     navigate('/')
   }
@@ -45,58 +52,62 @@ export default function Dashboard() {
                 Let the learning journey begin!
             </span>
           </div>
-          <br></br>
 
           <div className="profile flex justify-center py-0">
             
             <label htmlFor="profile">
               <img src={ apiData?.profile || avatar } className={styles.profile_img} alt="avatar" />
             </label>
+
           </div>
 
           <div className="textbox flex flex-col items-center gap-6">
+
             <div className="flex justify-center items-center pt-4 text-3xl w-2/3 text-center text-gray-500">
               <b>{ apiData?.username || "User Name" }</b>
             </div>
-            <div className="flex flex-col justify-center items-center text-md w-2/3 text-center text-indigo-500">
-              <b>Score: { apiData?.questions}</b>
-              <b>{ apiData?.rank || "Novice Questioneer" }</b>
+            
+            <div className="flex flex-col justify-center items-center w-2/3 text-center">
+              <p className="font-semibold text-sm text-gray-700">Score: { apiData?.score }</p>
+              <p className="font-semibold text-sm text-gray-700">Questions Asked: { apiData?.questions }</p>
+              <p className="font-semibold text-md text-indigo-500">{ apiData?.rank || "Novice Questioneer" }</p>
             </div>
             
             <div style={{border: '1px solid #d3d3d3', width: '100%'}}></div>
 
-              <div className="w-[70%] flex flex-col gap-6 py-2">
+              <div className="w-[95%] md:w-[75%] flex flex-col gap-4 py-2">
 
-                <Link to="" className="relative inline-flex items-center justify-center px-10 py-6 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-900 rounded-lg group">
+                <Link to="" className="relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-900 rounded-lg group">
                   <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
                   <span className="relative text-center text-gray-500">Your Questions</span>
                 </Link>
 
-                <Link to="/pre" className="relative inline-flex items-center justify-center px-14 py-6 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group">
-                  <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-indigo-500 rounded-full group-hover:w-96 group-hover:h-80 block"></span>
+                <Link to="/pre" className="relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group">
+                  <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-indigo-500 rounded-3xl group-hover:w-full group-hover:h-80 block"></span>
                   <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
                   <span className="relative text-center">Pre Questions</span>
                 </Link>
 
-                <Link to="/post" className="relative inline-flex items-center justify-center px-10 py-6 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group">
-                <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-indigo-500 rounded-full group-hover:w-96 group-hover:h-80 block"></span>
+                <Link to="/post" className="relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group">
+                <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-indigo-500 rounded-3xl group-hover:w-full group-hover:h-80 block"></span>
                   <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
                   <span className="relative text-center">Post Class Feedback</span>
                 </Link>
 
-                <Link to="/repository" className="relative inline-flex items-center justify-center px-10 py-6 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-900 rounded-lg group">
-                <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-indigo-500 rounded-full group-hover:w-96 group-hover:h-80 block"></span>
+                <Link to="/repository" className="relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-900 rounded-lg group">
+                <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-indigo-500 rounded-3xl group-hover:w-full group-hover:h-80 block"></span>
                   <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
                   <span className="relative text-center">Question Repository</span>
                 </Link>
 
-                <Link to="" className="relative inline-flex items-center justify-center px-10 py-6 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-900 rounded-lg group">
+                <Link to="/questionnaire" className="relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-900 rounded-lg group">
+                <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-indigo-500 rounded-3xl group-hover:w-full group-hover:h-80 block"></span>
                   <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
-                  <span className="relative text-center text-gray-500">Questionnaire</span>
+                  <span className="relative text-center">Questionnaire</span>
                 </Link>
 
                 <Link to="/ask" className="relative inline-flex items-center justify-center px-10 py-4 overflow-hidden font-mono font-medium tracking-tighter text-white bg-indigo-500 rounded-lg group">
-                  <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-[#ff6a6a] rounded-full group-hover:w-96 group-hover:h-80 block"></span>
+                  <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-[#ff6a6a] rounded-3xl group-hover:w-full group-hover:h-80 block"></span>
                   <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-red-200"></span>
                   <span className="relative text-center">Ask a Question!</span>
                 </Link>
@@ -105,14 +116,25 @@ export default function Dashboard() {
 
             </div>
 
-          <div style={{border: '1px solid #d3d3d3', width: '100%', marginTop: '40px'}}></div>
+            <div className="profile flex justify-center py-0 my-4">
+
+              <Link to="/">
+                <img src={home_icon} className={styles.icon} alt="avatar" />
+              </Link>
+              <Link to="/rules">
+                <img src={info_icon} className={styles.icon} alt="avatar" />
+              </Link>
+
+            </div>
+
+          <div style={{border: '1px solid #d3d3d3', width: '100%', marginTop: '20px'}}></div>
 
           <div className="text-center py-4">
               <span className='text-gray-500'>Wanna take a break? <button onClick={userLogout} className='text-red-500' to="/">Logout</button></span>
           </div>
 
           <div className='relative text-center py-2'>
-            <span className='text-gray-500'>© Independent University Bangladesh 2023</span>
+            <span className='text-gray-500'>©IUB-QBL Team 2023</span>
           </div>
 
         </div>

@@ -23,6 +23,7 @@ export default function Register() {
       id: '',
       profile: '',
       questions: 0,
+      score: 0,
       rank: 'Novice Questioneer'
     },
     validate : registerValidation,
@@ -88,7 +89,7 @@ export default function Register() {
             </div>
 
             <div className='text-center'>
-              <span className='text-gray-500'>Already Registed? <Link className='text-red-500' to="/">Login Now</Link></span>
+              <span className='text-gray-500'>Already Registed? <Link className='text-red-500' to="/login">Login Now</Link></span>
             </div>
 
           </form>

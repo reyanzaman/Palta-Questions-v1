@@ -1,6 +1,16 @@
 import mongoose from "mongoose";
 
 export const TypeSchema = new mongoose.Schema({
+    course: {
+        type: String,
+        required: [true],
+        unique: false
+    },
+    section: {
+        type: Number,
+        required: [true],
+        unique: false
+    },
     knowledge: {
         type: Number,
         required: [false],

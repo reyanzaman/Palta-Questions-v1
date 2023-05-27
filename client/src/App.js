@@ -2,6 +2,7 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 /** import all components */
+// import Homepage from './components/Homepage';
 import Username from './components/Username';
 import Reset from './components/Reset';
 import Register from './components/Register';
@@ -18,8 +19,10 @@ import PreQuestions from './components/PreQuestions';
 import PostQuestions from './components/PostQuestions';
 import ViewPre from './components/ViewPre';
 import GeneralQuestions from './components/GeneralQuestions';
-import ViewGeneral from './components/ViewGeneral.js';
+import ViewGeneral from './components/ViewGeneral';
 import Ask from './components/Ask';
+import Homepage from './components/Homepage';
+import Rules from './components/Rules';
 
 // auth middleware
 import { AuthorizeUser,ProtectRoute } from './middleware/auth';
@@ -28,6 +31,14 @@ import { AuthorizeUser,ProtectRoute } from './middleware/auth';
 const router = createBrowserRouter([
     {
         path: '/',
+        element: <Homepage></Homepage>
+    },
+    {
+        path: '/rules',
+        element: <Rules></Rules>
+    },
+    {
+        path: '/login',
         element: <Username></Username>
     },
     {
@@ -91,7 +102,7 @@ const router = createBrowserRouter([
         element: <AuthorizeUser><GeneralQuestions/></AuthorizeUser>
     },
     {
-        path: '/generalQuestions/:indexNo',
+        path: '/generalQuestions/:questionNo/:questionID',
         element: <AuthorizeUser><ViewGeneral/></AuthorizeUser>
     },
     {

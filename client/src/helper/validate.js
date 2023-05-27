@@ -1,8 +1,15 @@
 import toast from 'react-hot-toast';
 import { authenticate } from './helper';
 
-export async function searchQuestions(values){
-    
+/** validate username */
+function usernameVerify(error = {}, values){
+    if(!values.username){
+        error.username = toast.error('Username Required!')
+    }else if(values.username.includes(" ")){
+        error.username = toast.error('Invalid Username')
+    }
+
+    return error;
 }
 
 /** validate login page username */
@@ -59,25 +66,14 @@ function passwordVerify(errors = {}, values){
     if(!values.password){
         errors.password = toast.error("Password Required!")
     }else if(values.password.includes(" ")){
-        errors.password = toast.error("Wrong Password")
-    }else if(values.password.length < 4){
+        errors.password = toast.error("Invalid character in password")
+    }else if(String(values.password).length < 4){
         errors.password = toast.error("Password too short! Must be minimum 4 characters.")
     }else if(!specialChars.test(values.password)){
         errors.password = toast.error("Password must contain at least one special character.")
     }
 
     return errors;
-}
-
-/** validate username */
-function usernameVerify(error = {}, values){
-    if(!values.username){
-        error.username = toast.error('Username Required!')
-    }else if(values.username.includes(" ")){
-        error.username = toast.error('Invalid Username')
-    }
-
-    return error;
 }
 
 /** validate email */
@@ -95,12 +91,14 @@ function emailVerify(error={}, values){
 
 function idVerify(error = {}, values) {
     if (!values.id) {
-      error.id = toast.error("ID Required!");
+        error.id = toast.error("ID Required!");
     } else if (typeof values.id === "string" && values.id.includes(" ")) {
-      error.id = toast.error("Invalid ID");
+        error.id = toast.error("Invalid ID");
     } else if (/^[a-zA-z]*$/i.test(values.id)) {
-      error.id = toast.error("Invalid ID");
+        error.id = toast.error("Invalid ID");
+    } else if (String(values.id).length < 4) {
+        error.id = toast.error("Invalid ID");
     }
     return error;
-  }
+}
   

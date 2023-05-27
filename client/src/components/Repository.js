@@ -3,17 +3,24 @@ import { Link, useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { useFormik} from 'formik';
 import styles from '../styles/Username.module.css';
-import { findQuestions, findGeneral } from '../helper/helper';
 
 export default function Repository() {
 
     const navigate = useNavigate();
 
+    const currentMonth = new Date().toLocaleString('default', { month: 'long' });
+    const currentYear = new Date().getFullYear();
+
     const [topics] = useState({
-      CSC101: ['Print', 'If-Else', 'Loops'],
-      CSC203: ['Objects & Classes', 'Stacks', 'Queues'],
-      CSC401: ['SQL', 'ERD', 'XAMP']
+      CSC101: ['All Topics','Print', 'If-Else', 'Loops'],
+      CSC203: ['All Topics','Objects & Classes', 'Stacks', 'Queues'],
+      CSC401: ['All Topics','SQL', 'ERD', 'XAMP'],
+      General: ['All Topics','Print', 'If-Else', 'Loops']
     });
+
+    const [now_month] = useState(currentMonth);
+    const monthIndex = new Date(`${now_month} 1, 2000`).getMonth();
+    const [now_year] = useState(currentYear);
 
     const handleChange = event => {
       const selectedCourse = event.target.value;
@@ -25,23 +32,23 @@ export default function Repository() {
       initialValues: {
         type: 'pre',
         course: 'CSC101',
-        topic: 'Print',
+        topic: 'All Topics',
         section: '',
-        semester: 'All',
-        year: '2023'
+        month: monthIndex,
+        year: now_year
       },
       onSubmit: async (values) => {
         try {
-          const { type, course, topic, section, semester, year} = values;
+          const { type, course, topic, section, month, year} = values;
           if(type==="pre"){
-            let questions = await findQuestions(type, course, topic, section, semester, year);
-            navigate('/preQuestions', { state: { questions } });
+            let data = {type, course, topic, section, month, year};
+            navigate('/preQuestions', { state: { data } });
           }else if(type==="post"){
-            let questions = await findQuestions(type, course, topic, section, semester, year);
-            navigate('/postQuestions', { state: { questions } });
+            let data = {type, course, topic, section, month, year};
+            navigate('/postQuestions', { state: { data } });
           }else if(type==="general"){
-            let generalQuestions = await findGeneral(course, topic);
-            navigate('/generalQuestions', { state: { generalQuestions } });
+            let data = {type, course, topic, month, year};
+            navigate('/generalQuestions', { state: { data } });
           }else if(type==="prequestionnaire"){
             navigate()
           }else if(type==="postquestionnaire"){
@@ -60,7 +67,7 @@ export default function Repository() {
 
         <Toaster position='top-center' reverseOrder={false}></Toaster>
 
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex justify-center items-center">
           <div className={styles.glass}>
 
             <div className="title flex flex-col items-center">
@@ -81,32 +88,72 @@ export default function Repository() {
                   <option disabled key="prequestionnaire" value="prequestionnaire" className="text-gray-200">Pre-Questionnaire</option>
                   <option disabled key="postquestionnaire" value="postquestionnaire" className="text-gray-200">Post-Questionnaire</option>
                 </select>
-                <select {...formik.getFieldProps('course')} className={styles.textbox} onChange={handleChange}>
-                  <option value="CSC101">CSC101</option>
-                  <option value="CSC203">CSC203</option>
-                  <option value="CSC401">CSC401</option>
-                </select>
+
                 {formik.values.type !== "general" ? (
                   <>
                     <input {...formik.getFieldProps('section')} type="number" placeholder="Section" className={styles.textbox}/>
-                    
-                    <select {...formik.getFieldProps('semester')} className={styles.textbox}>
-                      <option value="All">All</option>
-                      <option value="Spring">Spring</option>
-                      <option value="Summer">Summer</option>
-                      <option value="Autumn">Autumn</option>
+                  
+                    <select {...formik.getFieldProps('course')} className={styles.textbox} onChange={handleChange}>
+                      <option value="CSC101">CSC101</option>
+                      <option value="CSC203">CSC203</option>
+                      <option value="CSC401">CSC401</option>
                     </select>
 
-                    <input {...formik.getFieldProps('year')} type="string" placeholder="Year" className={styles.textbox}/>
+                    <select {...formik.getFieldProps('topic')} className={styles.textbox}>
+                      {topics[formik.values.course].map(topic => (
+                        <option key={topic} value={topic}>
+                          {topic}
+                        </option>
+                      ))}
+                    </select>
                   </>
                 ) : null}
-                <select {...formik.getFieldProps('topic')} className={styles.textbox}>
-                  {topics[formik.values.course].map(topic => (
-                    <option key={topic} value={topic}>
-                      {topic}
-                    </option>
-                  ))}
+                {formik.values.type === "general" ? (
+                  <>
+                    <select {...formik.getFieldProps('course')} className={styles.textbox} onChange={handleChange}>
+                      <option value="CSC101">CSC101</option>
+                      <option value="CSC203">CSC203</option>
+                      <option value="CSC401">CSC401</option>
+                      <option value="General">General</option>
+                    </select>
+                    
+                    {formik.values.course !== "General" ? (
+                    <>
+                      <select {...formik.getFieldProps('topic')} className={styles.textbox}>
+                        {topics[formik.values.course].map(topic => (
+                          <option key={topic} value={topic}>
+                            {topic}
+                          </option>
+                        ))}
+                      </select>
+                    </>
+                    ) : null}
+                  </>
+                ) : null}
+
+                <select {...formik.getFieldProps('month')} className={styles.textbox}>
+                  <option value="All">Whole Year</option>
+                  <option value="0">January</option>
+                  <option value="1">February</option>
+                  <option value="2">March</option>
+                  <option value="3">April</option>
+                  <option value="4">May</option>
+                  <option value="5">June</option>
+                  <option value="6">July</option>
+                  <option value="7">August</option>
+                  <option value="8">September</option>
+                  <option value="9">October</option>
+                  <option value="10">November</option>
+                  <option value="11">December</option>
                 </select>
+
+                <input
+                  {...formik.getFieldProps('year')}
+                  type="string"
+                  placeholder="Year"
+                  className={styles.textbox}
+                />
+                
                 <button type="submit" className={styles.btn}>Search</button>
               </div>
             </form>

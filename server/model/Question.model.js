@@ -18,7 +18,7 @@ export const QuestionSchema = new mongoose.Schema({
     },
     topic: {
         type: String,
-        required: [true],
+        required: [false],
         unique: false
     },
     date: {
@@ -41,6 +41,21 @@ export const QuestionSchema = new mongoose.Schema({
         required: [false],
         unique: false
     },
+    q1Score: {
+        type: Number,
+        required: [false],
+        unique: false
+    },
+    q2Score: {
+        type: Number,
+        required: [false],
+        unique: false
+    },
+    q3Score: {
+        type: Number,
+        required: [false],
+        unique: false
+    },
     thisclass: {
         type: String,
         required: [false],
@@ -58,10 +73,15 @@ export const QuestionSchema = new mongoose.Schema({
     },
     section: {
         type: Number,
-        required: [true],
+        required: [false],
         unique: false
     },
     semester: {
+        type: String,
+        required: [false],
+        unique: false
+    },
+    month: {
         type: String,
         required: [true],
         unique: false

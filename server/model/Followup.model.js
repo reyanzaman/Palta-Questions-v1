@@ -1,28 +1,38 @@
 import mongoose from "mongoose";
 
-export const AnswerSchema = new mongoose.Schema({
-    username: {
+export const FollowupSchema = new mongoose.Schema({
+    author: {
         type: String,
+        required: [true],
+        unique: false
+    },
+    usernames: {
+        type: [String],
         required: [true],
         unique: false
     },
     date: {
-        type: String,
+        type: [String],
         required: [true],
-        unique: false
-    },
-    answer: {
-        type: String,
-        required: [false],
         unique: false
     },
     question: {
         type: String,
-        required: [false],
+        required: [true],
         unique: false
     },
-    paltaQuestion: {
+    qScore: {
         type: String,
+        required: [true],
+        unique: false
+    },
+    comments: {
+        type: [String],
+        required: [true],
+        unique: false
+    },
+    cScore: {
+        type: [Number],
         required: [false],
         unique: false
     },
@@ -33,12 +43,12 @@ export const AnswerSchema = new mongoose.Schema({
     },
     topic: {
         type: String,
-        required: [true],
+        required: [false],
         unique: false
     },
     isAnonymous: {
-        type: String,
-        required: [false],
+        type: [String],
+        required: [true],
         unique: false
     },
     section: {
@@ -51,6 +61,11 @@ export const AnswerSchema = new mongoose.Schema({
         required: [false],
         unique: false
     },
+    month: {
+        type: String,
+        required: [false],
+        unique: false
+    },
     year: {
         type: String,
         required: [false],
@@ -58,4 +73,4 @@ export const AnswerSchema = new mongoose.Schema({
     },
 });
 
-export default mongoose.model.Answers || mongoose.model('Answer', AnswerSchema);
+export default mongoose.model.Followups || mongoose.model('Followup', FollowupSchema);

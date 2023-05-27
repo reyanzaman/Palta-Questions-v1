@@ -11,7 +11,7 @@ import styles from '../styles/Username.module.css'
 export default function Username() {
 
   const navigate = useNavigate();
-  const setUsername = useAuthStore( state => state.setUsername)
+  const setUsername = useAuthStore(state => state.setUsername)
 
   const formik = useFormik({
     initialValues: {
@@ -54,6 +54,9 @@ export default function Username() {
             
             <div className='text-center py-4'>
               <span className='text-gray-500'>Not a Member? <Link className='text-red-500' to="/register">Register Now</Link></span>
+            </div>
+            <div className='text-center my-2'>
+              <span className='text-gray-500'><Link className='text-gray-500 font-bold bg-gray-100 py-2 px-24 rounded-xl drop-shadow-md hover:bg-gray-200' to="/">Home </Link></span>
             </div>
 
           </form>
