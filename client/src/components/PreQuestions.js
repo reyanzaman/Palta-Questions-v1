@@ -3,17 +3,18 @@ import { useLocation } from 'react-router-dom';
 import styles from '../styles/Username.module.css';
 import { Link } from 'react-router-dom';
 import { useDataStore } from '../store/store';
-import { findQuestions } from "../helper/helper";
+import { findQuestions, findAllComments } from "../helper/helper";
 
 export default function PreQuestions() {
   const location = useLocation();
   const [state, setState] = useState({
     questions: null,
+    comments: null,
     current_question: 1,
     current_page: 1
   })
 
-  const { questions, current_question, current_page } = state;
+  const { questions, comments, current_question, current_page } = state;
 
   const data = location.state?.data;
 
@@ -31,7 +32,18 @@ export default function PreQuestions() {
         setState((prevState) => ({ ...prevState, questions: questions }));
       }
     }
+
+    async function fetchComments() {
+      if (data) {
+        const comments = await findAllComments(
+          data?.course
+        );
+        setState((prevState) => ({ ...prevState, comments: comments }));
+      }
+    }
+
     fetchData();
+    fetchComments();
 
     const intervalId = setInterval(fetchData, 15000); //every 15 seconds
 
@@ -65,39 +77,122 @@ export default function PreQuestions() {
 
   const questionSort = (questions) => {
     let mergedQuestions = [];
-    let mergedScores = [];
+    let index = questions.length - 1;
     for (let i = 0; i < questions.length; i++) {
-      mergedQuestions.push(questions[i]['question1']);
-      mergedQuestions.push(questions[i]['question2']);
-      mergedQuestions.push(questions[i]['question3']);
-      mergedScores.push(questions[i]['q1Score']);
-      mergedScores.push(questions[i]['q2Score']);
-      mergedScores.push(questions[i]['q3Score']);
+      mergedQuestions.push({
+        username: questions[i].username,
+        type: questions[i].type,
+        course: questions[i].course,
+        topic: questions[i].topic,
+        date: questions[i].date,
+        question: questions[i].question1,
+        qscore: questions[i].q1Score,
+        isAnonymous: questions[i].isAnonymous,
+        section: questions[i].section,
+        semester: questions[i].semester,
+        month: questions[i].month,
+        year: questions[i].year,
+        qnum: 'question1',
+        index: index
+      });
+      mergedQuestions.push({
+        username: questions[i].username,
+        type: questions[i].type,
+        course: questions[i].course,
+        topic: questions[i].topic,
+        date: questions[i].date,
+        question: questions[i].question2,
+        qscore: questions[i].q2Score,
+        isAnonymous: questions[i].isAnonymous,
+        section: questions[i].section,
+        semester: questions[i].semester,
+        month: questions[i].month,
+        year: questions[i].year,
+        qnum: 'question2',
+        index: index
+      });
+      mergedQuestions.push({
+        username: questions[i].username,
+        type: questions[i].type,
+        course: questions[i].course,
+        topic: questions[i].topic,
+        date: questions[i].date,
+        question: questions[i].question3,
+        qscore: questions[i].q3Score,
+        isAnonymous: questions[i].isAnonymous,
+        section: questions[i].section,
+        semester: questions[i].semester,
+        month: questions[i].month,
+        year: questions[i].year,
+        qnum: 'question3',
+        index: index
+      });
+      index--;
     }
 
-    const sortedIndices = Array.from(mergedScores.keys()).sort((a, b) => mergedScores[b] - mergedScores[a]);
-
-    const sortedQuestions = sortedIndices.map((index) => {
-      const question = mergedQuestions[index];
-      const { semester, year, section, date, isAnonymous, username } = questions[Math.floor(index / 3)];
-      const scoreKey = `q${(index % 3) + 1}Score`;
-      const score = questions[Math.floor(index / 3)][scoreKey];
-
-      return {
-        question,
-        semester,
-        year,
-        section,
-        date,
-        isAnonymous,
-        username,
-        score,
-      };
-    });
+    const sortedQuestions = mergedQuestions.sort((a, b) => a.qscore - b.qscore);
 
     return sortedQuestions;
   };
 
+  const questionMerge = (questions) => {
+    let mergedQuestions = [];
+    let index = questions.length - 1;
+    for (let i = 0; i < questions.length; i++) {
+      mergedQuestions.push({
+        username: questions[i].username,
+        type: questions[i].type,
+        course: questions[i].course,
+        topic: questions[i].topic,
+        date: questions[i].date,
+        question: questions[i].question1,
+        qscore: questions[i].q1Score,
+        isAnonymous: questions[i].isAnonymous,
+        section: questions[i].section,
+        semester: questions[i].semester,
+        month: questions[i].month,
+        year: questions[i].year,
+        qnum: 'question1',
+        index: index
+      });
+      mergedQuestions.push({
+        username: questions[i].username,
+        type: questions[i].type,
+        course: questions[i].course,
+        topic: questions[i].topic,
+        date: questions[i].date,
+        question: questions[i].question2,
+        qscore: questions[i].q2Score,
+        isAnonymous: questions[i].isAnonymous,
+        section: questions[i].section,
+        semester: questions[i].semester,
+        month: questions[i].month,
+        year: questions[i].year,
+        qnum: 'question2',
+        index: index
+      });
+      mergedQuestions.push({
+        username: questions[i].username,
+        type: questions[i].type,
+        course: questions[i].course,
+        topic: questions[i].topic,
+        date: questions[i].date,
+        question: questions[i].question3,
+        qscore: questions[i].q3Score,
+        isAnonymous: questions[i].isAnonymous,
+        section: questions[i].section,
+        semester: questions[i].semester,
+        month: questions[i].month,
+        year: questions[i].year,
+        qnum: 'question3',
+        index: index
+      });
+      index--;
+    }
+    return mergedQuestions;
+  }
+
+  const mergedQuestions = questionMerge(questions);
   const sortedQuestions = questionSort(questions);
 
   const totalQuestions = sortedQuestions.length;
@@ -144,7 +239,7 @@ export default function PreQuestions() {
   return (
     <div className="container mx-auto">
       <div className="flex justify-center items-center">
-        <div className={styles.glass} style={{minWidth: '70%'}}>
+        <div className={styles.glass} style={{minWidth: '100%'}}>
           <div className="title flex flex-col items-center">
             <h4 className="text-4xl font-bold text-center">Pre-Questions Repository</h4>
             <span className="py-4 text-lg w-2/3 text-center text-gray-500">Take your pick!</span>
@@ -167,16 +262,25 @@ export default function PreQuestions() {
 
           <div id="timeSorted" className={`${sortBy === 'time' ? '' : 'hidden'}`}>
             <div className="w-[100%] sm:w-[90%] bg-gray-200 rounded-lg max-h-[30rem] overflow-x-clip overflow-y-auto mx-auto p-6">
-              {questions.slice().reverse().slice(((current_page-1)*((current_page-1) * questionPerPage)/3) , (current_page * questionPerPage)/3).map((question, index) => (
+              {mergedQuestions.slice().reverse().slice(current_question-1 , current_question + questionPerPage - 1).map((question, index) => {
+                let commentCount = 0;
+                if(comments){
+                  for (let i = 0; i < comments.length; i++) {
+                    if (comments[i].question === question.question) {
+                      commentCount = comments[i].comments.length;
+                    }
+                }
+                }
+                return (
                 <div key={index}>
                   <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-4">
                     <div>
                       <h1 className="lg:w-full text-left text-md font-bold hover:text-indigo-500">
                         <Link
-                          to={`/preQuestions/${questions.length - index - 1}/question1`}
+                          to={`/preQuestions/${questions.length - question['index'] - 1}/${question['qnum']}`}
                           onClick={handleClick}
                         >
-                          <div className={styles.truncateLines}>{question['question1']}</div>
+                          <div className={styles.truncateLines}>{question['question']}</div>
                         </Link>
                       </h1>
                     </div>
@@ -188,63 +292,11 @@ export default function PreQuestions() {
                       </h1>
                       <br />
                       <h1 className="w-fit text-sm lg:float-right sm:float-left font-bold text-indigo-800">
-                        {'Question Score: ' + question['q1Score']}
-                      </h1>
-                    </div>
-                    <p className="text-sm pt-2">
-                      Posted by <b>{question['isAnonymous'] === 'true' ? 'Anonymous User' : question['username']}</b>
-                    </p>
-                  </div>
-                  <hr className="h-px my-8 border-0 dark:bg-gray-300" />
-
-                  <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-4">
-                    <div>
-                      <h1 className="lg:w-full text-left text-md font-bold hover:text-indigo-500">
-                        <Link
-                          to={`/preQuestions/${questions.length - index - 1}/question2`}
-                          onClick={handleClick}
-                        >
-                          <div className={styles.truncateLines}>{question['question2']}</div>
-                        </Link>
-                      </h1>
-                    </div>
-                    <div>
-                      <h1 className="w-fit text-sm lg:float-right sm:float-left">{question['date']}</h1>
-                      <br />
-                      <h1 className="w-fit text-sm lg:float-right sm:float-left">
-                        {question['semester'] + ' ' + question['year'] + ' Section: ' + question['section']}
+                        {'Question Score: ' + question['qscore']}
                       </h1>
                       <br />
-                      <h1 className="w-fit text-sm lg:float-right sm:float-left font-bold text-indigo-800">
-                        {'Question Score: ' + question['q2Score']}
-                      </h1>
-                    </div>
-                    <p className="text-sm pt-2">
-                      Posted by <b>{question['isAnonymous'] === 'true' ? 'Anonymous User' : question['username']}</b>
-                    </p>
-                  </div>
-                  <hr className="h-px my-8 border-0 dark:bg-gray-300" />
-
-                  <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-4">
-                    <div>
-                      <h1 className="lg:w-full text-left text-md font-bold hover:text-indigo-500">
-                        <Link
-                          to={`/preQuestions/${questions.length - index - 1}/question3`}
-                          onClick={handleClick}
-                        >
-                          <div className={styles.truncateLines}>{question['question3']}</div>
-                        </Link>
-                      </h1>
-                    </div>
-                    <div>
-                      <h1 className="w-fit text-sm lg:float-right sm:float-left">{question['date']}</h1>
-                      <br />
-                      <h1 className="w-fit text-sm lg:float-right sm:float-left">
-                        {question['semester'] + ' ' + question['year'] + ' Section: ' + question['section']}
-                      </h1>
-                      <br />
-                      <h1 className="w-fit text-sm lg:float-right sm:float-left font-bold text-indigo-800">
-                        {'Question Score: ' + question['q3Score']}
+                      <h1 className={`w-fit text-sm lg:float-right sm:float-left font-bold ${commentCount > 0 ? 'text-red-500' : 'hidden'}`}>
+                        {'Palta Questions: ' + commentCount}
                       </h1>
                     </div>
                     <p className="text-sm pt-2">
@@ -253,19 +305,29 @@ export default function PreQuestions() {
                   </div>
                   <hr className="h-px my-8 border-0 dark:bg-gray-300" />
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
           <div id="scoreSorted" className={`${sortBy === 'score' ? '' : 'hidden'}`}>
             <div className="w-[100%] sm:w-[90%] bg-gray-200 rounded-lg max-h-[30rem] overflow-x-clip overflow-y-auto mx-auto p-6">
-              {sortedQuestions.slice(current_question-1 , current_question + questionPerPage - 1).map((question, index) => (
-                <div key={index}>
-                  <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-4">
+              {sortedQuestions.reverse().slice(current_question - 1, current_question + questionPerPage - 1).map((question, index) => {
+                let commentCount = 0;
+                if(comments){
+                  for (let i = 0; i < comments.length; i++) {
+                    if (comments[i].question === question.question) {
+                      commentCount = comments[i].comments.length;
+                    }
+                }
+                }
+                return (
+                  <div key={index}>
+                    <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-4">
                     <div>
                       <h1 className="lg:w-full text-left text-md font-bold hover:text-indigo-500">
                         <Link
-                          to={`/preQuestions/${questions.length - index - 1}/question1`}
+                          to={`/preQuestions/${questions.length - question['index'] - 1}/${question['qnum']}`}
                           onClick={handleClick}
                         >
                           <div className={styles.truncateLines}>{question.question}</div>
@@ -280,7 +342,11 @@ export default function PreQuestions() {
                       </h1>
                       <br />
                       <h1 className="w-fit text-sm lg:float-right sm:float-left font-bold text-indigo-800">
-                        {'Question Score: ' + question.score}
+                        {'Question Score: ' + question.qscore}
+                      </h1>
+                      <br />
+                      <h1 className={`w-fit text-sm lg:float-right sm:float-left font-bold ${commentCount > 0 ? 'text-red-500' : 'hidden'}`}>
+                        {'Palta Questions: ' + commentCount}
                       </h1>
                     </div>
                     <p className="text-sm pt-2">
@@ -289,7 +355,8 @@ export default function PreQuestions() {
                   </div>
                   <hr className="h-px my-8 border-0 dark:bg-gray-300" />
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
           

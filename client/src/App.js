@@ -24,6 +24,7 @@ import Ask from './components/Ask';
 import Homepage from './components/Homepage';
 import Rules from './components/Rules';
 import ViewQuestionnaire from "./components/ViewQuestionnaire";
+import RecoverUsername from "./components/RecoverUsername";
 
 // auth middleware
 import { AuthorizeUser,ProtectRoute } from './middleware/auth';
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
     {
         path: '/recovery',
         element: <Recovery></Recovery>
+    },
+    {
+        path: '/recoverUsername',
+        element: <RecoverUsername></RecoverUsername>
     },
     {
         path: '/reset',

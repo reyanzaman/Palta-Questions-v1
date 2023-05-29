@@ -59,9 +59,20 @@ export async function findQuestions(type, course, topic, section, month, year){
     }
 }
 
+export async function findAllComments(course){
+    try{
+        const response = await axios.get('/api/commentAll', {
+            params: { course }
+        });
+        return response.data;
+    }catch(error){
+        console.log(error);
+    }
+}
+
 export async function findGeneral(type, course, topic, month, year){
     try{
-        const response = await axios.get('/api/generalAll', {
+        const response = await axios.get('/api/general', {
             params: { type, course, topic, month, year }
         });
         return response.data;
@@ -189,6 +200,25 @@ export async function generateOTP(username){
         return Promise.resolve(code);
     }catch(error){
         return Promise.reject({ error });
+    }
+}
+
+export async function recoverUsername(email){
+    try{
+        const request = await axios.get(`/api/getUsername`, 
+        { params: 
+            {email: email.email}
+        });
+        console.log(request);
+        if(!request.data){
+            throw new Error();
+        }
+        let text = `Your Username is ${request.data}. Please login at https://palta-q.netlify.app/login.`;
+        await axios.post('/api/registerMail', { username: request.data, userEmail: email.email, text: text, subject: "Username Recovery"})
+        return Promise.resolve("Username has been sent to email");
+    }catch(error){
+        console.log(error);
+        return Promise.reject("Account does not exist!");
     }
 }
 

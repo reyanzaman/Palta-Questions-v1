@@ -40,7 +40,7 @@ export const registerMail = async(req, res) => {
         body: {
             name: username,
             intro: text || "Welcome to Question Based Learning! We\'re very excited to have you on board!",
-            outro: "We hope you are enjoying learning through QBL!"
+            outro: "We hope you are enjoying learning through Palta Questions!"
         }
     }
 

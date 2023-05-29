@@ -27,6 +27,8 @@ router.route('/questions').get(controller.searchQuestion); //Repository of Quest
 router.route('/getComment').get(controller.getComment); //Question Answer Viewer
 router.route('/general').get(controller.searchGeneral); //Search for general question repository
 router.route('/generalAll').get(controller.searchGeneralAll); //Search for all general questions
+router.route('/commentALl').get(controller.getAllComments); //Search for all comments
+router.route('/getUsername').get(controller.recoverUsername); //Send username to email
 
 /** PUT Methods */
 router.route('/resetPassword').put(controller.verifyUser, controller.resetPassword); // used to reset password

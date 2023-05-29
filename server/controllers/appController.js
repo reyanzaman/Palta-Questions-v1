@@ -276,12 +276,28 @@ export async function searchQuestion(req, res) {
 	}
 }
 
+export async function getAllComments(req, res){
+	try{
+		const { course } = req.query;
+		console.log(course);
+
+		var questions = await FollowupModel.find({
+			course
+		});
+
+		return res.json(questions);
+	}catch(error){
+		console.log(error);
+		return res.status(500).json({ error: "Failed to Get Palta Questions" });
+	}
+}
+
 export async function searchGeneral(req, res) {
 	try {
 		const { type, course, topic, month, year } = req.query;
 
 		let questions = null;
-		if (course == "general") {
+		if (course == "General") {
 			if (month === "All") {
 				if (year) {
 					questions = await QuestionModel.find({ type, course, year });
@@ -1719,7 +1735,10 @@ export async function validateQuestion(req, res, next) {
 				"were",
 				"will",
 				"can",
-				"?"
+				"does",
+				"do",
+				"shall",
+				"should"
 			];
 
 			const lowercaseQuestion = values.question1.toLowerCase();
@@ -1772,7 +1791,10 @@ export async function validateQuestion(req, res, next) {
 				"were",
 				"will",
 				"can",
-				"?"
+				"does",
+				"do",
+				"shall",
+				"should"
 			];
 
 			const lowercaseQuestion1 = values.question1.toLowerCase();
@@ -1845,7 +1867,10 @@ export async function validateQuestion(req, res, next) {
 				"were",
 				"will",
 				"can",
-				"?"
+				"does",
+				"do",
+				"shall",
+				"should"
 			];
 
 			const lowercaseComment = values.comments.toLowerCase();
@@ -1883,6 +1908,21 @@ export async function generateOTP(req, res) {
 		specialChars: false,
 	});
 	res.status(201).send({ code: req.app.locals.OTP });
+}
+
+export async function recoverUsername(req, res) {
+	try {
+		const email = req.query.email;
+		console.log("Email: ", email);
+		const user = await UserModel.findOne({ email });
+		if (!user) {
+			return res.status(404).json({ error: "Username not found" });
+		}
+		return res.json(user.username);
+	} catch (error) {
+		console.error(error);
+		return res.status(500).json({ error: "Internal Server Error" });
+	}
 }
 
 /** GET http://localhost:8080/api/verifyOTP */

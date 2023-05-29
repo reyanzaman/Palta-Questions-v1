@@ -88,7 +88,7 @@ export default function PostQuestions() {
     return (
       <div className="container mx-auto">
         <div className="flex justify-center items-center">
-          <div className={styles.glass} style={{minWidth: '70%'}}>
+          <div className={styles.glass} style={{minWidth: '100%'}}>
 
             <div className="title flex flex-col items-center">
               <h4 className="text-4xl font-bold text-center">Feedback Repository</h4>

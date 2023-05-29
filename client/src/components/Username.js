@@ -51,12 +51,13 @@ export default function Username() {
               <input {...formik.getFieldProps('username')} type="text" placeholder="Username" className={styles.textbox}/>
               <button type="submit" className={styles.btn}>Continue</button>
             </div>
-            
+
             <div className='text-center py-4'>
-              <span className='text-gray-500'>Not a Member? <Link className='text-red-500' to="/register">Register Now</Link></span>
+              <span><Link className='text-red-500' to="/recoverUsername">Forgot Username?</Link></span>
             </div>
             <div className='text-center my-2'>
-              <span className='text-gray-500'><Link className='text-gray-500 font-bold bg-gray-100 py-2 px-24 rounded-xl drop-shadow-md hover:bg-gray-200' to="/">Home </Link></span>
+              <span className='text-gray-500'><Link className='text-gray-500 font-bold bg-gray-100 py-2 px-12 mx-2 rounded-xl drop-shadow-md hover:bg-gray-200' to="/">Home </Link></span>
+              <span className='text-gray-500'><Link className='text-gray-500 font-bold bg-gray-100 py-2 px-12 mx-2 rounded-xl drop-shadow-md hover:bg-gray-200' to="/register">Register </Link></span>
             </div>
 
           </form>
