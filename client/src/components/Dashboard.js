@@ -95,10 +95,10 @@ export default function Dashboard() {
 
               <div className="w-[95%] md:w-[75%] flex flex-col gap-4 py-2">
 
-                <Link to="" className="relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-900 rounded-lg group">
+                {/* <Link to="" className="relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-900 rounded-lg group">
                   <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
                   <span className="relative text-center text-gray-500">Your Questions</span>
-                </Link>
+                </Link> */}
 
                 <Link to="/pre" className="relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group">
                   <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-indigo-500 rounded-3xl group-hover:w-full group-hover:h-80 block"></span>
@@ -126,11 +126,11 @@ export default function Dashboard() {
 
                 {/* <div className=""> */}
 
-                  <Link to="/ask" className="relative inline-flex items-center justify-center px-10 py-4 overflow-hidden font-mono font-medium tracking-tighter text-white bg-indigo-500 rounded-lg group">
+                  {/* <Link to="/ask" className="relative inline-flex items-center justify-center px-10 py-4 overflow-hidden font-mono font-medium tracking-tighter text-white bg-indigo-500 rounded-lg group">
                     <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-[#ff6a6a] rounded-3xl group-hover:w-full group-hover:h-80 block"></span>
                     <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-red-200"></span>
                     <span className="relative text-center">Ask a Question!</span>
-                  </Link>
+                  </Link> */}
 
                 {/* </div> */}
 
