@@ -10,6 +10,7 @@ export default function Repository() {
 
     const currentMonth = new Date().toLocaleString('default', { month: 'long' });
     const currentYear = new Date().getFullYear();
+    const currentDate = new Date().getDate();
 
     const [topics] = useState({
       CIS101: ['All Topics',' Thinking', 'Documentation', 'Data', 'Graphs', 'Ideas', 'G-Slides',
@@ -24,6 +25,7 @@ export default function Repository() {
     const [now_month] = useState(currentMonth);
     const monthIndex = new Date(`${now_month} 1, 2000`).getMonth();
     const [now_year] = useState(currentYear);
+    const [now_date] = useState(currentDate);
 
     const handleChange = event => {
       const selectedCourse = event.target.value;
@@ -38,19 +40,20 @@ export default function Repository() {
         topic: 'All Topics',
         section: '',
         month: monthIndex,
+        date: now_date,
         year: now_year
       },
       onSubmit: async (values) => {
         try {
-          const { type, course, topic, section, month, year} = values;
+          const { type, course, topic, section, date, month, year} = values;
           if(type==="pre"){
-            let data = {type, course, topic, section, month, year};
+            let data = {type, course, topic, section, date, month, year};
             navigate('/preQuestions', { state: { data } });
           }else if(type==="post"){
-            let data = {type, course, topic, section, month, year};
+            let data = {type, course, topic, section, date, month, year};
             navigate('/postQuestions', { state: { data } });
           }else if(type==="general"){
-            let data = {type, course, topic, month, year};
+            let data = {type, date, month, year};
             navigate('/generalQuestions', { state: { data } });
           }else if(type==="prequestionnaire" || type==="postquestionnaire"){
             let data = {type, course, topic, month, year};
@@ -102,26 +105,7 @@ export default function Repository() {
                       <option value="CSC401">CSC401</option>
                     </select>
 
-                    <select {...formik.getFieldProps('topic')} className={styles.textbox}>
-                      {topics[formik.values.course].map(topic => (
-                        <option key={topic} value={topic}>
-                          {topic}
-                        </option>
-                      ))}
-                    </select>
-                  </>
-                ) : null}
-                {formik.values.type === "general" ? (
-                  <>
-                    <select {...formik.getFieldProps('course')} className={styles.textbox} onChange={handleChange}>
-                      <option value="CIS101">CIS101</option>
-                      <option value="CSC101">CSC101</option>
-                      <option value="CSC203">CSC203</option>
-                      <option value="CSC401">CSC401</option>
-                      <option value="General">General</option>
-                    </select>
-                    
-                    {formik.values.course !== "General" ? (
+                    {formik.values.type === "pre" ? (
                     <>
                       <select {...formik.getFieldProps('topic')} className={styles.textbox}>
                         {topics[formik.values.course].map(topic => (
@@ -134,7 +118,7 @@ export default function Repository() {
                     ) : null}
                   </>
                 ) : null}
-
+                
                 <select {...formik.getFieldProps('month')} className={styles.textbox}>
                   <option value="All">Whole Year</option>
                   <option value="0">January</option>
@@ -150,6 +134,8 @@ export default function Repository() {
                   <option value="10">November</option>
                   <option value="11">December</option>
                 </select>
+
+                <input {...formik.getFieldProps('date')} type="number" placeholder="Date" className={styles.textbox}/>    
 
                 <input
                   {...formik.getFieldProps('year')}

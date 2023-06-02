@@ -23,8 +23,7 @@ export default function PreQuestions() {
       if (data) {
         const questions = await findGeneral(
           data?.type,
-          data?.course,
-          data?.topic,
+          data?.date,
           data?.month,
           data?.year
         );
@@ -214,7 +213,7 @@ export default function PreQuestions() {
                     <div>
                       <h1 className="lg:w-full text-left text-md font-bold hover:text-indigo-500">
                         <Link
-                          to={`/preQuestions/${questions.length - question['index'] - 1}/${question['qnum']}`}
+                          to={`/generalQuestions/${questions.length - question['index'] - 1}/${question['qnum']}`}
                           onClick={handleClick}
                         >
                           <div className={styles.truncateLines}>{question['question']}</div>
@@ -260,7 +259,7 @@ export default function PreQuestions() {
                     <div>
                       <h1 className="lg:w-full text-left text-md font-bold hover:text-indigo-500">
                         <Link
-                          to={`/preQuestions/${questions.length - question['index'] - 1}/${question['qnum']}`}
+                          to={`/generalQuestions/${questions.length - question['index'] - 1}/${question['qnum']}`}
                           onClick={handleClick}
                         >
                           <div className={styles.truncateLines}>{question.question}</div>

@@ -53,10 +53,10 @@ export default function Rules() {
                     <p className="text-yellow-500">Analytical Questions</p> (Analyzing): <br></br> <b className='text-indigo-500'>20 points</b>
                   </li>
                   <li>
-                    <p className="text-amber-600">Evaluative Questions</p> (Evaluating): <br></br> <b className='text-indigo-500'>25 points</b>
+                    <p className="text-amber-600">Evaluative Questions</p> (Evaluating): <br></br> <b className='text-indigo-500'>20 points</b>
                   </li>
                   <li>
-                    <p className="text-red-700">Synthetic Questions</p> (Creating): <br></br> <b className='text-indigo-500'>35 points</b>
+                    <p className="text-red-700">Synthetic Questions</p> (Creating): <br></br> <b className='text-indigo-500'>30 points</b>
                   </li>
                 </ul>
 
@@ -78,7 +78,7 @@ export default function Rules() {
                 <p>These are just some of the verbs for each category of questions according to bloom's taxonomy.
                   You can research online to find out more of the verbs associated with each category.<br></br>
                   <br></br>Now that you know how things work, you should have probably realized that you
-                  can get a maximum of 110 scores per questions! <br></br>
+                  can get a maximum of 100 scores per questions! <br></br>
                   Another fun fact is you will be given a title/ranking based on your score to
                   show off your querying skills to your friends and teachers! 
                   <br></br><br></br>

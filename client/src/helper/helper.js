@@ -48,10 +48,10 @@ export async function uploadPhoto(username, profile){
     }
 }
 
-export async function findQuestions(type, course, topic, section, month, year){
+export async function findQuestions(type, course, topic, section, date, month, year){
     try{
         const response = await axios.get('/api/questions', {
-            params: { type, course, topic, section, month, year }
+            params: { type, course, topic, section, date, month, year }
         });
         return response.data;
     }catch(error){
@@ -70,10 +70,19 @@ export async function findAllComments(course){
     }
 }
 
-export async function findGeneral(type, course, topic, month, year){
+export async function findRanking(){
+    try{
+        const response = await axios.get('/api/leaderboard', {});
+        return response.data;
+    }catch(error){
+        console.log(error);
+    }
+}
+
+export async function findGeneral(type, date, month, year){
     try{
         const response = await axios.get('/api/general', {
-            params: { type, course, topic, month, year }
+            params: { type, date, month, year }
         });
         return response.data;
     }catch(error){

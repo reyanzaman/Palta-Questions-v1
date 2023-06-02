@@ -29,6 +29,7 @@ router.route('/general').get(controller.searchGeneral); //Search for general que
 router.route('/generalAll').get(controller.searchGeneralAll); //Search for all general questions
 router.route('/commentALl').get(controller.getAllComments); //Search for all comments
 router.route('/getUsername').get(controller.recoverUsername); //Send username to email
+router.route('/leaderboard').get(controller.leaderboard); //Get leaderboard users
 
 /** PUT Methods */
 router.route('/resetPassword').put(controller.verifyUser, controller.resetPassword); // used to reset password

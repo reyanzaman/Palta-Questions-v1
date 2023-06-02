@@ -26,6 +26,7 @@ export default function PreQuestions() {
           data?.course,
           data?.topic,
           data?.section,
+          data?.date,
           data?.month,
           data?.year
         );

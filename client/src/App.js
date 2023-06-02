@@ -20,11 +20,11 @@ import PostQuestions from './components/PostQuestions';
 import ViewPre from './components/ViewPre';
 import GeneralQuestions from './components/GeneralQuestions';
 import ViewGeneral from './components/ViewGeneral';
-import Ask from './components/Ask';
 import Homepage from './components/Homepage';
 import Rules from './components/Rules';
 import ViewQuestionnaire from "./components/ViewQuestionnaire";
 import RecoverUsername from "./components/RecoverUsername";
+import Leaderboard from "./components/Leaderboard";
 
 // auth middleware
 import { AuthorizeUser,ProtectRoute } from './middleware/auth';
@@ -116,8 +116,8 @@ const router = createBrowserRouter([
         element: <AuthorizeUser><ViewGeneral/></AuthorizeUser>
     },
     {
-        path: '/ask',
-        element: <AuthorizeUser><Ask/></AuthorizeUser>
+        path: '/leaderboard',
+        element: <AuthorizeUser><Leaderboard/></AuthorizeUser>
     }
 ])
 

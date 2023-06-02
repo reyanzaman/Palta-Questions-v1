@@ -214,7 +214,7 @@ export default function ViewPre() {
 
                       return reversedComments.slice(current_question - 1, current_question + questionPerPage - 1).map((commentText, commentIndex) => (
                         <div key={commentIndex} className="mb-6 flex flex-col items-center text-center rounded-2xl p-6 bg-slate-700 text-neutral-100">
-                          <p className={styles.truncateLines2}>{commentText}</p>
+                          <p>{commentText}</p>
                           <p className='text-xs pt-2 text-indigo-100'>Posted by {reversedIsAnonymous[commentIndex] ? 'Anonymous User' : reversedUsernames[commentIndex]}</p>
                           <p className='text-xs text-indigo-100'>{reversedDates[commentIndex]}</p>
                           <p className='text-sm pt-2 font-bold text-indigo-200'>Comment Score: {reversedCScores[commentIndex]}</p>
