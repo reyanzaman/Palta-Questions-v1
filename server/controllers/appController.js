@@ -168,7 +168,7 @@ export async function changeRank(req, res) {
 		if (username) {
 			const user = await UserModel.findOne({ username });
 
-			if (user.score < 550) {
+			if (user.score < 550 && user.score >= 0) {
 				await UserModel.updateOne(
 					{ username: username },
 					{ rank: "Novice Questioneer" }
@@ -2001,14 +2001,20 @@ export async function postQuestionnaire(req, res){
 			section,
 			date,
 			semester,
-			likeProgramming,
-			scaredCourse,
-			whyScared,
-			confidence,
-			expectation
+			similarCourse,
+			teachingMethod,
+			programmingExcite,
+			lookForward,
+			pursueContents,
+			justification,
+			contents,
+			whatElseLearn,
+			expectations,
+			whyChooseCourse,
+			questionsAskedSmall,
+			questionsAskedDaily,
+			recommend
 		} = req.body;
-
-		console.log(req.body);
 
 		if(!username || !type || !course || !date || !semester){
 			return res.status(500).json({ msg: `Essential Information Missing!` });
@@ -2016,17 +2022,20 @@ export async function postQuestionnaire(req, res){
 		if(!section){
 			return res.status(500).json({ msg: `Section Missing!` });
 		}
-		if(scaredCourse == "yes" && !whyScared){
-			return res.status(500).json({ msg: `Please tell us why are you scared of this course` });
-		}
-		if(!expectation){
-			return res.status(500).json({ msg: `Please tell us what do you expect from this course` });
-		}
-		if(String(expectation).length < 15){
-			return res.status(500).json({ msg: `Expectation response too short!` });
-		}
-		if(scaredCourse == "yes" && String(whyScared).length < 15){
-			return res.status(500).json({ msg: `Response too short!` });
+		if(type==="pre"){
+			if(teachingMethod=="" || programmingExcite=="" || lookForward=="" || justification=="" || contents=="" || expectations=="" || whyChooseCourse=="" || questionsAskedSmall=="" || questionsAskedDaily==""){
+				return res.status(500).json({ msg: `Information Missing!` });
+			}
+			if(justification.length < 10 || expectations.length < 10 || whyChooseCourse.length < 10){
+				return res.status(500).json({ msg: `Response too short!` });
+			}
+		}else{
+			if(similarCourse=="" || programmingExcite=="" || pursueContents=="" || justification=="" || whatElseLearn=="" || questionsAskedDaily=="" || recommend==""){
+				return res.status(500).json({ msg: `Information Missing!` });
+			}
+			if(justification.length < 10 || whatElseLearn.length < 10){
+				return res.status(500).json({ msg: `Response too short!` });
+			}
 		}
 
 		const questionnaire = new QuestionnaireModel({
@@ -2036,11 +2045,19 @@ export async function postQuestionnaire(req, res){
 			section,
 			date,
 			semester,
-			likeProgramming,
-			scaredCourse,
-			whyScared,
-			confidence,
-			expectation
+			similarCourse,
+			teachingMethod,
+			programmingExcite,
+			lookForward,
+			pursueContents,
+			justification,
+			contents,
+			whatElseLearn,
+			expectations,
+			whyChooseCourse,
+			questionsAskedSmall,
+			questionsAskedDaily,
+			recommend
 		});
 
 		const result = await questionnaire.save();

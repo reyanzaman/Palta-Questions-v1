@@ -34,7 +34,7 @@ export default function Leaderboard() {
 
           <h1 className="text-center text-4xl font-bold text-gray-700 pt-3 pb-8">Leaderboard</h1>
 
-          <div className="mx-4">
+          <div className="md:mx-4 mx-0">
             {ranking ? (
               <>
               <div className="bg-gray-800 rounded-xl py-2 px-5 md:px-10">

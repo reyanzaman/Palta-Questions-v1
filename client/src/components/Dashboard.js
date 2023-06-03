@@ -86,9 +86,9 @@ export default function Dashboard() {
             </div>
             
             <div className="flex flex-col justify-center items-center w-2/3 text-center">
-              <p className="font-semibold text-sm text-gray-700">Score: { apiData?.score }</p>
+              <p className="font-semibold text-sm text-gray-700">Score: { apiData?.score < 0 ? "Infinite" : apiData?.score }</p>
               <p className="font-semibold text-sm text-gray-700">Questions Asked: { apiData?.questions }</p>
-              <p className="font-semibold text-md text-indigo-500">{ apiData?.rank || "Novice Questioneer" }</p>
+              <p className="font-semibold text-md text-indigo-500">{ apiData?.rank }</p>
             </div>
             
             <div style={{border: '1px solid #d3d3d3', width: '100%'}}></div>

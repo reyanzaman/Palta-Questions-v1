@@ -13,7 +13,7 @@ export default function Pre() {
 
     const [topics] = useState({
       CIS101: ['Thinking', 'Documentation', 'Data', 'Graphs', 'Ideas', 'G-Slides', 'Questionnaire', 'Referencing', 'Computing Mechanism', 'Python Coding', 'Final Project'],
-      CSC101: ['Print', 'If-Else', 'Loops'],
+      CSC101: ['Coding Environment (IDE)', 'Variables', 'Data Types', 'Operators','Print', 'Conditional Statements', 'Loops', 'Nested Conditions', 'Nested Loops', 'Lists', 'Tuples', 'Functions', 'File Handling'],
       CSC203: ['Objects & Classes', 'Stacks', 'Queues'],
       CSC401: ['SQL', 'ERD', 'XAMP']
     });

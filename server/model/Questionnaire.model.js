@@ -31,31 +31,71 @@ export const QuestionnaireSchema = new mongoose.Schema({
         required: [true],
         unique: false
     },
-    likeProgramming: {
-        type: String,
-        required: [true],
-        unique: false
-    },
-    scaredCourse: {
-        type: String,
-        required: [true],
-        unique: false
-    },
-    whyScared: {
+    similarCourse: {
         type: String,
         required: [false],
         unique: false
     },
-    confidence: {
+    teachingMethod: {
         type: String,
         required: [false],
         unique: false
     },
-    expectation: {
+    programmingExcite: {
         type: String,
         required: [true],
         unique: false
-    }
+    },
+    lookForward: {
+        type: String,
+        required: [false],
+        unique: false
+    },
+    pursueContents: {
+        type: String,
+        required: [false],
+        unique: false
+    },
+    justification: {
+        type: String,
+        required: [true],
+        unique: false
+    },
+    contents: {
+        type: String,
+        required: [false],
+        unique: false
+    },
+    whatElseLearn: {
+        type: String,
+        required: [false],
+        unique: false
+    },
+    expectations: {
+        type: String,
+        required: [false],
+        unique: false
+    },
+    whyChooseCourse: {
+        type: String,
+        required: [false],
+        unique: false
+    },
+    questionsAskedSmall: {
+        type: String,
+        required: [false],
+        unique: false
+    },
+    questionsAskedDaily: {
+        type: String,
+        required: [true],
+        unique: false
+    },
+    recommend: {
+        type: String,
+        required: [false],
+        unique: false
+    },
 });
 
 export default mongoose.model.Questionnaires || mongoose.model('Questionnaire', QuestionnaireSchema);
