@@ -5,9 +5,10 @@ import { authenticate } from './helper';
 function usernameVerify(error = {}, values){
     if(!values.username){
         error.username = toast.error('Username Required!')
-    }else if(values.username.includes(" ")){
-        error.username = toast.error('Invalid Username')
     }
+    // }else if(values.username.includes(" ")){
+    //     error.username = toast.error('Invalid Username')
+    // }
 
     return error;
 }
@@ -61,7 +62,7 @@ export async function registerValidation(values){
 /** validate password */
 function passwordVerify(errors = {}, values){
 
-    const specialChars = /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/
+    // const specialChars = /[`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?~]/
 
     if(!values.password){
         errors.password = toast.error("Password Required!")
@@ -69,9 +70,10 @@ function passwordVerify(errors = {}, values){
         errors.password = toast.error("Invalid character in password")
     }else if(String(values.password).length < 4){
         errors.password = toast.error("Password too short! Must be minimum 4 characters.")
-    }else if(!specialChars.test(values.password)){
-        errors.password = toast.error("Password must contain at least one special character.")
     }
+    // }else if(!specialChars.test(values.password)){
+    //     errors.password = toast.error("Password must contain at least one special character.")
+    // }
 
     return errors;
 }
