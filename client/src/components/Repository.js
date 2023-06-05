@@ -16,7 +16,7 @@ export default function Repository() {
       CIS101: ['All Topics',' Thinking', 'Documentation', 'Data', 'Graphs', 'Ideas', 'G-Slides',
        'Questionnaire', 'Referencing', 'Computing Mechanism', 'Python Coding',
        'Final Project'],
-      CSC101: ['All Topics','Print', 'If-Else', 'Loops'],
+      CSC101: ['Coding Environment (IDE)', 'Variables', 'Data Types', 'Operators','Print', 'Conditional Statements', 'Loops', 'Nested Conditions', 'Nested Loops', 'Lists', 'Tuples', 'Functions', 'File Handling'],
       CSC203: ['All Topics','Objects & Classes', 'Stacks', 'Queues'],
       CSC401: ['All Topics','SQL', 'ERD', 'XAMP'],
       General: ['All Topics','Print', 'If-Else', 'Loops']
