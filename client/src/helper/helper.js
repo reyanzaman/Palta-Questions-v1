@@ -1,8 +1,8 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
-// axios.defaults.baseURL = 'https://iub-qbl.onrender.com';
-axios.defaults.baseURL = 'http://localhost:8081/';
+axios.defaults.baseURL = 'https://iub-qbl.onrender.com';
+// axios.defaults.baseURL = 'http://localhost:8081/';
 
 // Make API Requests
 
@@ -34,6 +34,50 @@ export async function getUsername(){
     if(!token) return Promise.reject("Cannot find Token");
     let decode = jwt_decode(token)
     return decode;
+}
+
+export async function getUserDetails(username){
+    try{
+        const response = await axios.get('/api/userDetails', {
+            params: { username }
+        });
+        return response.data;
+    }catch(error){
+        console.log(error);
+    }
+}
+
+export async function setUserDetails(username){
+    try{
+        const response = await axios.post('/api/setUserDetails', {
+            params: { username }
+        });
+        return response.data;
+    }catch(error){
+        console.log(error);
+    }
+}
+
+export async function setSection(username, section){
+    try{
+        const response = await axios.post('/api/setSection', {
+            username, section
+        });
+        return response.data;
+    }catch(error){
+        console.log(error);
+    }
+}
+
+export async function setCourse(username, course){
+    try{
+        const response = await axios.post('/api/setCourse', {
+            username, course
+        });
+        return response.data;
+    }catch(error){
+        console.log(error);
+    }
 }
 
 export async function uploadPhoto(username, profile){

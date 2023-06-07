@@ -17,6 +17,9 @@ router.route('/comments').post(controller.validateQuestion, controller.submitCom
 router.route('/rank').post(controller.changeRank) //update rank based on score
 router.route('/questionnaire').post(controller.postQuestionnaire); //submit questionnaire
 router.route('/photo').post(controller.postPhoto); //submit photo
+router.route('/setUserDetails').post(controller.setUserDetails); //set section and course
+router.route('/setCourse').post(controller.setCourse); //set the course of user
+router.route('/setSection').post(controller.setSection); //set the section of user
 
 /** GET Methods */
 router.route('/user/:username').get(controller.getUser) //user with username
@@ -30,6 +33,7 @@ router.route('/generalAll').get(controller.searchGeneralAll); //Search for all g
 router.route('/commentALl').get(controller.getAllComments); //Search for all comments
 router.route('/getUsername').get(controller.recoverUsername); //Send username to email
 router.route('/leaderboard').get(controller.leaderboard); //Get leaderboard users
+router.route('/userDetails').get(controller.getUserDetails); //Get user course and section
 
 /** PUT Methods */
 router.route('/resetPassword').put(controller.verifyUser, controller.resetPassword); // used to reset password

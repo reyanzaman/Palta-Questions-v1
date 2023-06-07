@@ -36,6 +36,16 @@ export const UserSchema = new mongoose.Schema({
     },
     rank: {
         type: String
+    },
+    course: {
+        type: String,
+        required: [false],
+        unique: [false],
+    },
+    section: {
+        type: String,
+        required: [false],
+        unique: [false],
     }
 });
 

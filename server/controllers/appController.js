@@ -161,6 +161,60 @@ export async function postPhoto(req, res) {
 	}
 }
 
+export async function getUserDetails(req, res){
+	try{
+		const { username } = req.query;
+		const user = await UserModel.findOne(
+		{ username: username }
+		);
+		return res.json(user);
+	}catch(error){
+		console.log(error);
+		res.sendStatus(500);
+	}
+}
+
+export async function setUserDetails(req, res){
+	try{
+		const { username } = req.query;
+		const user = await UserModel.findOne(
+		{ username: username }
+		);
+		return res.json(user);
+	}catch(error){
+		console.log(error);
+		res.sendStatus(500);
+	}
+}
+
+export async function setSection(req, res){
+	try{
+		const { username, section } = req.body;
+		await UserModel.updateOne(
+			{ username: username },
+			{ $set: {section: section} }
+			);
+			res.sendStatus(200);
+	}catch(error){
+		console.log(error);
+		res.sendStatus(500);
+	}
+}
+
+export async function setCourse(req, res){
+	try{
+		const { username, course } = req.body;
+		await UserModel.updateOne(
+			{ username: username },
+			{ $set: {course: course} }
+			);
+			res.sendStatus(200);
+	}catch(error){
+		console.log(error);
+		res.sendStatus(500);
+	}
+}
+
 export async function changeRank(req, res) {
 	try {
 		const { username } = req.body;

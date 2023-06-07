@@ -51,7 +51,7 @@ export default function Homepage() {
 
     fetchData();
 
-    const intervalId = setInterval(fetchData, 10000); // Fetch data every 10 seconds
+    const intervalId = setInterval(fetchData, 5000); // Fetch data every 5 seconds
 
     return () => {
       clearInterval(intervalId); // Clean up the interval on component unmount
@@ -166,17 +166,16 @@ export default function Homepage() {
               .slice(0,4) //Only displays 4 latest questions
               .map((question, questionIndex) => (
                 <div key={questionIndex} className="mb-6 drop-shadow-sm border border-stone-200 flex flex-col rounded-2xl py-4 px-4 bg-gray-100 text-gray-700">
+                  <p className="w-full text-justify mb-2">{question.question1}</p>
                   <div className="grid lg:grid-cols-2 sm:grid-cols-1">
                     <div className="md:text-left text-center md:w-max">
-                      <p className={styles.truncateLines2}>{question.question1}</p>
                       <p className="text-xs pt-2 text-gray-700">Posted by {question.isAnonymous==="true" ? 'Anonymous User' : question.username}</p>
                       <p className="text-xs text-gray-700">
                         {question.date} {question.year}
                       </p>
                     </div>
                     <div className="md:text-right text-center">
-                      <p className="text-md md:pt-2 pt-0 font-medium text-gray-700">{question.course}</p>
-                      <p className="text-md text-gray-500">Question Score: {question.q1Score}</p>
+                      <p className="text-md text-gray-500 mt-6">Question Score: {question.q1Score}</p>
                     </div>
                   </div>
                 </div>

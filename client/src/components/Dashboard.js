@@ -7,13 +7,14 @@ import styles from '../styles/Username.module.css';
 import { Link } from 'react-router-dom';
 import useFetch from '../hooks/fetch.hook';
 import { useNavigate } from 'react-router-dom';
-import { updateRank, uploadPhoto } from '../helper/helper';
+import { updateRank, uploadPhoto, getUserDetails, setSection, setCourse } from '../helper/helper';
 import convertToBase64 from '../helper/convert';
 
 export default function Dashboard() {
 
   const { username } = useAuthStore(state => state.auth);
   const [file, setFile] = useState();
+  const [user, setUser] = useState({ section: '', course: '' });
 
   //Getting User Data
   const [{ isLoading, apiData, serverError }] = useFetch(username ? `/user/${username}` : null);
@@ -24,11 +25,13 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    async function fetchRank() {
+    async function fetchData() {
       await updateRank(apiData?.username);
+      const userDetails = await getUserDetails(apiData.username);
+      setUser(userDetails);
     }
-      fetchRank();
-  });
+    fetchData();
+  }, [apiData]);
 
   // logout handler function
   function userLogout(){
@@ -50,6 +53,29 @@ export default function Dashboard() {
     }
   };
 
+  const updateCourse = async e => {
+    try{
+      setUser(prevUser => ({
+        ...prevUser,
+        course: e.target.value
+      }));
+      await setCourse(apiData?.username, e.target.value);
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+  const updateSection = async e => {
+    try{
+      setUser(prevUser => ({
+        ...prevUser,
+        section: e.target.value
+      }));
+      await setSection(apiData?.username, e.target.value);
+    }catch(error){
+      console.log(error);
+    }
+  }
 
   if(isLoading) return <div className="flex justify-center items-center h-screen">
                          <h1 className="text-center text-2xl font-bold">Loading...</h1>
@@ -89,6 +115,37 @@ export default function Dashboard() {
               <p className="font-semibold text-sm text-gray-700">Score: { apiData?.score < 0 ? "Infinite" : apiData?.score }</p>
               <p className="font-semibold text-sm text-gray-700">Questions Asked: { apiData?.questions }</p>
               <p className="font-semibold text-md text-indigo-500">{ apiData?.rank }</p>
+            </div>
+
+            <div className='grid-cols-2 gap-4'>
+              <div className="flex flex-row items-center">
+                <label className='mr-3' htmlFor="course">Course:</label>
+                <select
+                  id="course"
+                  className={`${styles.textbox2} rounded-t-lg`}
+                  value={user.course}
+                  onChange={updateCourse}
+                >
+                  <option value="CIS101">CIS101</option>
+                  <option value="CSC101">CSC101</option>
+                  <option value="CSC203">CSC203</option>
+                  <option value="CSC401">CSC401</option>
+                </select>
+              </div>
+
+              <div className="flex flex-row items-center">
+                <label className='mr-2' htmlFor="section">Section:</label>
+                <input
+                  id="section"
+                  type="number"
+                  className={`${styles.textbox2} rounded-b-lg`}
+                  placeholder="Section"
+                  min={1}
+                  max={30}
+                  value={user.section}
+                  onChange={updateSection}
+                />
+              </div>
             </div>
             
             <div style={{border: '1px solid #d3d3d3', width: '100%'}}></div>

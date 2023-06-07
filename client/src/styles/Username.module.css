@@ -39,6 +39,12 @@
     @apply h-[100px] md:h-auto
 }
 
+.textbox2{
+  @apply border-0 px-5 md:py-2 py-0 w-full text-lg shadow-sm text-gray-700 bg-[rgba(255,255,255,0.4)];
+  @apply focus:outline-none;
+  @apply h-[50px] md:h-auto
+}
+
 .btn{
     @apply border bg-indigo-500 w-3/4 py-4 rounded-lg text-gray-50 text-xl shadow-sm text-center;
 }
@@ -80,14 +86,6 @@ input[type='file']{
 
   .truncateLines:hover {
     @apply text-indigo-500;
-  }
-
-  .truncateLines2 {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
 @media(max-width: 1000px){
