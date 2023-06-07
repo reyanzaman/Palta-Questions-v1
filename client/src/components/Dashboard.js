@@ -123,7 +123,7 @@ export default function Dashboard() {
                 <select
                   id="course"
                   className={`${styles.textbox2} rounded-t-lg`}
-                  value={user.course}
+                  value={user?.course}
                   onChange={updateCourse}
                 >
                   <option value="CIS101">CIS101</option>
@@ -142,7 +142,7 @@ export default function Dashboard() {
                   placeholder="Section"
                   min={1}
                   max={30}
-                  value={user.section}
+                  value={user?.section}
                   onChange={updateSection}
                 />
               </div>
