@@ -35,7 +35,7 @@ export default function Username() {
         <div className={styles.glass}>
 
           <div className="title flex flex-col items-center">
-            <h4 className="text-4xl font-bold">Welcome to Palta-Q</h4>
+            <h4 className="text-4xl font-bold text-center">Welcome to Palta-Q</h4>
             <span className="py-4 text-lg w-2/3 text-center text-gray-500">
               Kindle your brain through questioning
             </span>
@@ -55,9 +55,9 @@ export default function Username() {
             <div className='text-center py-4'>
               <span><Link className='text-red-500' to="/recoverUsername">Forgot Username?</Link></span>
             </div>
-            <div className='text-center my-2'>
-              <span className='text-gray-500'><Link className='text-gray-500 font-bold bg-gray-100 py-2 px-12 mx-2 rounded-xl drop-shadow-md hover:bg-gray-200' to="/">Home </Link></span>
-              <span className='text-gray-500'><Link className='text-gray-500 font-bold bg-gray-100 py-2 px-12 mx-2 rounded-xl drop-shadow-md hover:bg-gray-200' to="/register">Register </Link></span>
+            <div className='text-center my-2 text-gray-500 flex md:col-span-2 justify-center'>
+              <Link className='text-gray-500 font-bold bg-gray-100 py-2 px-12 mx-2 rounded-xl drop-shadow-md hover:bg-gray-200' to="/">Home </Link>
+              <Link className='text-gray-500 font-bold bg-gray-100 py-2 px-12 mx-2 rounded-xl drop-shadow-md hover:bg-gray-200' to="/register">Register </Link>
             </div>
 
           </form>

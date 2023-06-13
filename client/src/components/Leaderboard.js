@@ -6,10 +6,16 @@ import first from '../assets/first.png';
 import second from '../assets/second.png';
 import third from '../assets/third.png';
 import others from '../assets/others.png';
+import { setSection, setCourse } from '../helper/helper';
+import useFetch from '../hooks/fetch.hook';
+import { useAuthStore } from '../store/store';
 
 export default function Leaderboard() {
 
   const [ranking, setRanking] = useState(null);
+  const [user, setUser] = useState({ section: '', course: '' });
+  const { username } = useAuthStore(state => state.auth);
+  const [{ apiData }] = useFetch(username ? `/user/${username}` : null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,12 +33,67 @@ export default function Leaderboard() {
     };
   }, []);
 
+  const updateCourse = async e => {
+    try{
+      setUser(prevUser => ({
+        ...prevUser,
+        course: e.target.value
+      }));
+      await setCourse(apiData?.username, e.target.value);
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+  const updateSection = async e => {
+    try{
+      setUser(prevUser => ({
+        ...prevUser,
+        section: e.target.value
+      }));
+      await setSection(apiData?.username, e.target.value);
+    }catch(error){
+      console.log(error);
+    }
+  }
+
   return (
     <div className="container mx-auto">
       <div className="flex justify-center items-center">
         <div className={styles.glass} style={{minWidth: '100%'}}>
 
           <h1 className="text-center text-4xl font-bold text-gray-700 pt-3 pb-8">Leaderboard</h1>
+
+          <div className='w-2/4 mx-auto mt-2 mb-10'>
+            <div className="flex flex-row items-center">
+              <label className='mr-3' htmlFor="course">Course:</label>
+              <select
+                id="course"
+                className={`${styles.textbox2} rounded-t-lg`}
+                value={user?.course}
+                onChange={updateCourse}
+              >
+                <option value="CIS101">CIS101</option>
+                <option value="CSC101">CSC101</option>
+                <option value="CSC203">CSC203</option>
+                <option value="CSC401">CSC401</option>
+              </select>
+            </div>
+            
+            <div className="flex flex-row items-center">
+              <label className='mr-2' htmlFor="section">Section:</label>
+              <input
+                id="section"
+                type="number"
+                className={`${styles.textbox2} rounded-b-lg`}
+                placeholder="Section"
+                min={1}
+                max={30}
+                value={user?.section}
+                onChange={updateSection}
+              />
+            </div>
+          </div>
 
           <div className="md:mx-4 mx-0">
             {ranking ? (
