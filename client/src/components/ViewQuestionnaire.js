@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import styles from '../styles/Username.module.css';
 import { Link } from 'react-router-dom';
-import { findQuestions } from "../helper/helper";
+import { findQuestionnaire } from "../helper/helper";
 
 export default function ViewQuestionnaire() {
 
@@ -20,18 +20,19 @@ export default function ViewQuestionnaire() {
     useEffect(() => {
       async function fetchData() {
         if (data) {
-          const questions = await findQuestions(
+          const questions = await findQuestionnaire(
             data?.type,
             data?.course,
-            data?.topic,
             data?.section,
-            data?.month,
+            data?.semester,
             data?.year
           );
           setState((prevState) => ({ ...prevState, questions: questions }));
         }
       }
       fetchData();
+      console.log(questions);
+      console.log("Course: ", data?.course, "Semester: ", data?.semester);
   
       const intervalId = setInterval(fetchData, 15000); //every 15 seconds
   
@@ -41,7 +42,7 @@ export default function ViewQuestionnaire() {
     }, [data]);
 
     if (!questions) {
-      return <div className="h-screen items-center">No questions found!</div>;
+      return <div className="h-screen items-center">No questionnaire found!</div>;
     }
 
     const totalQuestions = questions.length;
@@ -88,35 +89,112 @@ export default function ViewQuestionnaire() {
     return (
       <div className="container mx-auto">
         <div className="flex justify-center items-center">
-          <div className={styles.glass} style={{minWidth: '70%'}}>
+          <div className={styles.glass} style={{minWidth: '100%'}}>
 
             <div className="title flex flex-col items-center">
-              <h4 className="text-4xl font-bold text-center">Feedback Repository</h4>
+              <h4 className="text-4xl font-bold text-center">Questionnaire Repository</h4>
               <span className="py-4 text-lg w-2/3 text-center text-gray-500">
-                Take a peek at everyone's progress!
+                Let's Analyze the Data!
               </span>
             </div>
 
             <div className="w-[100%] sm:w-[90%] bg-gray-200 rounded-lg max-h-[30rem] overflow-x-clip overflow-y-auto mx-auto p-6">
               <div className="w-[60em]"></div>
-              
+
               {questions.slice().reverse().slice(current_question-1 , current_question + questionPerPage - 1).map((question, index) => (
                   <div key={index}>
-                    <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-4">
-                      <div>
-                        <div className='lg:w-full text-left'>
-                          <h1 className='text-md text-indigo-500 font-bold'>What I learned this class:</h1>
-                          <p className='text-md'>{question['thisclass']}</p>
-                          <h1 className='text-md text-indigo-500 font-bold'>What I want to learn next class:</h1>
-                          <p className='text-md'>{question['nextclass']}</p>
-                        </div>
-                      </div>
-                      <div>
-                        <h1 className='w-fit text-sm lg:float-right sm:float-left'>{question['date'] + " " + question['semester'] + " " + question['year'] + " " + "Section: " + question['section']}</h1>
-                      </div>
-                      <p className='text-sm pt-2'>Posted by <b>{question['isAnonymous']==='true' ? 'Anonymous User' : question['username']}</b></p>
+
+                    {question['type']==="pre" ? <>
+
+                    <div className='text-center'>
+                      <p className='text-xl pt-6'>Posted by <b>{question['isAnonymous']==='true' ? 'Anonymous User' : question['username']}</b></p>
+                      <p className='text-sm'>Semeter: <b>{question['semester']}</b></p>
+                      <p className='text-sm mb-2'>{question['date']}</p>
+                      <br></br>
+
+                      <h1 className='text-md text-gray-800 font-bold'>If we implement a new teaching method, would you be interested to give it a try?</h1>
+                      <p className='text-md'>Answer: <p className='inline text-gray-600'>{question['teachingMethod']}</p></p>
+                      <br></br>
+
+                      <h1 className='text-md text-gray-800 font-bold'>How much does programming excite you?</h1>
+                      <p className='text-md'>Answer: <p className='inline text-gray-600'>{question['programmingExcite']}</p></p>
+                      <br></br>
+
+                      <h1 className='text-md text-gray-800 font-bold'>Do you look forward to this course?</h1>
+                      <p className='text-md'>Answer: <p className='inline text-gray-600'>{question['lookForward']}</p></p>
+                      <br></br>
+
+                      <h1 className='text-md text-gray-800 font-bold'>Can you please justify why?</h1>
+                      <p className='text-md'>Answer: <p className='inline text-gray-600'>{question['justification']}</p></p>
+                      <br></br>
+                    
+                      <h1 className='text-md text-gray-800 font-bold'>Have you thought about the contents of this course?</h1>
+                      <p className='text-md'>Answer: <p className='inline text-gray-600'>{question['contents']}</p></p>
+                      <br></br>
+
+                      <h1 className='text-md text-gray-800 font-bold'>What do you expect to learn from this course?</h1>
+                      <p className='text-md'>Answer: <p className='inline text-gray-600'>{question['expectations']}</p></p>
+                      <br></br>
+
+                      <h1 className='text-md text-gray-800 font-bold'>Why did you choose this course?</h1>
+                      <p className='text-md'>Answer: <p className='inline text-gray-600'>{question['whyChooseCourse']}</p></p>
+                      <br></br>
+
+                      <h1 className='text-md text-gray-800 font-bold'>Approximately how many questions did you ask when you were small?</h1>
+                      <p className='text-md'>Answer: <p className='inline text-gray-600'>{question['questionsAskedSmall']}</p></p>
+                      <br></br>
+
+                      <h1 className='text-md text-gray-800 font-bold'>Approximately how many questions do you ask now on a daily basis?</h1>
+                      <p className='text-md'>Answer: <p className='inline text-gray-600'>{question['questionsAskedDaily']}</p></p>
+                      <br></br>
                     </div>
-                    <hr className='h-px mt-4 border-0 dark:bg-gray-300'></hr>
+
+                    </> : question['type']==="post" ? <>
+
+                      <div className='text-center'>
+                        <p className='text-xl pt-6'>Posted by <b>{question['isAnonymous']==='true' ? 'Anonymous User' : question['username']}</b></p>
+                        <p className='text-sm'>Semeter: <b>{question['semester']}</b></p>
+                        <p className='text-sm mb-2'>{question['date']}</p>
+                        <br></br>
+
+                        <h1 className='text-md text-gray-800 font-bold'>Do you wish to elect similar courses in the future?</h1>
+                        <p className='text-md'>Answer: <p className='inline text-gray-600'>{question['similarCourse']}</p></p>
+                        <br></br>
+
+                        <h1 className='text-md text-gray-800 font-bold'>After doing this course, how much does programming excite you now?</h1>
+                        <p className='text-md'>Answer: <p className='inline text-gray-600'>{question['programmingExcite']}</p></p>
+                        <br></br>
+
+                        <h1 className='text-md text-gray-800 font-bold'>How much would you like to pursue on the contents of this course further?</h1>
+                        <p className='text-md'>Answer: <p className='inline text-gray-600'>{question['pursueContents']}</p></p>
+                        <br></br>
+
+                        <h1 className='text-md text-gray-800 font-bold'>Can you please justify why?</h1>
+                        <p className='text-md'>Answer: <p className='inline text-gray-600'>{question['justification']}</p></p>
+                        <br></br>
+                      
+                        <h1 className='text-md text-gray-800 font-bold'>Have you thought about the contents of this course?</h1>
+                        <p className='text-md'>Answer: <p className='inline text-gray-600'>{question['contents']}</p></p>
+                        <br></br>
+
+                        <h1 className='text-md text-gray-800 font-bold'>What else would you have liked to learn from this course?</h1>
+                        <p className='text-md'>Answer: <p className='inline text-gray-600'>{question['whatElseLearn']}</p></p>
+                        <br></br>
+
+                        <h1 className='text-md text-gray-800 font-bold'>Approximately how many questions do you ask on a daily basis after completing this course?</h1>
+                        <p className='text-md'>Answer: <p className='inline text-gray-600'>{question['questionsAskedDaily']}</p></p>
+                        <br></br>
+
+                        <h1 className='text-md text-gray-800 font-bold'>Would you recommend this course to others?</h1>
+                        <p className='text-md'>Answer: <p className='inline text-gray-600'>{question['recommend']}</p></p>
+                        <br></br>
+                      </div>
+
+                    </>: null}
+                    
+                    <hr className='h-px mt-4 border-0 dark:bg-gray-400'></hr>
+                    <hr className='h-px mt-px border-0 dark:bg-gray-400'></hr>
+                    <hr className='h-px mt-px border-0 dark:bg-gray-400'></hr>
 
                   </div>
                 ))}

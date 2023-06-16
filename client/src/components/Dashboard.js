@@ -9,6 +9,7 @@ import useFetch from '../hooks/fetch.hook';
 import { useNavigate } from 'react-router-dom';
 import { updateRank, uploadPhoto, getUserDetails, setSection, setCourse } from '../helper/helper';
 import convertToBase64 from '../helper/convert';
+import { Toaster } from 'react-hot-toast';
 
 export default function Dashboard() {
 
@@ -84,6 +85,7 @@ export default function Dashboard() {
 
   return (
     <div className="container mx-auto">
+      <Toaster position="top-center" reverseOrder={false} />
 
       <div className="flex justify-center items-center">
         <div className={styles.glass}>
@@ -144,6 +146,7 @@ export default function Dashboard() {
                   max={30}
                   value={user?.section}
                   onChange={updateSection}
+                  onWheel={(e) => e.target.blur()}
                 />
               </div>
             </div>

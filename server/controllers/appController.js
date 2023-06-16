@@ -94,8 +94,10 @@ export async function getUser(req, res) {
  */
 export async function register(req, res) {
 	try {
-		const { username, password, id, email, profile, questions, rank } =
+		const { username, password, id, email, profile, questions, rank, course, section } =
 			req.body;
+
+		const new_email = email + "@iub.edu.bd";
 
 		// Check for existing user
 		const existUsername = UserModel.exists({ username });
@@ -104,7 +106,7 @@ export async function register(req, res) {
 		const existID = UserModel.exists({ id });
 
 		// Check for existing email
-		const existEmail = UserModel.exists({ email });
+		const existEmail = UserModel.exists({ email: new_email });
 
 		const [usernameExists, idExists, emailExists] = await Promise.all([
 			existUsername,
@@ -113,17 +115,18 @@ export async function register(req, res) {
 		]);
 
 		if (usernameExists) {
-			return res.status(400).json({ error: "Please use unique username" });
+			console.log("username exists")
+			return res.status(400).json({ error: "Account already exists with this ID" });
 		}
 
 		if (idExists) {
-			return res.status(400).json({
-				error: "This ID already exists. Please login with your IUB ID.",
-			});
+			console.log("id exists");
+			return res.status(400).json({ error: "Account already exists with this ID" });
 		}
 
 		if (emailExists) {
-			return res.status(400).json({ error: "Please use unique email" });
+			console.log("email exists");
+			return res.status(400).json({ error: "Account already exists with this ID" });
 		}
 
 		const hashedPassword = await bcrypt.hash(password, 10);
@@ -132,15 +135,17 @@ export async function register(req, res) {
 			username,
 			password: hashedPassword,
 			id,
-			email,
+			email: new_email,
 			profile: profile || "",
 			questions: 0,
 			rank: "Novice Questioneer",
+			section: section,
+			course: course
 		});
 
 		const result = await user.save();
 
-		res.status(201).json({ msg: "User Registration Succesful" });
+		return res.status(201).json({ msg: "User Registration Succesful" });
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({ error: "Reg error" });
@@ -357,6 +362,45 @@ export async function searchQuestion(req, res) {
 	}
 }
 
+export async function searchQuestionnaire(req, res) {
+	try {
+		let { type, course, section, semester, year } = req.query;
+
+		if (type == "prequestionnaire") {
+			type = "pre";
+		} else if (type == "postquestionnaire") {
+			type = "post";
+		}
+
+		let questionnaire = null;
+
+		if (!year || year == "") {
+			if (!section || section == "") {
+				questionnaire = await QuestionnaireModel.find({ type, course, semester });
+			} else {
+				questionnaire = await QuestionnaireModel.find({ type, course, semester, section });
+			}
+		} else {
+			// Extract the year from the date string
+			const yearRegex = /(\d{4})/;
+			const match = year.match(yearRegex);
+			const extractedYear = match ? match[0] : null;
+
+			if (!section || section == "") {
+				questionnaire = await QuestionnaireModel.find({ type, course, semester, date: { $regex: extractedYear } });
+			} else {
+				questionnaire = await QuestionnaireModel.find({ type, course, semester, section, date: { $regex: extractedYear } });
+			}
+		}
+
+		return res.json(questionnaire);
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({ error: error });
+	}
+}
+  
+
 export async function getAllComments(req, res){
 	try{
 		const { course } = req.query;
@@ -374,7 +418,8 @@ export async function getAllComments(req, res){
 
 export async function leaderboard(req, res) {
     try {
-        var rankings = await UserModel.find({}).sort({ score: -1 }).limit(10);
+		const { section, course } = req.query;
+        var rankings = await UserModel.find({ section, course }).sort({ score: -1 }).limit(10);
         return res.json(rankings);
     } catch (error) {
         console.log(error);
@@ -2069,6 +2114,16 @@ export async function postQuestionnaire(req, res){
 			questionsAskedDaily,
 			recommend
 		} = req.body;
+
+		const exists = QuestionnaireModel.exists({ username: username, type: type });
+
+		const[questionnaireExists] = await Promise.all([
+			exists
+		])
+
+		if(questionnaireExists){
+			return res.status(500).json({ msg: `You have already posted the questionnaire` });
+		}
 
 		if(!username || !type || !course || !date || !semester){
 			return res.status(500).json({ msg: `Essential Information Missing!` });

@@ -104,7 +104,9 @@ export default function Homepage() {
         <div className="h-screen flex items-center justify-center text-2xl">Loading...</div>
       </div>
     );
-  if (serverError) return <h1 className="text-xl text-red-500">{serverError.message}</h1>;
+  if (serverError) {
+    window.location.reload();
+  };
 
   return (
     <div className="container mx-auto">

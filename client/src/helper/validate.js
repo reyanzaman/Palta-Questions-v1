@@ -53,11 +53,22 @@ export async function registerValidation(values){
     idVerify(errors, values);
     passwordVerify(errors, values);
     emailVerify(errors, values);
+    sectionVerify(errors, values);
 
     return errors;
 }
 
 /** ************************************** */
+
+function sectionVerify(errors = {}, values){
+    if(!values.section){
+        errors.section = toast.error("Section Required!")
+    }else if(values.section===""){
+        errors.section = toast.error("Section Required!")
+    }
+
+    return errors;
+}
 
 /** validate password */
 function passwordVerify(errors = {}, values){
@@ -81,11 +92,9 @@ function passwordVerify(errors = {}, values){
 /** validate email */
 function emailVerify(error={}, values){
     if(!values.email){
-        error.email = toast.error("Email Required!");
-    }else if(values.email.includes(" ")){
-        error.email = toast.error("Invalid Email!");
-    }else if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)){
-        error.email = toast.error("Invalid Email Address!")
+        error.email = toast.error("ID Does not match!");
+    }else if(values.email !== values.id){
+        error.email = toast.error("ID Does not match!!");
     }
 
     return error;

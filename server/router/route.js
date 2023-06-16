@@ -34,6 +34,7 @@ router.route('/commentALl').get(controller.getAllComments); //Search for all com
 router.route('/getUsername').get(controller.recoverUsername); //Send username to email
 router.route('/leaderboard').get(controller.leaderboard); //Get leaderboard users
 router.route('/userDetails').get(controller.getUserDetails); //Get user course and section
+router.route('/getQuestionnaire').get(controller.searchQuestionnaire); //Get questionnaire
 
 /** PUT Methods */
 router.route('/resetPassword').put(controller.verifyUser, controller.resetPassword); // used to reset password

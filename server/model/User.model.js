@@ -18,7 +18,7 @@ export const UserSchema = new mongoose.Schema({
     },
     email:{
         type: String,
-        required: [true, "Please provide an unique Email"],
+        required: [true, "Email is required"],
         unique: [true, "Email already exists"],
     },
     profile: {

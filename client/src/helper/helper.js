@@ -103,6 +103,17 @@ export async function findQuestions(type, course, topic, section, date, month, y
     }
 }
 
+export async function findQuestionnaire(type, course, section, semester, year){
+    try{
+        const response = await axios.get('/api/getQuestionnaire', {
+            params: { type, course, section, semester, year }
+        });
+        return response.data;
+    }catch(error){
+        console.log(error);
+    }
+}
+
 export async function findAllComments(course){
     try{
         const response = await axios.get('/api/commentAll', {
@@ -114,9 +125,12 @@ export async function findAllComments(course){
     }
 }
 
-export async function findRanking(){
+export async function findRanking(section, course){
     try{
-        const response = await axios.get('/api/leaderboard', {});
+        console.log(section, course);
+        const response = await axios.get('/api/leaderboard', {
+            params: { section, course }
+        });
         return response.data;
     }catch(error){
         console.log(error);
@@ -202,6 +216,8 @@ export async function registerUser(credentials){
         const { data: { msg }, status } = await axios.post(`/api/register`, credentials)
 
         let { username, email } = credentials;
+
+        email = email + "@iub.edu.bd";
 
         // Send Email
         if(status === 201){

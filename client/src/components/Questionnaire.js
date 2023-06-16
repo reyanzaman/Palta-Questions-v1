@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { useFormik, resetForm } from "formik";
 import { useAuthStore } from "../store/store";
@@ -12,6 +12,7 @@ export default function Questionnaire() {
 	const [{ isLoading, apiData, serverError }] = useFetch(
 		username ? `/user/${username}` : null
 	);
+	const navigate = useNavigate()
 
 	const formik = useFormik({
 		initialValues: {
@@ -58,6 +59,7 @@ export default function Questionnaire() {
                     return <b>{err.error.response.data.msg}</b>;
                 },
 			});
+			postPromise.then(function () { navigate('/dashboard') });
 		},
 	});
 
@@ -130,6 +132,7 @@ export default function Questionnaire() {
 													e.preventDefault();
 												}
 											}}
+											onWheel={(e) => e.target.blur()}
 											onChange={(e) => {
 												const { value, min, max } = e.target;
 												const numValue = parseInt(value);

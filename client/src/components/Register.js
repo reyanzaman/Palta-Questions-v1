@@ -24,23 +24,28 @@ export default function Register() {
       profile: '',
       questions: 0,
       score: 0,
-      rank: 'Novice Questioneer'
+      rank: 'Novice Questioneer',
+      course: 'CIS101',
+      section: ''
     },
     validate : registerValidation,
     validateOnBlur: false,
     validateOnChange: false,
-    onSubmit : async values => {
-      values = await Object.assign(values, { profile : file || ''})
+    onSubmit: async values => {
+      values = await Object.assign(values, { profile: file || '' })
       let registerPromise = registerUser(values)
       toast.promise(registerPromise, {
         loading: 'Creating...',
-        success : (response) => <b>{response}</b>,
-          error: (err) => {
-            return <b>{err.error.response.data.error}</b>
-          },
+        success: (response) => {
+          console.log(response);
+          return JSON.stringify(response);
+        },
+        error: (err) => {
+          return <b>{String(err.error.response.data.error)}</b>;
+        },
       });
 
-      registerPromise.then(function(){ navigate('/')});
+      registerPromise.then(function () { navigate('/') });
     }
   })
 
@@ -79,11 +84,18 @@ export default function Register() {
               <span className="py-4 text-sm w-auto h-auto text-center text-purple-500">
                 You can upload a picture here if you want!
               </span>
-              <input {...formik.getFieldProps('email')} type="email" placeholder="Email" className={styles.textbox}/>
-              <input {...formik.getFieldProps('id')} type="number" placeholder="IUB ID" className={styles.textbox} min="1000" max="9999999"/>
+              <input {...formik.getFieldProps('id')} type="number" placeholder="IUB ID" className={styles.textbox} min="1000" max="9999999" onWheel={(e) => e.target.blur()}/>
+              <input {...formik.getFieldProps('email')} type="number" placeholder="Confirm IUB ID" className={styles.textbox} min="1000" max="99999999" onWheel={(e) => e.target.blur()}/>
               <input {...formik.getFieldProps('username')} type="text" placeholder="Username" className={styles.textbox}/>
               <input {...formik.getFieldProps('password')} type="password" placeholder="Password" className={styles.textbox}/>
-           
+              
+              <select {...formik.getFieldProps('course')} className={styles.textbox}>
+                <option value="CIS101">CIS101</option>
+                <option value="CSC101">CSC101</option>
+                <option value="CSC203">CSC203</option>
+                <option value="CSC401">CSC401</option>
+              </select>
+              <input {...formik.getFieldProps('section')} type="number" placeholder="Section" className={styles.textbox} min="1" max="30" onWheel={(e) => e.target.blur()}/>
             </div>
 
             <div className="textbox flex flex-col items-center gap-6 my-6">

@@ -34,6 +34,7 @@ let MailGenerator = new Mailgen({
 */
 export const registerMail = async(req, res) => {
     const { username, userEmail, text, subject } = req.body;
+    console.log(userEmail);
 
     // body of the email
     var email = {
@@ -58,5 +59,5 @@ export const registerMail = async(req, res) => {
         .then(() => {
             return res.status(200).send({ msg: "You should recieve an email from us soon."})
         })
-        .catch(error => res.status(500).send({ error }))
+        .catch(error => res.status(500).send({ error: "Your IUB ID is invalid" }))
 }

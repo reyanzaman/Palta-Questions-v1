@@ -6,32 +6,11 @@ import first from '../assets/first.png';
 import second from '../assets/second.png';
 import third from '../assets/third.png';
 import others from '../assets/others.png';
-import { setSection, setCourse } from '../helper/helper';
-import useFetch from '../hooks/fetch.hook';
-import { useAuthStore } from '../store/store';
 
 export default function Leaderboard() {
 
   const [ranking, setRanking] = useState(null);
   const [user, setUser] = useState({ section: '', course: '' });
-  const { username } = useAuthStore(state => state.auth);
-  const [{ apiData }] = useFetch(username ? `/user/${username}` : null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const ranking = await findRanking();
-      setRanking(ranking);
-      console.log(ranking);
-    };
-
-    fetchData();
-
-    const intervalId = setInterval(fetchData, 10000); // Fetch data every 10 seconds
-
-    return () => {
-      clearInterval(intervalId); // Clean up the interval on component unmount
-    };
-  }, []);
 
   const updateCourse = async e => {
     try{
@@ -39,7 +18,6 @@ export default function Leaderboard() {
         ...prevUser,
         course: e.target.value
       }));
-      await setCourse(apiData?.username, e.target.value);
     }catch(error){
       console.log(error);
     }
@@ -51,7 +29,15 @@ export default function Leaderboard() {
         ...prevUser,
         section: e.target.value
       }));
-      await setSection(apiData?.username, e.target.value);
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+  const searchLeaderboard = async e => {
+    try{
+      const ranking = await findRanking(user.section, user.course || "CIS101")
+      setRanking(ranking);
     }catch(error){
       console.log(error);
     }
@@ -91,8 +77,18 @@ export default function Leaderboard() {
                 max={30}
                 value={user?.section}
                 onChange={updateSection}
+                onWheel={(e) => e.target.blur()}
               />
             </div>
+          </div>
+
+          <div className='text-center mt-4 mb-10'>
+            <button
+              className='text-indigo-200 bg-gray-800 rounded-xl p-4 px-10 drop-shadow-md hover:bg-gray-700 hover:text-gray-100'
+              onClick={searchLeaderboard}
+            >
+              Search
+            </button>
           </div>
 
           <div className="md:mx-4 mx-0">
@@ -199,7 +195,7 @@ export default function Leaderboard() {
               </div>
             </>
           ) : (
-            <p className="text-center text-xl text-gray-700 font-bold p-4">Loading...</p>
+            <p className="text-center text-xl text-gray-700 font-bold p-4">Enter your course and section . . .</p>
           )}
           </div>
 
