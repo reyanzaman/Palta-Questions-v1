@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Getting Started with Question Based Learning Through Palta Questions
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -8,63 +8,45 @@ In the project directory, you can run:
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+in both the client and server directory to run the client side and server side respectively.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Hosting
 
-### `npm test`
+The server is hosted on render.com and the front-end is hosted on netlify.
+The domain has been purchased and licensed from godaddy.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### https://palta-q.com/
 
-### `npm run build`
+## Application Description
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The application was made for educational purposes and for collecting data.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The website features real-time questioning system with a dynamic leaderboard and ranking system. It uses the commenting system to implement palta-questions and also features dynamic forms to collect and visualize data. It includes all basic features such as mailing system, password and username recovery, changing user data and also basic profile photo upload system.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Tech Stacks
 
-### `npm run eject`
+Front-end makes use of:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+React.js
+Tailwind CSS
+(Including other javascript libraries)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Backend includes:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Node.js
+Express.js
+Mongoose
+(Along with other javscript libraries)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Database:
 
-## Learn More
+Mongo DB hosted on Mongo DB Atlas Servers
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Screenshots
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+![Home Page](client/public/Screenshots/1.png?raw=true "Home Page")
+![Dashboard](client/public/Screenshots/2.png?raw=true "Dashboard")
+![Leaderboard](client/public/Screenshots/3.png?raw=true "Leaderboard")
+![Questionnaire](client/public/Screenshots/4.png?raw=true "Questionnaire")
+![Palta Questions Page](client/public/Screenshots/5.png?raw=true "Palta Questions Page")
+![Rules Page](client/public/Screenshots/6.png?raw=true "Rules Page")
