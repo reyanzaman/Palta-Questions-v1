@@ -1,4 +1,4 @@
-# Getting Started with Question Based Learning Through Palta Questions
+# Getting Started with Query Based Access To Neurons Through Palta Questions
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

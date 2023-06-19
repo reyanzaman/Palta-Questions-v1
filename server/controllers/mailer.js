@@ -19,7 +19,7 @@ let transporter = nodemailer.createTransport(nodeConfig);
 let MailGenerator = new Mailgen({
     theme: "default",
     product: {
-        name: "IUB QBL Team",
+        name: "IUB QBAN Team",
         link: 'https://mailgen.js'
     }
 })
@@ -40,7 +40,7 @@ export const registerMail = async(req, res) => {
     var email = {
         body: {
             name: username,
-            intro: text || "Welcome to Question Based Learning! We\'re very excited to have you on board!",
+            intro: text || "Welcome to Query Based Access to Neurons! We\'re very excited to have you on board!",
             outro: "We hope you are enjoying learning through Palta Questions!"
         }
     }

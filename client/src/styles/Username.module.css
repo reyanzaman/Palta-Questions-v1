@@ -96,4 +96,39 @@ input[type='file']{
         backdrop-filter: blur(7.1px);
         @apply  h-[100%] min-w-[100%] py-12 px-6 m-0;
     }
+
+    .tooltip:hover + .tooltiptext {
+      visibility: visible;
+      display: block;
+      @apply my-2 bg-gray-200 rounded-lg p-2;
+    }
+
+    .tooltiptext {
+      visibility: hidden;
+      display: none;
+    }
+}
+
+@media(min-width: 1000px){
+  .tooltip {
+    position: relative;
+    /* Add your other tooltip styles here */
+  }
+  
+  .tooltiptext {
+    visibility: hidden;
+    opacity: 25%;
+    transition: opacity .5s linear;
+    text-align: center;
+    position: absolute;
+    margin: auto;
+    text-align: left;
+    width: 25em;
+    @apply bg-slate-800 text-gray-300 px-3 py-2 rounded-lg text-xs drop-shadow-md ml-2;
+  }
+  
+  .tooltip:hover + .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
 }

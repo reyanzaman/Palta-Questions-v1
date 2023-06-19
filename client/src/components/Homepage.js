@@ -139,7 +139,7 @@ export default function Homepage() {
             <img src={apiData?.username? apiData?.profile ? apiData?.profile : avatar : avatar} className={styles.profile_img_small} alt="avatar" />
           </div>
 
-          <h1 className={styles.logo}>Palta Questions</h1>
+          <h1 className={styles.logo}>Palta Question</h1>
 
           <div className="w-[100%] mx-auto drop-shadow-sm rounded-lg p-1 py-5 md:p-6">
             <form className="py-1 flex flex-col items-center" onSubmit={formik.handleSubmit}>
@@ -197,7 +197,7 @@ export default function Homepage() {
 
           <hr className="border-t-2 border-gray-300"></hr>
           <div className='relative text-center py-2'>
-            <span className='text-gray-500'>©IUB-QBL Team 2023</span>
+            <span className='text-gray-500'>©IUB-QBAN Team 2023</span>
           </div>
         </div>
       </div>

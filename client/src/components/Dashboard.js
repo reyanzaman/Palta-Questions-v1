@@ -160,29 +160,47 @@ export default function Dashboard() {
                   <span className="relative text-center text-gray-500">Your Questions</span>
                 </Link> */}
 
-                <Link to="/pre" className="relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group">
+                <div>
+                  <Link to="/pre" className={`${styles.tooltip} w-full relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group`}>
+                    <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-indigo-500 rounded-3xl group-hover:w-full group-hover:h-80 block"></span>
+                    <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
+                    <span className="relative text-center tooltip">Pre Questions</span>
+                  </Link>
+                  <span className={`${styles.tooltiptext}`}>Use pre-questions just before the class starts. Figure out today's
+                  topic from the course outline or ask your faculty and write three pre-questions on that specific topic.</span>
+                </div>
+
+                <div>
+                  <Link to="/post" className={`${styles.tooltip} w-full relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group`}>
+                    <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-indigo-500 rounded-3xl group-hover:w-full group-hover:h-80 block"></span>
+                    <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
+                    <div className="relative text-center">
+                      Post Class Feedback
+                    </div>
+                  </Link>
+                  <span className={`${styles.tooltiptext}`}>Use post-class feedbacks when your class ends
+                  so that we get an idea about what your understanding of the lecture and interests</span>
+                </div>
+
+                <div>
+                  <Link to="/repository" className={`${styles.tooltip} w-full relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group`}>
                   <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-indigo-500 rounded-3xl group-hover:w-full group-hover:h-80 block"></span>
-                  <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
-                  <span className="relative text-center">Pre Questions</span>
-                </Link>
+                    <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
+                    <span className="relative text-center">Question Repository</span>
+                  </Link>
+                  <span className={`${styles.tooltiptext}`}>Here you can ask palta questions and also see what questions and feedbacks everyone
+                  is asking or giving.</span>
+                </div>
 
-                <Link to="/post" className="relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group">
-                <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-indigo-500 rounded-3xl group-hover:w-full group-hover:h-80 block"></span>
-                  <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
-                  <span className="relative text-center">Post Class Feedback</span>
-                </Link>
-
-                <Link to="/repository" className="relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-900 rounded-lg group">
-                <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-indigo-500 rounded-3xl group-hover:w-full group-hover:h-80 block"></span>
-                  <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
-                  <span className="relative text-center">Question Repository</span>
-                </Link>
-
-                <Link to="/questionnaire" className="relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-900 rounded-lg group">
-                <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-indigo-500 rounded-3xl group-hover:w-full group-hover:h-80 block"></span>
-                  <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
-                  <span className="relative text-center">Questionnaire</span>
-                </Link>
+                <div>
+                  <Link to="/questionnaire" className={`${styles.tooltip} w-full relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group`}>
+                  <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-indigo-500 rounded-3xl group-hover:w-full group-hover:h-80 block"></span>
+                    <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
+                    <span className="relative text-center">Questionnaire</span>
+                  </Link>
+                  <span className={`${styles.tooltiptext}`}>In order to understand the effectiveness of the app and the method, please fill out
+                  the survey forms here.</span>
+                </div>
 
                 <Link to="/leaderboard" className="relative inline-flex items-center justify-center px-10 py-4 overflow-hidden font-mono font-medium tracking-tighter text-white bg-indigo-500 rounded-lg group">
                   <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-[#ff6a6a] rounded-3xl group-hover:w-full group-hover:h-80 block"></span>
@@ -212,7 +230,7 @@ export default function Dashboard() {
           </div>
 
           <div className='relative text-center py-2'>
-            <span className='text-gray-500'>©IUB-QBL Team 2023</span>
+            <span className='text-gray-500'>©IUB-QBAN Team 2023</span>
           </div>
 
         </div>

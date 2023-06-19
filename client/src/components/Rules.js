@@ -13,7 +13,7 @@ export default function Rules() {
             <div className={styles.glass}>
 
               <div className="flex flex-col items-center">
-                <h4 className="title text-4xl font-bold text-center text-gray-700">Question Based Learning</h4>
+                <h4 className="title text-4xl font-bold text-center text-gray-700">Query Based Access to Neurons (QBAN)</h4>
                 <span className="py-4 text-xl w-7/8 text-center text-gray-500">
                   Let's learn how to use this web app first!
                 </span>
@@ -167,9 +167,9 @@ export default function Rules() {
 
                 <br></br>
 
-                <p>This web app's purpose is to implement the Question Based Learning method and 
+                <p>This web app's purpose is to implement the Query Based Access to Neurons method and 
                   test out its effectiveness to get a better view of how learning methods should 
-                  improve in the future. We hope you enjoy QBL. Best of Luck!
+                  improve in the future. We hope you enjoy Palta Questions. Best of Luck!
                 </p>
                 <br></br>
                 
@@ -200,7 +200,7 @@ export default function Rules() {
               <div style={{border: '1px solid #d3d3d3', width: '100%', marginTop: '20px'}}></div>
 
               <div className='relative text-center py-2'>
-                <span className='text-gray-500'>©IUB-QBL Team 2023</span>
+                <span className='text-gray-500'>©IUB-QBAN Team 2023</span>
               </div>
   
             </div>
