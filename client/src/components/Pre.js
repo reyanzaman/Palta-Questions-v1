@@ -12,16 +12,25 @@ export default function Pre() {
     const [{ isLoading, apiData, serverError }] = useFetch(username ? `/user/${username}` : null);
 
     const [topics] = useState({
-      CIS101: ['Thinking', 'Documentation', 'Data', 'Graphs', 'Ideas', 'G-Slides', 'Questionnaire', 'Referencing', 'Computing Mechanism', 'Python Coding', 'Final Project'],
-      CSC101: ['Coding Environment (IDE)', 'Variables', 'Data Types', 'Operators','Print', 'Conditional Statements', 'Loops', 'Nested Conditions', 'Nested Loops', 'Lists', 'Tuples', 'Functions', 'File Handling'],
-      CSC203: ['Objects & Classes', 'Stacks', 'Queues'],
-      CSC401: ['SQL', 'ERD', 'XAMP']
+      CIS101: [' Thinking', 'Documentation', 'Data', 'Graphs', 'Excel', 'Ideas', 'G-Slides',
+        'Questionnaire', 'Referencing', 'Computing Mechanism', 'Python Coding',
+        'Final Project'],
+      CSC101: ['Coding Environment (IDE)', 'Variables', 'Data Types', 'Operators', 'Print', 'Conditional Statements', 'Loops', 'Nested Conditions', 'Nested Loops', 'Lists', 'Tuples', 'Functions', 'File Handling'],
+      CSC203: ['Python Review', 'Stacks', 'Queues', 'Pointers', 'Nodes', 'Singly Linked List',
+      'Doubly Linked List', 'Recursion', 'Recursion', 'Binary Search Tree', 'Graph', 'Hashing'],
+    });
+
+    const [sections] = useState({
+      CIS101: ['10', '11'],
+      CSC101: ['5'],
+      CSC203: ['10']
     });
     
     const handleChange = event => {
       const selectedCourse = event.target.value;
       formik.setFieldValue('course', selectedCourse);
       formik.setFieldValue('topic', topics[selectedCourse][0]);
+      formik.setFieldValue('section', sections[selectedCourse][0]);
     };
 
     const formik = useFormik({
@@ -97,7 +106,6 @@ export default function Pre() {
                     <option value="CIS101">CIS101</option>
                     <option value="CSC101">CSC101</option>
                     <option value="CSC203">CSC203</option>
-                    <option value="CSC401">CSC401</option>
                   </select>
                   <select {...formik.getFieldProps('topic')} className={styles.textbox}>
                     {topics[formik.values.course] && topics[formik.values.course].map(topic => (
@@ -107,33 +115,13 @@ export default function Pre() {
                     ))}
                   </select>
 
-                  <input
-                    {...formik.getFieldProps('section')}
-                    type="number"
-                    placeholder="Section"
-                    className={styles.textbox}
-                    min={1}
-                    max={30}
-                    onKeyDown={(e) => {
-                      const { key } = e;
-
-                      if (key === '-' || key === '+' || key === 'e') {
-                        e.preventDefault();
-                      }
-                    }}
-                    onChange={(e) => {
-                      const { value, min, max } = e.target;
-                      const numValue = parseInt(value);
-
-                      if (numValue < min) {
-                        formik.setFieldValue('section', min);
-                      } else if (numValue > max) {
-                        formik.setFieldValue('section', max);
-                      } else {
-                        formik.setFieldValue('section', numValue);
-                      }
-                    }}
-                  />
+                  <select {...formik.getFieldProps('section')} className={styles.textbox}>
+                    {sections[formik.values.course].map(topic => (
+                    <option key={topic} value={topic}>
+                      {topic}
+                    </option>
+                    ))}
+                  </select>
                   
                   <select {...formik.getFieldProps('semester')} className={styles.textbox}>
                     <option value="Spring">Spring</option>

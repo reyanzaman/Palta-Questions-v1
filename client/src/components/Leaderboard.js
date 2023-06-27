@@ -1,30 +1,57 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/Username.module.css';
 import { Link } from 'react-router-dom';
-import { findRanking } from "../helper/helper";
+import { findRanking, getUserDetails } from "../helper/helper";
 import first from '../assets/first.png';
 import second from '../assets/second.png';
 import third from '../assets/third.png';
 import others from '../assets/others.png';
+import { useFormik } from 'formik';
+import useFetch from '../hooks/fetch.hook';
+import { useAuthStore } from '../store/store';
 
 export default function Leaderboard() {
 
   const [ranking, setRanking] = useState(null);
   const [user, setUser] = useState({ section: '', course: '' });
 
+  const { username } = useAuthStore(state => state.auth);
+  const [{ apiData }] = useFetch(username ? `/user/${username}` : null);
+
+  const [sections] = useState({
+		CIS101: ['10', '11'],
+		CSC101: ['5'],
+		CSC203: ['10']
+	});
+
+  useEffect(() => {
+    async function fetchData() {
+      const userDetails = await getUserDetails(apiData.username);
+      setUser(userDetails);
+    }
+    fetchData();
+  }, [apiData]);
+
   const updateCourse = async e => {
-    try{
+    const selectedCourse = e.target.value;
+    formik.setFieldValue('course', selectedCourse);
+    const selectedSection = sections[selectedCourse][0];
+    formik.setFieldValue('section', selectedSection);
+  
+    try {
       setUser(prevUser => ({
         ...prevUser,
-        course: e.target.value
+        course: selectedCourse,
+        section: selectedSection
       }));
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }
-  }
+  }  
 
   const updateSection = async e => {
     try{
+      formik.setFieldValue('section', e.target.value);
       setUser(prevUser => ({
         ...prevUser,
         section: e.target.value
@@ -33,6 +60,12 @@ export default function Leaderboard() {
       console.log(error);
     }
   }
+
+  const formik = useFormik({
+    initialValues: {
+      course: 'CSC101',
+      section: ''
+  },onSubmit: async (values) => {},})
 
   const searchLeaderboard = async e => {
     try{
@@ -68,17 +101,17 @@ export default function Leaderboard() {
             
             <div className="flex flex-row items-center">
               <label className='mr-2' htmlFor="section">Section:</label>
-              <input
-                id="section"
-                type="number"
-                className={`${styles.textbox2} rounded-b-lg`}
-                placeholder="Section"
-                min={1}
-                max={30}
+              <select
+                {...formik.getFieldProps('section')}
+                className={styles.textbox2}
                 value={user?.section}
-                onChange={updateSection}
-                onWheel={(e) => e.target.blur()}
-              />
+                onChange={updateSection}>
+                    {sections[user?.course || formik.values.course].map(section => (
+                    <option key={section} value={section}>
+                      {section}
+                    </option>
+                    ))}
+              </select>
             </div>
           </div>
 

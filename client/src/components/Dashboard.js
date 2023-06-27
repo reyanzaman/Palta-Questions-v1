@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { updateRank, uploadPhoto, getUserDetails, setSection, setCourse } from '../helper/helper';
 import convertToBase64 from '../helper/convert';
 import { Toaster } from 'react-hot-toast';
+import { useFormik } from 'formik';
 
 export default function Dashboard() {
 
@@ -54,20 +55,34 @@ export default function Dashboard() {
     }
   };
 
+  const [sections] = useState({
+		CIS101: ['10', '11'],
+		CSC101: ['5'],
+		CSC203: ['10']
+	});
+
   const updateCourse = async e => {
-    try{
+    const selectedCourse = e.target.value;
+    formik.setFieldValue('course', selectedCourse);
+    const selectedSection = sections[selectedCourse][0];
+    formik.setFieldValue('section', selectedSection);
+  
+    try {
       setUser(prevUser => ({
         ...prevUser,
-        course: e.target.value
+        course: selectedCourse,
+        section: selectedSection
       }));
-      await setCourse(apiData?.username, e.target.value);
-    }catch(error){
+      await setCourse(apiData?.username, selectedCourse);
+      await setSection(apiData?.username, selectedSection);
+    } catch (error) {
       console.log(error);
     }
-  }
+  }  
 
   const updateSection = async e => {
     try{
+      formik.setFieldValue('section', e.target.value);
       setUser(prevUser => ({
         ...prevUser,
         section: e.target.value
@@ -77,6 +92,12 @@ export default function Dashboard() {
       console.log(error);
     }
   }
+
+  const formik = useFormik({
+    initialValues: {
+      course: 'CSC101',
+      section: ''
+  },onSubmit: async (values) => {},})
 
   if(isLoading) return <div className="flex justify-center items-center h-screen">
                          <h1 className="text-center text-2xl font-bold">Loading...</h1>
@@ -120,9 +141,12 @@ export default function Dashboard() {
             </div>
 
             <div className='grid-cols-2 gap-4'>
+
+              <form onSubmit={formik.handleSubmit}>
               <div className="flex flex-row items-center">
                 <label className='mr-3' htmlFor="course">Course:</label>
                 <select
+                  {...formik.getFieldProps('course')}
                   id="course"
                   className={`${styles.textbox2} rounded-t-lg`}
                   value={user?.course}
@@ -131,24 +155,24 @@ export default function Dashboard() {
                   <option value="CIS101">CIS101</option>
                   <option value="CSC101">CSC101</option>
                   <option value="CSC203">CSC203</option>
-                  <option value="CSC401">CSC401</option>
                 </select>
               </div>
 
               <div className="flex flex-row items-center">
                 <label className='mr-2' htmlFor="section">Section:</label>
-                <input
-                  id="section"
-                  type="number"
-                  className={`${styles.textbox2} rounded-b-lg`}
-                  placeholder="Section"
-                  min={1}
-                  max={30}
-                  value={user?.section}
-                  onChange={updateSection}
-                  onWheel={(e) => e.target.blur()}
-                />
+                <select
+                {...formik.getFieldProps('section')}
+                className={styles.textbox2}
+                value={user?.section}
+                onChange={updateSection}>
+                    {sections[user?.course || formik.values.course].map(section => (
+                    <option key={section} value={section}>
+                      {section}
+                    </option>
+                    ))}
+                </select>
               </div>
+              </form>
             </div>
             
             <div style={{border: '1px solid #d3d3d3', width: '100%'}}></div>

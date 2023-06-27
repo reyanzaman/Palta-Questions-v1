@@ -252,10 +252,30 @@ export async function changeRank(req, res) {
 					{ username: username },
 					{ rank: "Master Questioneer" }
 				);
-			} else if (user.score >= 7000) {
+			} else if (user.score >= 7000 && user.score < 15000) {
 				await UserModel.updateOne(
 					{ username: username },
 					{ rank: "Legendary Questioneer" }
+				);
+			} else if (user.score >= 15000 && user.score < 25000) {
+				await UserModel.updateOne(
+					{ username: username },
+					{ rank: "Mythical Questioneer" }
+				);
+			} else if (user.score >= 25000 && user.score < 35000) {
+				await UserModel.updateOne(
+					{ username: username },
+					{ rank: "Outstanding Questioneer" }
+				);
+			} else if (user.score >= 35000 && user.score < 50000) {
+				await UserModel.updateOne(
+					{ username: username },
+					{ rank: "Master of Questions" }
+				);
+			} else if (user.score >= 50000) {
+				await UserModel.updateOne(
+					{ username: username },
+					{ rank: "Beyond Comparison" }
 				);
 			} else if (user.score < 0){
 				await UserModel.updateOne(
@@ -278,38 +298,38 @@ export async function searchQuestion(req, res) {
 		let questions = null;
 		if (date==""){
 			if (month === "All") {
-				if (topic != "All Topics" && section!=="" && year!=="") {
+				if (topic != "All Topics" && section!=="All" && year!=="") {
 					questions = await QuestionModel.find({type, course, topic, section, year});
-				} else if (section!=="" && topic != "All Topics" && year=="") {
+				} else if (section!=="All" && topic != "All Topics" && year=="") {
 					questions = await QuestionModel.find({ type, course, topic, section});
-				} else if (year!=="" && topic != "All Topics" && section=="") {
+				} else if (year!=="" && topic != "All Topics" && section=="All") {
 					questions = await QuestionModel.find({ type, course, topic, year});
-				} else if (section!=="" && topic == "All Topics" && year=="") {
+				} else if (section!=="All" && topic == "All Topics" && year=="") {
 					questions = await QuestionModel.find({ type, course, section});
-				} else if (year!="" && topic == "All Topics" && section=="") {
+				} else if (year!="" && topic == "All Topics" && section=="All") {
 					questions = await QuestionModel.find({ type, course, year });
-				} else if (topic != "All Topics" && section=="" && year=="") {
+				} else if (topic != "All Topics" && section=="All" && year=="") {
 					questions = await QuestionModel.find({ type, course, topic });
-				}else if (topic == "All Topics" && section!=="" && year!==""){
+				}else if (topic == "All Topics" && section!=="All" && year!==""){
 					questions = await QuestionModel.find({ type, course, section, year});
 				} else {
 					questions = await QuestionModel.find({ type, course });
 				}
 			} else {
-				if (topic != "All Topics" && section!=="" && year!=="") {
+				if (topic != "All Topics" && section!=="All" && year!=="") {
 					questions = await QuestionModel.find({type, course, topic, month, section, year});
-				} else if (section!=="" && topic != "All Topics" && year=="") {
+				} else if (section!=="All" && topic != "All Topics" && year=="") {
 					questions = await QuestionModel.find({type, course, topic, month, section});
-				} else if (year!=="" && topic != "All Topics" && section=="") {
+				} else if (year!=="" && topic != "All Topics" && section=="All") {
 					questions = await QuestionModel.find({type, course, topic, month, year});
-				} else if (section!=="" && topic == "All Topics" && year=="") {
+				} else if (section!=="All" && topic == "All Topics" && year=="") {
 					questions = await QuestionModel.find({ type, course, month, section });
-				} else if (year!=="" && topic == "All Topics" && section=="") {
+				} else if (year!=="" && topic == "All Topics" && section=="All") {
 					console.log("here: ", type, course, month, year);
 					questions = await QuestionModel.find({ type, course, month, year });
-				} else if (topic != "All Topics" && section=="" && year=="") {
+				} else if (topic != "All Topics" && section=="All" && year=="") {
 					questions = await QuestionModel.find({ type, course, month, topic });
-				}else if (topic == "All Topics" && section!=="" && year!==""){
+				}else if (topic == "All Topics" && section!=="All" && year!==""){
 					questions = await QuestionModel.find({ type, course, month, section, year});
 				} else {
 					questions = await QuestionModel.find({ type, course, month });
@@ -319,37 +339,37 @@ export async function searchQuestion(req, res) {
 			const regexPattern = new RegExp(`.*\\s${date.toString()}\\s.*`);
 			const searchDate = { $regex: regexPattern };
 			if (month === "All") {
-				if (topic != "All Topics" && section!=="" && year!=="") {
+				if (topic != "All Topics" && section!=="All" && year!=="") {
 					questions = await QuestionModel.find({type, course, topic, section, date:searchDate, year});
-				} else if (section!=="" && topic != "All Topics" && year=="") {
+				} else if (section!=="All" && topic != "All Topics" && year=="") {
 					questions = await QuestionModel.find({ type, course, topic, section, date:searchDate});
-				} else if (year!=="" && topic != "All Topics" && section=="") {
+				} else if (year!=="" && topic != "All Topics" && section=="All") {
 					questions = await QuestionModel.find({ type, course, topic, date:searchDate, year});
-				} else if (section!=="" && topic == "All Topics" && year=="") {
+				} else if (section!=="All" && topic == "All Topics" && year=="") {
 					questions = await QuestionModel.find({ type, course, section, date:searchDate});
-				} else if (year!="" && topic == "All Topics" && section=="") {
+				} else if (year!="" && topic == "All Topics" && section=="All") {
 					questions = await QuestionModel.find({ type, course, date:searchDate, year });
-				} else if (topic != "All Topics" && section=="" && year=="") {
+				} else if (topic != "All Topics" && section=="All" && year=="") {
 					questions = await QuestionModel.find({ type, course, topic, date:searchDate});
-				}else if (topic == "All Topics" && section!=="" && year!==""){
+				}else if (topic == "All Topics" && section!=="All" && year!==""){
 					questions = await QuestionModel.find({ type, course, section, date:searchDate, year});
 				} else {
 					questions = await QuestionModel.find({ type, course, date:searchDate});
 				}
 			} else {
-				if (topic != "All Topics" && section!=="" && year!=="") {
+				if (topic != "All Topics" && section!=="All" && year!=="") {
 					questions = await QuestionModel.find({type, course, topic, month, section, date:searchDate, year});
-				} else if (section!=="" && topic != "All Topics" && year=="") {
+				} else if (section!=="All" && topic != "All Topics" && year=="") {
 					questions = await QuestionModel.find({type, course, topic, month, date:searchDate, section});
-				} else if (year!=="" && topic != "All Topics" && section=="") {
+				} else if (year!=="" && topic != "All Topics" && section=="All") {
 					questions = await QuestionModel.find({type, course, topic, month, date:searchDate, year});
-				} else if (section!=="" && topic == "All Topics" && year=="") {
+				} else if (section!=="All" && topic == "All Topics" && year=="") {
 					questions = await QuestionModel.find({ type, course, month, date:searchDate, section });
-				} else if (year!=="" && topic == "All Topics" && section=="") {
+				} else if (year!=="" && topic == "All Topics" && section=="All") {
 					questions = await QuestionModel.find({ type, course, month, date:searchDate, year });
-				} else if (topic != "All Topics" && section=="" && year=="") {
+				} else if (topic != "All Topics" && section=="All" && year=="") {
 					questions = await QuestionModel.find({ type, course, month, date:searchDate, topic });
-				}else if (topic == "All Topics" && section!=="" && year!==""){
+				}else if (topic == "All Topics" && section!=="All" && year!==""){
 					questions = await QuestionModel.find({ type, course, month, date:searchDate, section, year});
 				} else {
 					questions = await QuestionModel.find({ type, course, date:searchDate, month });
@@ -375,7 +395,7 @@ export async function searchQuestionnaire(req, res) {
 		let questionnaire = null;
 
 		if (!year || year == "") {
-			if (!section || section == "") {
+			if (!section || section == "All") {
 				questionnaire = await QuestionnaireModel.find({ type, course, semester });
 			} else {
 				questionnaire = await QuestionnaireModel.find({ type, course, semester, section });
@@ -386,7 +406,7 @@ export async function searchQuestionnaire(req, res) {
 			const match = year.match(yearRegex);
 			const extractedYear = match ? match[0] : null;
 
-			if (!section || section == "") {
+			if (!section || section == "All") {
 				questionnaire = await QuestionnaireModel.find({ type, course, semester, date: { $regex: extractedYear } });
 			} else {
 				questionnaire = await QuestionnaireModel.find({ type, course, semester, section, date: { $regex: extractedYear } });
@@ -2095,24 +2115,22 @@ export async function postQuestionnaire(req, res){
 	try{
 		const {
 			username,
-			type,
+            type,
 			course,
 			section,
 			date,
 			semester,
-			similarCourse,
-			teachingMethod,
-			programmingExcite,
-			lookForward,
-			pursueContents,
+			attitude,
+			confidence,
+			topic_motivation,
+			teaching_method,
+			new_method,
+			learning_motivation,
 			justification,
-			contents,
-			whatElseLearn,
-			expectations,
 			whyChooseCourse,
-			questionsAskedSmall,
-			questionsAskedDaily,
-			recommend
+			questionsAskedYoung,
+			questionsAskDaily,
+			questionsHelpLearn,
 		} = req.body;
 
 		const exists = QuestionnaireModel.exists({ username: username, type: type });
@@ -2132,19 +2150,17 @@ export async function postQuestionnaire(req, res){
 			return res.status(500).json({ msg: `Section Missing!` });
 		}
 		if(type==="pre"){
-			if(teachingMethod=="" || programmingExcite=="" || lookForward=="" || justification=="" || contents=="" || expectations=="" || whyChooseCourse=="" || questionsAskedSmall=="" || questionsAskedDaily==""){
+			//Pre-Questionnaire Validation
+			if(attitude=="" || confidence=="" || topic_motivation=="" || teaching_method=="" ||
+			learning_motivation=="" || justification=="" || whyChooseCourse=="" || new_method=="" ||
+			questionsAskedYoung=="" || questionsAskDaily=="" || questionsHelpLearn==""){
 				return res.status(500).json({ msg: `Information Missing!` });
 			}
-			if(justification.length < 10 || expectations.length < 10 || whyChooseCourse.length < 10){
+			if(attitude.length < 10 || questionsHelpLearn.length < 10 || teaching_method.length < 10 || justification.length < 10){
 				return res.status(500).json({ msg: `Response too short!` });
 			}
 		}else{
-			if(similarCourse=="" || programmingExcite=="" || pursueContents=="" || justification=="" || whatElseLearn=="" || questionsAskedDaily=="" || recommend==""){
-				return res.status(500).json({ msg: `Information Missing!` });
-			}
-			if(justification.length < 10 || whatElseLearn.length < 10){
-				return res.status(500).json({ msg: `Response too short!` });
-			}
+			//Post-Questionnaire Validation
 		}
 
 		const questionnaire = new QuestionnaireModel({
@@ -2154,19 +2170,17 @@ export async function postQuestionnaire(req, res){
 			section,
 			date,
 			semester,
-			similarCourse,
-			teachingMethod,
-			programmingExcite,
-			lookForward,
-			pursueContents,
+			attitude,
+			confidence,
+			topic_motivation,
+			teaching_method,
+			new_method,
+			learning_motivation,
 			justification,
-			contents,
-			whatElseLearn,
-			expectations,
 			whyChooseCourse,
-			questionsAskedSmall,
-			questionsAskedDaily,
-			recommend
+			questionsAskedYoung,
+			questionsAskDaily,
+			questionsHelpLearn
 		});
 
 		const result = await questionnaire.save();

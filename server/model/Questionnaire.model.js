@@ -31,47 +31,32 @@ export const QuestionnaireSchema = new mongoose.Schema({
         required: [true],
         unique: false
     },
-    similarCourse: {
+    attitude: {
         type: String,
         required: [false],
         unique: false
     },
-    teachingMethod: {
+    confidence: {
         type: String,
         required: [false],
         unique: false
     },
-    programmingExcite: {
-        type: String,
-        required: [true],
-        unique: false
-    },
-    lookForward: {
+    topic_motivation: {
         type: String,
         required: [false],
         unique: false
     },
-    pursueContents: {
+    teaching_method: {
+        type: String,
+        required: [false],
+        unique: false
+    },
+    learning_motivation: {
         type: String,
         required: [false],
         unique: false
     },
     justification: {
-        type: String,
-        required: [true],
-        unique: false
-    },
-    contents: {
-        type: String,
-        required: [false],
-        unique: false
-    },
-    whatElseLearn: {
-        type: String,
-        required: [false],
-        unique: false
-    },
-    expectations: {
         type: String,
         required: [false],
         unique: false
@@ -81,17 +66,17 @@ export const QuestionnaireSchema = new mongoose.Schema({
         required: [false],
         unique: false
     },
-    questionsAskedSmall: {
+    questionsAskedYoung: {
         type: String,
         required: [false],
         unique: false
     },
-    questionsAskedDaily: {
+    questionsAskDaily: {
         type: String,
-        required: [true],
+        required: [false],
         unique: false
     },
-    recommend: {
+    questionsHelpLearn: {
         type: String,
         required: [false],
         unique: false

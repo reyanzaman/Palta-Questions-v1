@@ -13,14 +13,19 @@ export default function Repository() {
   const currentDate = new Date().getDate();
 
   const [topics] = useState({
-    CIS101: ['All Topics', ' Thinking', 'Documentation', 'Data', 'Graphs', 'Ideas', 'G-Slides',
+    CIS101: ['All Topics', ' Thinking', 'Documentation', 'Data', 'Graphs', 'Excel', 'Ideas', 'G-Slides',
       'Questionnaire', 'Referencing', 'Computing Mechanism', 'Python Coding',
       'Final Project'],
-    CSC101: ['Coding Environment (IDE)', 'Variables', 'Data Types', 'Operators', 'Print', 'Conditional Statements', 'Loops', 'Nested Conditions', 'Nested Loops', 'Lists', 'Tuples', 'Functions', 'File Handling'],
-    CSC203: ['All Topics', 'Objects & Classes', 'Stacks', 'Queues'],
-    CSC401: ['All Topics', 'SQL', 'ERD', 'XAMP'],
-    General: ['All Topics', 'Print', 'If-Else', 'Loops']
+    CSC101: ['All Topics', 'Coding Environment (IDE)', 'Variables', 'Data Types', 'Operators', 'Print', 'Conditional Statements', 'Loops', 'Nested Conditions', 'Nested Loops', 'Lists', 'Tuples', 'Functions', 'File Handling'],
+    CSC203: ['All Topics', 'Python Review', 'Stacks', 'Queues', 'Pointers', 'Nodes', 'Singly Linked List',
+    'Doubly Linked List', 'Recursion', 'Recursion', 'Binary Search Tree', 'Graph', 'Hashing'],
   });
+
+  const [sections] = useState({
+		CIS101: ['10', '11', 'All'],
+		CSC101: ['5'],
+		CSC203: ['10']
+	});
 
   const [now_month] = useState(currentMonth);
   const monthIndex = new Date(`${now_month} 1, 2000`).getMonth();
@@ -31,6 +36,7 @@ export default function Repository() {
     const selectedCourse = event.target.value;
     formik.setFieldValue('course', selectedCourse);
     formik.setFieldValue('topic', topics[selectedCourse][0]);
+    formik.setFieldValue('section', sections[selectedCourse][0]);
   };
 
   const handleSemester = event => {
@@ -102,13 +108,18 @@ export default function Repository() {
 
               {formik.values.type === "prequestionnaire" || formik.values.type === "postquestionnaire" ? (
                 <>
-                  <input {...formik.getFieldProps('section')} type="number" onWheel={(e) => e.target.blur()} placeholder="Section" className={styles.textbox} />
-
                   <select {...formik.getFieldProps('course')} className={styles.textbox} onChange={handleChange}>
                     <option value="CIS101">CIS101</option>
                     <option value="CSC101">CSC101</option>
                     <option value="CSC203">CSC203</option>
-                    <option value="CSC401">CSC401</option>
+                  </select>
+
+                  <select {...formik.getFieldProps('section')} className={styles.textbox}>
+                    {sections[formik.values.course].map(topic => (
+                    <option key={topic} value={topic}>
+                      {topic}
+                    </option>
+                    ))}
                   </select>
 
                   <select {...formik.getFieldProps('semester')} className={styles.textbox} onChange={handleSemester}>
@@ -128,15 +139,20 @@ export default function Repository() {
                 <>
                   {formik.values.type !== "general" ? (
                     <>
-                      <input {...formik.getFieldProps('section')} type="number" onWheel={(e) => e.target.blur()} placeholder="Section" className={styles.textbox} />
-
                       <select {...formik.getFieldProps('course')} className={styles.textbox} onChange={handleChange}>
                         <option value="CIS101">CIS101</option>
                         <option value="CSC101">CSC101</option>
                         <option value="CSC203">CSC203</option>
-                        <option value="CSC401">CSC401</option>
                       </select>
 
+                      <select {...formik.getFieldProps('section')} className={styles.textbox}>
+                        {sections[formik.values.course].map(topic => (
+                        <option key={topic} value={topic}>
+                          {topic}
+                        </option>
+                        ))}
+                      </select>
+        
                       {formik.values.type === "pre" ? (
                         <>
                           <select {...formik.getFieldProps('topic')} className={styles.textbox}>

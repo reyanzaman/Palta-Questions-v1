@@ -110,7 +110,7 @@ export default function Rules() {
                     <div className='bg-rose-500 w-full h-[4px] my-2'></div>
                   </li>
                   <li>
-                    <b className='text-indigo-500'>(&gt;7000)</b> <br></br> Legendary <br></br> Questioneer
+                    <b className='text-indigo-500'>(7001-15000)</b> <br></br> Legendary <br></br> Questioneer
                     <div className='bg-red-700 w-full h-[4px] my-2'></div>
                   </li>
                 </ul>
@@ -121,6 +121,32 @@ export default function Rules() {
                 </div>
 
                 <br></br>
+
+                <ul className='grid lg:grid-cols-4 gap-6 p-4 text-center'>
+                  <li>
+                    <b className='text-indigo-500'>(15001-25000)</b> <br></br> Mthical <br></br> Questioneer
+                    <div className='bg-cyan-600 w-full h-[4px] my-2'></div>
+                  </li>
+                  <li>
+                    <b className='text-indigo-500'>(25001-35000)</b> <br></br> Outstanding <br></br> Questioneer
+                    <div className='bg-indigo-600 w-full h-[4px] my-2'></div>
+                  </li>
+                  <li>
+                    <b className='text-indigo-500'>(35001-50000)</b> <br></br> Master of <br></br> Questions
+                    <div className='bg-fuchsia-800 w-full h-[4px] my-2'></div>
+                  </li>
+                  <li>
+                    <b className='text-indigo-500'>(&gt; 50000)</b> <br></br> Beyond <br></br> Comparison
+                    <div className='bg-zinc-600 w-full h-[4px] my-2'></div>
+                  </li>
+                </ul>
+
+                <div class="bg-indigo-600 h-[4px] w-2/5 mt-6 mb-4 relative hidden md:block">
+                  <span class="absolute top-1/2 left-0 transform translate-y-[-50%] w-4 h-4 bg-cyan-600 rotate-45"></span>
+                  <span class="absolute top-1/2 right-0 transform translate-y-[-50%] w-4 h-4 bg-zinc-600 rotate-45"></span>
+                </div>
+
+                <br></br><br></br>
 
                 <p>The system has 5 main functionality:</p>
 
