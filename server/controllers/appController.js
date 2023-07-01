@@ -281,7 +281,7 @@ export async function changeRank(req, res) {
 			} else if (user.score < 0){
 				await UserModel.updateOne(
 					{ username: username },
-					{ rank: "Master of Questions" }
+					{ rank: "Questioneer Sensei" }
 				);
 			}
 
