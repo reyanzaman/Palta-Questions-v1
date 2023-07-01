@@ -15,6 +15,18 @@ export default function Register() {
   const navigate = useNavigate()
   const [file, setFile] = useState()
 
+  const [sections] = useState({
+		CIS101: ['10', '11'],
+		CSC101: ['5'],
+		CSC203: ['10']
+	});
+
+	const handleChange = event => {
+	const selectedCourse = event.target.value;
+	formik.setFieldValue('course', selectedCourse);
+	formik.setFieldValue('section', sections[selectedCourse][0]);
+	};
+
   const formik = useFormik({
     initialValues : {
       email: '',
@@ -25,8 +37,8 @@ export default function Register() {
       questions: 0,
       score: 0,
       rank: 'Novice Questioneer',
-      course: 'CIS101',
-      section: ''
+      course: 'CSC101',
+      section: '5'
     },
     validate : registerValidation,
     validateOnBlur: false,
@@ -93,9 +105,14 @@ export default function Register() {
                 <option value="CIS101">CIS101</option>
                 <option value="CSC101">CSC101</option>
                 <option value="CSC203">CSC203</option>
-                <option value="CSC401">CSC401</option>
               </select>
-              <input {...formik.getFieldProps('section')} type="number" placeholder="Section" className={styles.textbox} min="1" max="30" onWheel={(e) => e.target.blur()}/>
+              <select {...formik.getFieldProps('section')} className={styles.textbox}>
+                {sections[formik.values.course].map(topic => (
+                  <option key={topic} value={topic}>
+                    Section-{topic}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="textbox flex flex-col items-center gap-6 my-6">

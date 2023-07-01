@@ -49,7 +49,7 @@ export default function Repository() {
       type: 'pre',
       course: 'CIS101',
       topic: 'All Topics',
-      section: '',
+      section: '10',
       semester: 'Spring',
       month: monthIndex,
       date: now_date,
@@ -117,7 +117,7 @@ export default function Repository() {
                   <select {...formik.getFieldProps('section')} className={styles.textbox}>
                     {sections[formik.values.course].map(topic => (
                     <option key={topic} value={topic}>
-                      {topic}
+                      Section-{topic}
                     </option>
                     ))}
                   </select>
@@ -148,7 +148,7 @@ export default function Repository() {
                       <select {...formik.getFieldProps('section')} className={styles.textbox}>
                         {sections[formik.values.course].map(topic => (
                         <option key={topic} value={topic}>
-                          {topic}
+                          Section-{topic}
                         </option>
                         ))}
                       </select>

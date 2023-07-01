@@ -41,7 +41,7 @@ export default function Pre() {
         question2: '',
         question3: '',
         isAnonymous: 'false',
-        section: '',
+        section: '10',
         semester: 'Summer',
         month: '',
         year: ''
@@ -118,7 +118,7 @@ export default function Pre() {
                   <select {...formik.getFieldProps('section')} className={styles.textbox}>
                     {sections[formik.values.course].map(topic => (
                     <option key={topic} value={topic}>
-                      {topic}
+                      Section-{topic}
                     </option>
                     ))}
                   </select>

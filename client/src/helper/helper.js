@@ -1,8 +1,8 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
-axios.defaults.baseURL = 'https://iub-qbl.onrender.com';
-// axios.defaults.baseURL = 'http://localhost:8081/';
+// axios.defaults.baseURL = 'https://iub-qbl.onrender.com';
+axios.defaults.baseURL = 'http://localhost:8081/';
 
 // Make API Requests
 
@@ -34,6 +34,15 @@ export async function getUsername(){
     if(!token) return Promise.reject("Cannot find Token");
     let decode = jwt_decode(token)
     return decode;
+}
+
+export async function runAdminCommand(){
+    try{
+        const response = await axios.get('/api/adminCommand')
+        return response.data;
+    }catch(error){
+        console.log(error);
+    }
 }
 
 export async function getUserDetails(username){

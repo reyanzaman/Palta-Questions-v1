@@ -6,6 +6,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import otpGenerator from "otp-generator";
 import FollowupModel from "../model/Followup.model.js";
+import natural from 'natural';
 
 /** middleware for verify user */
 export async function verifyUser(req, res, next) {
@@ -311,6 +312,7 @@ export async function searchQuestion(req, res) {
 				} else if (topic != "All Topics" && section=="All" && year=="") {
 					questions = await QuestionModel.find({ type, course, topic });
 				}else if (topic == "All Topics" && section!=="All" && year!==""){
+					console.log(type, course, section, year);
 					questions = await QuestionModel.find({ type, course, section, year});
 				} else {
 					questions = await QuestionModel.find({ type, course });
@@ -494,6 +496,10 @@ export async function searchGeneralAll(req, res) {
 	try {
 		const { type, month, year } = req.query;
 		var questions = await QuestionModel.find({ type, month, year });
+		if(questions[0]==null){
+			const new_month = month-1;
+			var questions = await QuestionModel.find({ type, new_month, year });
+		}
 		return res.json(questions);
 	} catch (error) {
 		console.log(error);
@@ -1766,24 +1772,118 @@ export async function updateScore(username, num) {
 	}
 }
 
-export async function checkDuplicate(type, questions) {
+function calculateSimilarity(question1, question2) {
+	if(question2){
+		const distance = natural.LevenshteinDistance(question1, question2);
+		const maxLength = Math.max(question1.length, question2.length);
+		const similarity = 1 - distance / maxLength;
+		return similarity;
+	}else{
+		return 0;
+	}
+}
+
+export async function checkSimilarity(type, course, section, question, num){
+	try{
+		if(num==1){
+			let existingQuestions = "";
+			if(section){
+				existingQuestions = await QuestionModel.find({ type, course, section });
+			}else{
+				existingQuestions = await QuestionModel.find({ type, course });
+			}
+
+			for (const existingQuestion of existingQuestions) {
+				const similarity1 = calculateSimilarity(question, existingQuestion.question1);
+				const similarity2 = calculateSimilarity(question, existingQuestion.question2);
+				const similarity3 = calculateSimilarity(question, existingQuestion.question3);
+				if (similarity1 >= 0.75 || similarity2 >= 0.75 || similarity3 >= 0.75) {
+					return true;
+				}
+			}
+
+			return false;
+			
+		}else if(num==2){
+			let existingQuestions = "";
+			if(section){
+				existingQuestions = await FollowupModel.find({ course, section });
+			}
+
+			for (const existingQuestion of existingQuestions) {
+				for(const comment of existingQuestion.comments){
+					const similarity = calculateSimilarity(question, comment);
+					if (similarity >= 0.75 ) {
+						return true;
+					}
+				}
+			}
+
+			return false;
+		}
+	}catch(error){
+		console.log(error);
+		return { error: "Error checking similarity: " + error.message };
+	}
+}
+
+export async function checkDuplicate(type, course, section, questions) {
 	if (type == "general") {
 		try {
-			const status1 = await QuestionModel.exists({
-				question1: { $regex: new RegExp(questions, "i") },
-			});
-			const status2 = await QuestionModel.exists({
-				question2: { $regex: new RegExp(questions, "i") },
-			});
-			const status3 = await QuestionModel.exists({
-				question3: { $regex: new RegExp(questions, "i") },
-			});
-			if (status1 || status2 || status3) {
+			const q1 = questions;
+			let statusQ11 = null;
+			let statusQ12 = null;
+			if(section){
+				const filter = {
+					course: course,
+					section: section,
+					$or: [
+						{ question1: { $regex: new RegExp(q1, "i") } },
+						{ question2: { $regex: new RegExp(q1, "i") } },
+						{ question3: { $regex: new RegExp(q1, "i") } }
+					]
+				};
+				statusQ11 = await QuestionModel.exists(filter);
+			}else{
+				const filter = {
+					type: "general",
+					question1: q1
+				};
+				statusQ11 = await QuestionModel.exists(filter);
+			}
+			
+			if(section){
+				const filter2 = {
+					course: course,
+					section: section,
+					$or: [
+						{ comments: { $regex: new RegExp(q1, "i") } }
+					]
+				};
+				statusQ12 = await FollowupModel.exists(filter2);
+			}else{
+				const filter2 = {
+					course: course,
+					$or: [
+						{ comments: { $regex: new RegExp(q1, "i") } }
+					]
+				};
+				statusQ12 = await FollowupModel.exists(filter2);
+			}
+			
+			if (statusQ11 || statusQ12) {
 				return { error: "Question Already Exists!" };
+			}
+
+			const statusQ21 = await checkSimilarity(type, course, section, q1, 1);
+			const statusQ22 = await checkSimilarity(type, course, section, q1, 2);
+
+			if(statusQ21 || statusQ22){
+				return { error: "Similar Question Already Exists!"};
 			}
 			return { success: "No duplicates found" };
 		} catch (error) {
-			return { error: "Error checking duplicates: " + error.message };
+			return { error: "Error checking general duplicates: " + error.message };
 		}
 	}
 
@@ -1793,52 +1893,231 @@ export async function checkDuplicate(type, questions) {
 		const q3 = questions[2];
 
 		try {
-			const statusQ11 = await QuestionModel.exists({
-				question1: { $regex: new RegExp(q1, "i") },
-			});
-			const statusQ12 = await QuestionModel.exists({
-				question2: { $regex: new RegExp(q1, "i") },
-			});
-			const statusQ13 = await QuestionModel.exists({
-				question3: { $regex: new RegExp(q1, "i") },
-			});
-			if (statusQ11 || statusQ12 || statusQ13) {
+			const filter = {
+				course: course,
+				section: section,
+				$or: [
+				  { question1: { $regex: new RegExp(q1, "i") } },
+				  { question2: { $regex: new RegExp(q1, "i") } },
+				  { question3: { $regex: new RegExp(q1, "i") } }
+				]
+			  };
+			  const statusQ11 = await QuestionModel.exists(filter);
+			  if (statusQ11) {
 				return { error: "Question 1 Already Exists!" };
-			}
-
-			const statusQ21 = await QuestionModel.exists({
-				question1: { $regex: new RegExp(q2, "i") },
-			});
-			const statusQ22 = await QuestionModel.exists({
-				question2: { $regex: new RegExp(q2, "i") },
-			});
-			const statusQ23 = await QuestionModel.exists({
-				question3: { $regex: new RegExp(q2, "i") },
-			});
-			if (statusQ21 || statusQ22 || statusQ23) {
+			  }
+			
+			  filter.$or = [
+				{ question1: { $regex: new RegExp(q2, "i") } },
+				{ question2: { $regex: new RegExp(q2, "i") } },
+				{ question3: { $regex: new RegExp(q2, "i") } }
+			  ];
+			  const statusQ21 = await QuestionModel.exists(filter);
+			  
+			  if (statusQ21) {
 				return { error: "Question 2 Already Exists!" };
-			}
-
-			const statusQ31 = await QuestionModel.exists({
-				question1: { $regex: new RegExp(q3, "i") },
-			});
-			const statusQ32 = await QuestionModel.exists({
-				question2: { $regex: new RegExp(q3, "i") },
-			});
-			const statusQ33 = await QuestionModel.exists({
-				question3: { $regex: new RegExp(q3, "i") },
-			});
-			if (statusQ31 || statusQ32 || statusQ33) {
+			  }
+			
+			  filter.$or = [
+				{ question1: { $regex: new RegExp(q3, "i") } },
+				{ question2: { $regex: new RegExp(q3, "i") } },
+				{ question3: { $regex: new RegExp(q3, "i") } }
+			  ];
+			  const statusQ31 = await QuestionModel.exists(filter);
+			  
+			  if (statusQ31) {
 				return { error: "Question 3 Already Exists!" };
-			}
+			  }
 
-			// If no duplicates found
-			return { success: "No duplicates found" };
+			  const statusQ41 = await checkSimilarity(type, course, section, q1, 1);
+			  const statusQ42 = await checkSimilarity(type, course, section, q2, 1);
+			  const statusQ43 = await checkSimilarity(type, course, section, q3, 1);
+
+			  if(statusQ41){
+				return { error: "Question 1 Similar to Another Question!" };
+			  }else if(statusQ42){
+				return { error: "Question 2 Similar to Another Question!" };
+			  }else if(statusQ43){
+				return { error: "Question 3 Similar to Another Question!" };
+			  }
+			
+			  // If no duplicates found
+			  return { success: "No duplicates found" };
 		} catch (error) {
-			return { error: "Error checking duplicates: " + error.message };
+			return { error: "Error checking pre duplicates: " + error.message };
 		}
 	}
 }
+
+export async function checkSimilarity2(type, course, section, question){
+	try{
+		let existingQuestions = "";
+		if(section){
+			existingQuestions = await QuestionModel.find({ type, course, section });
+		}else{
+			existingQuestions = await QuestionModel.find({ type, course });
+		}
+
+		for (const existingQuestion of existingQuestions) {
+			if(question==existingQuestion.question1 || question==existingQuestion.question2 || question==existingQuestion.question3){
+				continue;
+			}else{
+				const similarity1 = calculateSimilarity(question, existingQuestion.question1);
+				const similarity2 = calculateSimilarity(question, existingQuestion.question2);
+				const similarity3 = calculateSimilarity(question, existingQuestion.question3);
+				
+				var user = "";
+
+				if(similarity1 >= 0.75 || similarity2 >= 0.75 || similarity3 >= 0.75){
+					const username = existingQuestion.username;
+					user = await UserModel.findOne({ username: username });
+					var scoreToDeduct = existingQuestion.q1Score;
+					if(existingQuestion.q2Score){
+						scoreToDeduct = scoreToDeduct + existingQuestion.q2Score
+					}
+					if(existingQuestion.q3Score){
+						scoreToDeduct = scoreToDeduct + existingQuestion.q3Score
+					}
+				}
+
+				if (similarity1 >= 0.75) {
+					console.log(question);
+					console.log(existingQuestion.question1);
+					console.log("Q1: ", existingQuestion.q1Score)
+					console.log("Q2: ", existingQuestion.q2Score)
+					console.log("Q3: ", existingQuestion.q3Score)
+					console.log("Deducted: ", scoreToDeduct, "from: ", user.username);
+
+					await QuestionModel.deleteOne({ _id: existingQuestion._id });
+					if (user) {
+						user.score -= scoreToDeduct;
+						await user.save();
+					}
+					return true;
+				}else if(similarity2 >= 0.75){
+					console.log(question);
+					console.log(existingQuestion.question2);
+					console.log("Q1: ", existingQuestion.q1Score)
+					console.log("Q2: ", existingQuestion.q2Score)
+					console.log("Q3: ", existingQuestion.q3Score)
+					console.log("Deducted: ", scoreToDeduct, "from: ", user.username);
+
+					await QuestionModel.deleteOne({ _id: existingQuestion._id });
+					if (user) {
+						user.score -= scoreToDeduct;
+						await user.save();
+					}
+					return true;
+				}else if(similarity3 >= 0.75){
+					console.log(question);
+					console.log(existingQuestion.question3);
+					console.log("Q1: ", existingQuestion.q1Score)
+					console.log("Q2: ", existingQuestion.q2Score)
+					console.log("Q3: ", existingQuestion.q3Score)
+					console.log("Deducted: ", scoreToDeduct, "from: ", user.username);
+
+					await QuestionModel.deleteOne({ _id: existingQuestion._id });
+					if (user) {
+						user.score -= scoreToDeduct;
+						await user.save();
+					}
+					return true;
+				}
+			}
+		}
+		return false;
+	}catch(error){
+		console.log(error);
+		return { error: "Error checking similarity: " + error.message };
+	}
+}
+
+export async function adminCommand(req, res){
+	try{
+		console.log("Admin command running");
+
+		const questions = await QuestionModel.find();
+		console.log(questions.length);
+
+		var general_count = 0;
+		var pre_count = 0;
+		var count = 0;
+
+		for(const question of questions){
+			count++;
+			console.log("Question count: ", count);
+			if(question.type=="general"){
+				const statusQ1 = await checkSimilarity2(question.type, question.course, question.section, question.question1);
+			
+				if(statusQ1){
+					general_count++;
+					console.log("General_Count: ", general_count);
+				}
+			}else if(question.type=="pre"){
+				const statusQ1 = await checkSimilarity2(question.type, question.course, question.section, question.question1);
+				const statusQ2 = await checkSimilarity2(question.type, question.course, question.section, question.question2);
+				const statusQ3 = await checkSimilarity2(question.type, question.course, question.section, question.question3);
+			
+				if(statusQ1 || statusQ2 || statusQ3){
+					pre_count++;
+					console.log("Pre_Count: ", pre_count);
+				}
+			}
+		}
+		const total_count = general_count + pre_count;
+		console.log("Total: ", total_count);
+
+		const now_questions = await QuestionModel.find();
+		console.log(now_questions.length);
+
+		return res.status(200);
+	}catch(error){
+		console.log(error);
+		return res.status(500);
+	}
+}
+
+// export async function removeWrongSections(req, res){
+// 	try{
+// 		const questions = await QuestionModel.find({
+// 			course: "CIS101",
+//             section: {"$nin": [10, 11]}
+//         });
+//         console.log(questions.length);
+
+// 		for (const question of questions) {
+
+// 			const q1S = parseInt(question.q1Score);
+// 			const q2S = parseInt(question.q2Score);
+// 			const q3S = parseInt(question.q3Score);
+// 			let scoreToDeduct = 0;
+
+// 			if(q1S){
+// 				scoreToDeduct = scoreToDeduct + q1S;
+// 			}
+// 			if(q2S){
+// 				scoreToDeduct = scoreToDeduct + q2S;
+// 			}
+// 			if(q3S){
+// 				scoreToDeduct = scoreToDeduct + q3S;
+// 			}
+
+//             const user = await UserModel.findOne({ username: question.username });
+
+//             if (user) {
+//                 user.score -= scoreToDeduct;
+//                 await user.save();
+//             }
+//             await QuestionModel.deleteOne({ _id: question._id });
+//         }
+// 		console.log("Operation Successful");
+
+// 		res.sendStatus(200);
+// 	}catch(error){
+// 		console.log(error);
+// 		res.sendStatus(500);
+// 	}
+// }
 
 export async function validateQuestion(req, res, next) {
 	try {
@@ -1889,7 +2168,7 @@ export async function validateQuestion(req, res, next) {
 			if (values.question1.length < 10) {
 				return res.status(500).send({ error: "Question too Short!" });
 			} else if (containsBloomQuestion) {
-				const result = await checkDuplicate("general", values.question1);
+				const result = await checkDuplicate("general", values.course, values.section, values.question1);
 				console.log(result);
 				if (result.error) {
 					return res.status(500).json({ error: result.error });
@@ -1970,7 +2249,7 @@ export async function validateQuestion(req, res, next) {
 				return res.status(500).send({ error: "Duplicate Questions" });
 			} else {
 				var q_array = [values.question1, values.question2, values.question3];
-				const result = await checkDuplicate("pre", q_array);
+				const result = await checkDuplicate("pre", values.course, values.section, q_array);
 				if (result.error) {
 					return res.status(500).json({ error: result.error });
 				} else {
@@ -2021,7 +2300,7 @@ export async function validateQuestion(req, res, next) {
 			if (values.comments.length < 10) {
 				return res.status(500).send({ error: "Question too Short!" });
 			} else if (containsBloomQuestion) {
-				const result = await checkDuplicate("general", values.comments);
+				const result = await checkDuplicate("general", values.course, values.section, values.comments);
 				console.log(result);
 				if (result.error) {
 					return res.status(500).json({ error: result.error });

@@ -31,7 +31,7 @@ export default function Questionnaire() {
 			username: "",
             type: localStorage.getItem("selectedType") || "pre",
 			course: "CIS101",
-			section: "",
+			section: "10",
 			date: "",
 			semester: "Summer",
 			attitude: "",
@@ -126,7 +126,7 @@ export default function Questionnaire() {
 										<select {...formik.getFieldProps('section')} className={styles.textbox}>
 											{sections[formik.values.course].map(topic => (
 											<option key={topic} value={topic}>
-												{topic}
+												Section-{topic}
 											</option>
 											))}
 										</select>

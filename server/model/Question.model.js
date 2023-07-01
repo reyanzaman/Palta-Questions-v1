@@ -93,4 +93,4 @@ export const QuestionSchema = new mongoose.Schema({
     },
 });
 
-export default mongoose.model.Questions || mongoose.model('Question', QuestionSchema);
+export default mongoose.model('Question', QuestionSchema);

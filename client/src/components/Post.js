@@ -43,7 +43,7 @@ export default function Post() {
         nextclass: '',
         date: '',
         isAnonymous: 'false',
-        section: '',
+        section: '10',
         semester: 'Summer',
         month: '',
         year: ''
@@ -120,7 +120,7 @@ export default function Post() {
                   <select {...formik.getFieldProps('section')} className={styles.textbox}>
                     {sections[formik.values.course].map(topic => (
                     <option key={topic} value={topic}>
-                      {topic}
+                      Section-{topic}
                     </option>
                     ))}
                   </select>

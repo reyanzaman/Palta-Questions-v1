@@ -7,7 +7,7 @@ import styles from '../styles/Username.module.css';
 import { Link } from 'react-router-dom';
 import useFetch from '../hooks/fetch.hook';
 import { useNavigate } from 'react-router-dom';
-import { updateRank, uploadPhoto, getUserDetails, setSection, setCourse } from '../helper/helper';
+import { updateRank, uploadPhoto, getUserDetails, setSection, setCourse, runAdminCommand } from '../helper/helper';
 import convertToBase64 from '../helper/convert';
 import { Toaster } from 'react-hot-toast';
 import { useFormik } from 'formik';
@@ -88,6 +88,14 @@ export default function Dashboard() {
         section: e.target.value
       }));
       await setSection(apiData?.username, e.target.value);
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+  const handleClick = async e => {
+    try{
+      await runAdminCommand();
     }catch(error){
       console.log(error);
     }
@@ -179,10 +187,16 @@ export default function Dashboard() {
 
               <div className="w-[95%] md:w-[75%] flex flex-col gap-4 py-2">
 
-                {/* <Link to="" className="relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-900 rounded-lg group">
+              {/* Temporary Command for debugging and making changes/adjustments */}
+              {/* {user?.username === "reyanzaman" ? (
+								<>
+                <Link to="" onClick={handleClick} className="relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-900 rounded-lg group">
+                <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-lime-800 rounded-3xl group-hover:w-full group-hover:h-80 block"></span>
                   <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
-                  <span className="relative text-center text-gray-500">Your Questions</span>
-                </Link> */}
+                  <span className="relative text-center text-yellow-500">Admin Function</span>
+                </Link>
+                </>
+              ):null} */}
 
                 <div>
                   <Link to="/pre" className={`${styles.tooltip} w-full relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group`}>
