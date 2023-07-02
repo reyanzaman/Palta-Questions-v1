@@ -197,7 +197,7 @@ export default function Homepage() {
 
           <hr className="border-t-2 border-gray-300"></hr>
           <div className='relative text-center py-2'>
-            <span className='text-gray-500'>©IUB-QBAN Team 2023</span>
+            <span className='text-gray-500'>©IUB-QuBAN Team 2023</span>
           </div>
         </div>
       </div>

@@ -95,7 +95,6 @@ export default function Leaderboard() {
                 <option value="CIS101">CIS101</option>
                 <option value="CSC101">CSC101</option>
                 <option value="CSC203">CSC203</option>
-                <option value="CSC401">CSC401</option>
               </select>
             </div>
             

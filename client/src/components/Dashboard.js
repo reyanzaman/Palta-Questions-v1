@@ -224,7 +224,7 @@ export default function Dashboard() {
                   <Link to="/repository" className={`${styles.tooltip} w-full relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group`}>
                   <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-indigo-500 rounded-3xl group-hover:w-full group-hover:h-80 block"></span>
                     <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
-                    <span className="relative text-center">Question Repository</span>
+                    <span className="relative text-center">Palta Question</span>
                   </Link>
                   <span className={`${styles.tooltiptext}`}>Here you can ask palta questions and also see what questions and feedbacks everyone
                   is asking or giving.</span>
@@ -268,7 +268,7 @@ export default function Dashboard() {
           </div>
 
           <div className='relative text-center py-2'>
-            <span className='text-gray-500'>©IUB-QBAN Team 2023</span>
+            <span className='text-gray-500'>©IUB-QuBAN Team 2023</span>
           </div>
 
         </div>

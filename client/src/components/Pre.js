@@ -15,7 +15,7 @@ export default function Pre() {
       CIS101: [' Thinking', 'Documentation', 'Data', 'Graphs', 'Excel', 'Ideas', 'G-Slides',
         'Questionnaire', 'Referencing', 'Computing Mechanism', 'Python Coding',
         'Final Project'],
-      CSC101: ['Coding Environment (IDE)', 'Variables', 'Data Types', 'Operators', 'Print', 'Conditional Statements', 'Loops', 'Nested Conditions', 'Nested Loops', 'Lists', 'Tuples', 'Functions', 'File Handling'],
+      CSC101: ['Coding Environment (IDE)', 'Trace Table', 'Flow Chart', 'Variables', 'Data Types', 'Operators', 'Print', 'Conditional Statements', 'Loops', 'Nested Conditions', 'Nested Loops', 'Lists', 'Tuples', 'Functions', 'File Handling'],
       CSC203: ['Python Review', 'Stacks', 'Queues', 'Pointers', 'Nodes', 'Singly Linked List',
       'Doubly Linked List', 'Recursion', 'Recursion', 'Binary Search Tree', 'Graph', 'Hashing'],
     });
