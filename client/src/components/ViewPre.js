@@ -217,7 +217,7 @@ export default function ViewPre() {
                           <p>{commentText}</p>
                           <p className='text-xs pt-2 text-indigo-100'>Posted by {reversedIsAnonymous[commentIndex] ? 'Anonymous User' : reversedUsernames[commentIndex]}</p>
                           <p className='text-xs text-indigo-100'>{reversedDates[commentIndex]}</p>
-                          <p className='text-sm pt-2 font-bold text-indigo-200'>Comment Score: {reversedCScores[commentIndex]}</p>
+                          <p className='text-sm pt-2 font-bold text-indigo-200'>Score: {reversedCScores[commentIndex]}</p>
                         </div>
                       ));
                     })}
@@ -273,7 +273,7 @@ export default function ViewPre() {
   
               <div className='text-center mt-8 flex flex-row justify-center gap-4'>
                 <span><Link className='text-slate-800 font-bold text-xl border-2 border-slate-400 hover:border-indigo-500 rounded-md py-1 px-6 hover:text-indigo-500' onClick={goPrevious}>Go Back</Link></span>
-                <span><Link className='text-slate-800 font-bold text-xl border-2 border-slate-400 hover:border-indigo-500 rounded-md py-1 px-6 hover:text-indigo-500' to="/dashboard">Go Home</Link></span>
+                <span><Link className='text-slate-800 font-bold text-xl border-2 border-slate-400 hover:border-indigo-500 rounded-md py-1 px-6 hover:text-indigo-500' to="/dashboard">Dashboard</Link></span>
               </div>
   
             </div>

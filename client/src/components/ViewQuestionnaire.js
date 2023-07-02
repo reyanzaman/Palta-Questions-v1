@@ -230,7 +230,7 @@ export default function ViewQuestionnaire() {
                 className="text-neutral-50 font-bold hover:bg-indigo-700 bg-indigo-500 py-3 px-10 rounded-md"
                 to="/dashboard"
               >
-                Go Home
+                Dashboard
               </Link>
               </span>
             </div>

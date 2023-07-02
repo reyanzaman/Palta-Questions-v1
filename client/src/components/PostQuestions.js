@@ -103,19 +103,20 @@ export default function PostQuestions() {
               
               {questions.slice().reverse().slice(current_question-1 , current_question + questionPerPage - 1).map((question, index) => (
                   <div key={index}>
-                    <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-4">
-                      <div>
+                    <div className="grid lg:grid-cols-3 sm:grid-cols-2 gap-4">
+                      <div className='md:col-span-2 col-span-1'>
                         <div className='lg:w-full text-left'>
-                          <h1 className='text-md text-indigo-500 font-bold'>What I learned this class:</h1>
-                          <p className='text-md'>{question['thisclass']}</p>
-                          <h1 className='text-md text-indigo-500 font-bold'>What I want to learn next class:</h1>
-                          <p className='text-md'>{question['nextclass']}</p>
+                          <h1 className='text-md text-center md:text-left text-indigo-500 font-bold'>What I learned this class:</h1>
+                          <p className='text-md text-center md:text-left'>{question['thisclass']}</p>
+                          <h1 className='text-md text-center md:text-left text-indigo-500 font-bold'>What I want to learn next class:</h1>
+                          <p className='text-md text-center md:text-left'>{question['nextclass']}</p>
                         </div>
                       </div>
-                      <div>
-                        <h1 className='w-fit text-sm lg:float-right sm:float-left'>{question['date'] + " " + question['semester'] + " " + question['year'] + " " + "Section: " + question['section']}</h1>
+                      <div className='col-span-1'>
+                        {/* <h1 className='w-fit text-sm float-none md:float-right relative mx-auto text-center md:text-left'>{question['semester'] + " " + question['year'] + " " + "Section: " + question['section'] + " "}</h1> */}
+                        <h1 className='w-fit text-sm float-none md:float-right relative mx-auto first-letter:text-center md:text-left'>{question['date']}</h1>
+                        <h1 className='w-fit text-sm float-none md:float-right relative mx-auto text-center md:text-left'>Posted by <b>{question['isAnonymous']==='true' ? 'Anonymous User' : question['username']}</b></h1>
                       </div>
-                      <p className='text-sm pt-2'>Posted by <b>{question['isAnonymous']==='true' ? 'Anonymous User' : question['username']}</b></p>
                     </div>
                     <hr className='h-px mt-4 border-0 dark:bg-gray-300'></hr>
 
@@ -153,7 +154,7 @@ export default function PostQuestions() {
                 className="text-neutral-50 font-bold hover:bg-indigo-700 bg-indigo-500 py-3 px-10 rounded-md"
                 to="/dashboard"
               >
-                Go Home
+                Dashboard
               </Link>
               </span>
             </div>

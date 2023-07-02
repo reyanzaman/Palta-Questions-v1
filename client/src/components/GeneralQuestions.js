@@ -223,6 +223,10 @@ export default function PreQuestions() {
                     <div>
                       <h1 className="w-fit text-sm lg:float-right sm:float-left">{question['date'] + " " + question['year']}</h1>
                       <br />
+                      <p className="w-fit text-sm lg:float-right sm:float-left">
+                        Posted by <b>{question.isAnonymous === 'true' ? 'Anonymous User' : question.username}</b>
+                      </p>
+                      <br></br>
                       <h1 className="w-fit text-sm lg:float-right sm:float-left font-bold text-indigo-800">
                         {'Question Score: ' + question['qscore']}
                       </h1>
@@ -231,9 +235,6 @@ export default function PreQuestions() {
                         {'Palta Questions: ' + commentCount}
                       </h1>
                     </div>
-                    <p className="text-sm pt-2">
-                      Posted by <b>{question['isAnonymous'] === 'true' ? 'Anonymous User' : question['username']}</b>
-                    </p>
                   </div>
                   <hr className="h-px my-8 border-0 dark:bg-gray-300" />
                 </div>
@@ -273,13 +274,14 @@ export default function PreQuestions() {
                         {'Question Score: ' + question.qscore}
                       </h1>
                       <br />
+                      <p className="w-fit text-sm lg:float-right sm:float-left">
+                        Posted by <b>{question.isAnonymous === 'true' ? 'Anonymous User' : question.username}</b>
+                      </p>
+                      <br></br>
                       <h1 className={`w-fit text-sm lg:float-right sm:float-left font-bold ${commentCount > 0 ? 'text-red-500' : 'hidden'}`}>
                         {'Palta Questions: ' + commentCount}
                       </h1>
                     </div>
-                    <p className="text-sm pt-2">
-                      Posted by <b>{question.isAnonymous === 'true' ? 'Anonymous User' : question.username}</b>
-                    </p>
                   </div>
                   <hr className="h-px my-8 border-0 dark:bg-gray-300" />
                 </div>
@@ -324,7 +326,7 @@ export default function PreQuestions() {
                 className="text-neutral-50 font-bold hover:bg-indigo-700 bg-indigo-500 py-3 px-10 rounded-md"
                 to="/dashboard"
               >
-                Go Home
+                Dashboard
               </Link>
             </span>
           </div>

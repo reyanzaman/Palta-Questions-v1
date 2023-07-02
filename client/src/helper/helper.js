@@ -1,8 +1,8 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
-axios.defaults.baseURL = 'https://iub-qbl.onrender.com';
-// axios.defaults.baseURL = 'http://localhost:8081/';
+// axios.defaults.baseURL = 'https://iub-qbl.onrender.com';
+axios.defaults.baseURL = 'http://localhost:8081/';
 
 // Make API Requests
 

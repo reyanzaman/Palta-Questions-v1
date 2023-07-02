@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast'
 import { useFormik} from 'formik'
 import { useAuthStore } from '../store/store'
@@ -10,6 +10,8 @@ import useFetch from '../hooks/fetch.hook';
 export default function Pre() {
     const { username } = useAuthStore(state => state.auth);
     const [{ isLoading, apiData, serverError }] = useFetch(username ? `/user/${username}` : null);
+
+    const navigate = useNavigate()
 
     const [topics] = useState({
       CIS101: [' Thinking', 'Documentation', 'Data', 'Graphs', 'Excel', 'Ideas', 'G-Slides',
@@ -73,6 +75,7 @@ export default function Pre() {
             return <b>{err.error.response.data.error}</b>
           },
         });
+        prePromise.then(function () { navigate('/dashboard') });
       }
     })
 
@@ -148,7 +151,7 @@ export default function Pre() {
               </form>
 
               <div className='text-center mt-4'>
-                <span><Link className='text-indigo-500' to="/dashboard">Back to Dashboard</Link></span>
+                <span><Link className='text-indigo-500' to="/dashboard">Dashboard</Link></span>
               </div>
 
             </div>

@@ -443,7 +443,7 @@ export default function Questionnaire() {
 						<div className="text-center mt-4">
 							<span>
 								<Link className="text-indigo-500" to="/dashboard">
-									Back to Dashboard
+									Dashboard
 								</Link>
 							</span>
 						</div>

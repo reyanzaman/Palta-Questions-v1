@@ -100,10 +100,10 @@ export default function Repository() {
 
               <select {...formik.getFieldProps('type')} className={styles.textbox}>
                 <option key="pre" value="pre">Pre-Questions</option>
-                <option key="post" value="post">Feedback</option>
+                {/* <option key="post" value="post">Feedback</option> */}
                 <option key="general" value="general">General-Questions</option>
-                <option key="prequestionnaire" value="prequestionnaire">Pre-Questionnaire</option>
-                <option key="postquestionnaire" value="postquestionnaire">Post-Questionnaire</option>
+                {/* <option key="prequestionnaire" value="prequestionnaire">Pre-Questionnaire</option> */}
+                {/* <option key="postquestionnaire" value="postquestionnaire">Post-Questionnaire</option> */}
               </select>
 
               {formik.values.type === "prequestionnaire" || formik.values.type === "postquestionnaire" ? (
@@ -198,7 +198,7 @@ export default function Repository() {
           </form>
 
           <div className='text-center mt-4'>
-            <span><Link className='text-indigo-500' to="/dashboard">Back to Dashboard</Link></span>
+            <span><Link className='text-indigo-500' to="/dashboard">Dashboard</Link></span>
           </div>
 
         </div>

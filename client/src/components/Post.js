@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { useFormik} from 'formik';
 import { useAuthStore } from '../store/store';
@@ -11,6 +11,8 @@ export default function Post() {
 
     const { username } = useAuthStore(state => state.auth);
     const [{ isLoading, apiData, serverError }] = useFetch(username ? `/user/${username}` : null);
+
+    const navigate = useNavigate();
 
     const [topics] = useState({
       CIS101: [' Thinking', 'Documentation', 'Data', 'Graphs', 'Excel', 'Ideas', 'G-Slides',
@@ -75,6 +77,7 @@ export default function Post() {
             return <b>{err.error.response.data.error}</b>
           }
         });
+        postPromise.then(function () { navigate('/dashboard') });
       }
     })
 
