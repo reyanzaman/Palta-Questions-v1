@@ -1783,12 +1783,12 @@ function calculateSimilarity(question1, question2) {
 	}
 }
 
-export async function checkSimilarity(type, course, section, question, num){
+export async function checkSimilarity(type, course, section, topic, question, num){
 	try{
 		if(num==1){
 			let existingQuestions = "";
 			if(section){
-				existingQuestions = await QuestionModel.find({ type, course, section });
+				existingQuestions = await QuestionModel.find({ type, course, section, topic });
 			}else{
 				existingQuestions = await QuestionModel.find({ type, course });
 			}
@@ -1827,7 +1827,7 @@ export async function checkSimilarity(type, course, section, question, num){
 	}
 }
 
-export async function checkDuplicate(type, course, section, questions) {
+export async function checkDuplicate(type, course, section, topic, questions) {
 	if (type == "general") {
 		try {
 			const q1 = questions;
@@ -1875,8 +1875,8 @@ export async function checkDuplicate(type, course, section, questions) {
 				return { error: "Question Already Exists!" };
 			}
 
-			const statusQ21 = await checkSimilarity(type, course, section, q1, 1);
-			const statusQ22 = await checkSimilarity(type, course, section, q1, 2);
+			const statusQ21 = await checkSimilarity(type, course, section, topic, q1, 1);
+			const statusQ22 = await checkSimilarity(type, course, section, topic, q1, 2);
 
 			if(statusQ21 || statusQ22){
 				return { error: "Similar Question Already Exists!"};
@@ -1949,11 +1949,11 @@ export async function checkDuplicate(type, course, section, questions) {
 	}
 }
 
-export async function checkSimilarity2(type, course, section, question){
+export async function checkSimilarity2(type, course, section, topic, question){
 	try{
 		let existingQuestions = "";
 		if(section){
-			existingQuestions = await QuestionModel.find({ type, course, section });
+			existingQuestions = await QuestionModel.find({ type, course, section, topic });
 		}else{
 			existingQuestions = await QuestionModel.find({ type, course });
 		}
@@ -2047,16 +2047,16 @@ export async function adminCommand(req, res){
 			count++;
 			console.log("Question count: ", count);
 			if(question.type=="general"){
-				const statusQ1 = await checkSimilarity2(question.type, question.course, question.section, question.question1);
+				const statusQ1 = await checkSimilarity2(question.type, question.course, question.section, question.topic, question.question1);
 			
 				if(statusQ1){
 					general_count++;
 					console.log("General_Count: ", general_count);
 				}
 			}else if(question.type=="pre"){
-				const statusQ1 = await checkSimilarity2(question.type, question.course, question.section, question.question1);
-				const statusQ2 = await checkSimilarity2(question.type, question.course, question.section, question.question2);
-				const statusQ3 = await checkSimilarity2(question.type, question.course, question.section, question.question3);
+				const statusQ1 = await checkSimilarity2(question.type, question.course, question.section, question.topic, question.question1);
+				const statusQ2 = await checkSimilarity2(question.type, question.course, question.section, question.topic, question.question2);
+				const statusQ3 = await checkSimilarity2(question.type, question.course, question.section, question.topic, question.question3);
 			
 				if(statusQ1 || statusQ2 || statusQ3){
 					pre_count++;
@@ -2168,7 +2168,7 @@ export async function validateQuestion(req, res, next) {
 			if (values.question1.length < 10) {
 				return res.status(500).send({ error: "Question too Short!" });
 			} else if (containsBloomQuestion) {
-				const result = await checkDuplicate("general", values.course, values.section, values.question1);
+				const result = await checkDuplicate("general", values.course, values.section, values.topic, values.question1);
 				console.log(result);
 				if (result.error) {
 					return res.status(500).json({ error: result.error });
@@ -2249,7 +2249,7 @@ export async function validateQuestion(req, res, next) {
 				return res.status(500).send({ error: "Duplicate Questions" });
 			} else {
 				var q_array = [values.question1, values.question2, values.question3];
-				const result = await checkDuplicate("pre", values.course, values.section, q_array);
+				const result = await checkDuplicate("pre", values.course, values.section, values.topic, q_array);
 				if (result.error) {
 					return res.status(500).json({ error: result.error });
 				} else {
