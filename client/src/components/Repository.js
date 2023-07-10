@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { useFormik } from 'formik';
 import styles from '../styles/Username.module.css';
+import { getUserDetails } from '../helper/helper';
+import { useAuthStore } from '../store/store';
+import useFetch from '../hooks/fetch.hook';
 
 export default function Repository() {
 
@@ -11,6 +14,10 @@ export default function Repository() {
   const currentMonth = new Date().toLocaleString('default', { month: 'long' });
   const currentYear = new Date().getFullYear();
   const currentDate = new Date().getDate();
+
+  const { username } = useAuthStore(state => state.auth);
+  const [{ isLoading, apiData, serverError }] = useFetch(username ? `/user/${username}` : null);
+  const [user, setUser] = useState({ section: '', course: '' });
 
   const [topics] = useState({
     CIS101: ['All Topics', ' Thinking', 'Documentation', 'Data', 'Graphs', 'Excel', 'Ideas', 'G-Slides',
@@ -21,23 +28,21 @@ export default function Repository() {
     'Doubly Linked List', 'Recursion', 'Recursion', 'Binary Search Tree', 'Graph', 'Hashing'],
   });
 
-  const [sections] = useState({
-		CIS101: ['10', '11', 'All'],
-		CSC101: ['5'],
-		CSC203: ['10']
-	});
+  useEffect(() => {
+    async function fetchData() {
+      const userDetails = await getUserDetails(apiData?.username);
+      setUser(userDetails);
+
+      const defaultTopic = userDetails && userDetails.course ? topics[userDetails.course][0] : '';
+      formik.setFieldValue('topic', defaultTopic);
+    }
+    fetchData();
+  }, [apiData]);
 
   const [now_month] = useState(currentMonth);
   const monthIndex = new Date(`${now_month} 1, 2000`).getMonth();
   const [now_year] = useState(currentYear);
   const [now_date] = useState(currentDate);
-
-  const handleChange = event => {
-    const selectedCourse = event.target.value;
-    formik.setFieldValue('course', selectedCourse);
-    formik.setFieldValue('topic', topics[selectedCourse][0]);
-    formik.setFieldValue('section', sections[selectedCourse][0]);
-  };
 
   const handleSemester = event => {
     const selectedSemester = event.target.value;
@@ -47,15 +52,18 @@ export default function Repository() {
   const formik = useFormik({
     initialValues: {
       type: 'pre',
-      course: 'CIS101',
+      course: '',
       topic: 'All Topics',
-      section: '10',
+      section: '',
       semester: 'Spring',
       month: monthIndex,
       date: now_date,
       year: now_year
     },
     onSubmit: async (values) => {
+      values.course = user?.course;
+      values.section = user?.section;
+
       try {
         const { type, course, topic, section, semester, date, month, year } = values;
         if (type === "pre") {
@@ -90,7 +98,7 @@ export default function Repository() {
           <div className="title flex flex-col items-center">
             <h4 className="text-4xl font-bold text-center">Question Repository</h4>
             <span className="py-4 text-lg w-2/3 text-center text-gray-500">
-              Explore the vast bank of questions!
+              Learn deeper using palta questions!
             </span>
           </div>
 
@@ -100,28 +108,14 @@ export default function Repository() {
 
               <select {...formik.getFieldProps('type')} className={styles.textbox}>
                 <option key="pre" value="pre">Pre-Questions</option>
-                {/* <option key="post" value="post">Feedback</option> */}
                 <option key="general" value="general">General-Questions</option>
+                {/* <option key="post" value="post">Feedback</option> */}
                 {/* <option key="prequestionnaire" value="prequestionnaire">Pre-Questionnaire</option> */}
                 {/* <option key="postquestionnaire" value="postquestionnaire">Post-Questionnaire</option> */}
               </select>
 
               {formik.values.type === "prequestionnaire" || formik.values.type === "postquestionnaire" ? (
                 <>
-                  <select {...formik.getFieldProps('course')} className={styles.textbox} onChange={handleChange}>
-                    <option value="CIS101">CIS101</option>
-                    <option value="CSC101">CSC101</option>
-                    <option value="CSC203">CSC203</option>
-                  </select>
-
-                  <select {...formik.getFieldProps('section')} className={styles.textbox}>
-                    {sections[formik.values.course].map(topic => (
-                    <option key={topic} value={topic}>
-                      Section-{topic}
-                    </option>
-                    ))}
-                  </select>
-
                   <select {...formik.getFieldProps('semester')} className={styles.textbox} onChange={handleSemester}>
                     <option value="Spring">Spring</option>
                     <option value="Summer">Summer</option>
@@ -139,24 +133,10 @@ export default function Repository() {
                 <>
                   {formik.values.type !== "general" ? (
                     <>
-                      <select {...formik.getFieldProps('course')} className={styles.textbox} onChange={handleChange}>
-                        <option value="CIS101">CIS101</option>
-                        <option value="CSC101">CSC101</option>
-                        <option value="CSC203">CSC203</option>
-                      </select>
-
-                      <select {...formik.getFieldProps('section')} className={styles.textbox}>
-                        {sections[formik.values.course].map(topic => (
-                        <option key={topic} value={topic}>
-                          Section-{topic}
-                        </option>
-                        ))}
-                      </select>
-        
                       {formik.values.type === "pre" ? (
                         <>
                           <select {...formik.getFieldProps('topic')} className={styles.textbox}>
-                            {topics[formik.values.course].map(topic => (
+                            {topics[user?.course] && topics[user?.course].map(topic => (
                               <option key={topic} value={topic}>
                                 {topic}
                               </option>

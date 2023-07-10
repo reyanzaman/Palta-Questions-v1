@@ -168,7 +168,7 @@ export default function Homepage() {
               .slice(0,4) //Only displays 4 latest questions
               .map((question, questionIndex) => (
                 <div key={questionIndex} className="mb-6 drop-shadow-sm border border-stone-200 flex flex-col rounded-2xl py-4 px-4 bg-gray-100 text-gray-700">
-                  <p className="w-full text-justify mb-2">{question.question1}</p>
+                  <p className="w-full text-center md:text-justify mb-2">{question.question1}</p>
                   <div className="grid lg:grid-cols-2 sm:grid-cols-1">
                     <div className="md:text-left text-center md:w-max">
                       <p className="text-xs pt-2 text-gray-700">Posted by {question.isAnonymous==="true" ? 'Anonymous User' : question.username}</p>

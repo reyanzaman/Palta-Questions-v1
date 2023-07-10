@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { useFormik } from "formik";
 import { useAuthStore } from "../store/store";
 import styles from "../styles/Username.module.css";
-import { postQuestionnaire } from "../helper/helper";
+import { postQuestionnaire, getUserDetails } from "../helper/helper";
 import useFetch from "../hooks/fetch.hook";
 
 export default function Questionnaire() {
@@ -12,19 +12,17 @@ export default function Questionnaire() {
 	const [{ isLoading, apiData, serverError }] = useFetch(
 		username ? `/user/${username}` : null
 	);
+	const [user, setUser] = useState({ section: '', course: '' });
+
 	const navigate = useNavigate()
 
-	const [sections] = useState({
-		CIS101: ['10', '11'],
-		CSC101: ['5'],
-		CSC203: ['10']
-	});
-
-	const handleChange = event => {
-	const selectedCourse = event.target.value;
-	formik.setFieldValue('course', selectedCourse);
-	formik.setFieldValue('section', sections[selectedCourse][0]);
-	};
+	useEffect(() => {
+		async function fetchData() {
+		  const userDetails = await getUserDetails(apiData?.username);
+		  setUser(userDetails);
+		}
+		fetchData();
+	  }, [apiData]);
 
 	const formik = useFormik({
 		initialValues: {
@@ -60,6 +58,9 @@ export default function Questionnaire() {
 			const formattedDate = currentDate.toLocaleString("en-US", options);
 			values.date = formattedDate;
 			values.username = apiData.username;
+
+			values.course = user.course;
+			values.section = user.section;
 
 			let postPromise = postQuestionnaire(values);
 			toast.promise(postPromise, {
@@ -115,22 +116,6 @@ export default function Questionnaire() {
 								{formik.values.type === "pre" ? (
 									<>
 										{/* Pre-Questionnaire */}
-										<select
-											{...formik.getFieldProps("course")}
-											className={styles.textbox} onChange={handleChange}>
-											<option value="CIS101">CIS101</option>
-											<option value="CSC101">CSC101</option>
-											<option value="CSC203">CSC203</option>
-										</select>
-
-										<select {...formik.getFieldProps('section')} className={styles.textbox}>
-											{sections[formik.values.course].map(topic => (
-											<option key={topic} value={topic}>
-												Section-{topic}
-											</option>
-											))}
-										</select>
-
 										<select
 											{...formik.getFieldProps("semester")}
 											className={styles.textbox}>

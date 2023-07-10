@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { useFormik} from 'formik';
 import { useAuthStore } from '../store/store';
 import styles from '../styles/Username.module.css';
-import { postQuestion } from '../helper/helper';
+import { postQuestion, getUserDetails } from '../helper/helper';
 import useFetch from '../hooks/fetch.hook';
 
 export default function Post() {
 
     const { username } = useAuthStore(state => state.auth);
     const [{ isLoading, apiData, serverError }] = useFetch(username ? `/user/${username}` : null);
+    const [user, setUser] = useState({ section: '', course: '' });
 
     const navigate = useNavigate();
 
@@ -23,18 +24,16 @@ export default function Post() {
       'Doubly Linked List', 'Recursion', 'Recursion', 'Binary Search Tree', 'Graph', 'Hashing'],
     });
 
-    const [sections] = useState({
-      CIS101: ['10', '11'],
-      CSC101: ['5'],
-      CSC203: ['10']
-    });
+    useEffect(() => {
+      async function fetchData() {
+        const userDetails = await getUserDetails(apiData?.username);
+        setUser(userDetails);
 
-    const handleChange = event => {
-      const selectedCourse = event.target.value;
-      formik.setFieldValue('course', selectedCourse);
-      formik.setFieldValue('topic', topics[selectedCourse][0]);
-      formik.setFieldValue('section', sections[selectedCourse][0]);
-    };
+        const defaultTopic = userDetails && userDetails.course ? topics[userDetails.course][0] : '';
+        formik.setFieldValue('topic', defaultTopic);
+      }
+      fetchData();
+    }, [apiData]);
 
     const formik = useFormik({
       initialValues: {
@@ -68,6 +67,9 @@ export default function Post() {
         values.year = year.toString(); // Set the year in the year variable
         values.month = month.toString();
         values.username = apiData.username;
+
+        values.course = user.course;
+        values.section = user.section;
 
         let postPromise = postQuestion(values)
         toast.promise(postPromise, {
@@ -107,24 +109,11 @@ export default function Post() {
                 <br></br>
                 <div className="textbox flex flex-col items-center gap-6">
                   
-                  <select {...formik.getFieldProps('course')} className={styles.textbox} onChange={handleChange}>
-                    <option value="CIS101">CIS101</option>
-                    <option value="CSC101">CSC101</option>
-                    <option value="CSC203">CSC203</option>
-                  </select>
                   <select {...formik.getFieldProps('topic')} className={styles.textbox}>
-                    {topics[formik.values.course].map(topic => (
+                    {topics[user?.course] && topics[user?.course].map(topic => (
                       <option key={topic} value={topic}>
                         {topic}
                       </option>
-                    ))}
-                  </select>
-
-                  <select {...formik.getFieldProps('section')} className={styles.textbox}>
-                    {sections[formik.values.course].map(topic => (
-                    <option key={topic} value={topic}>
-                      Section-{topic}
-                    </option>
                     ))}
                   </select>
                   
