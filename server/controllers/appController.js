@@ -1810,10 +1810,16 @@ export async function checkSimilarity(type, course, month, section, topic, quest
 			}
 
 			for (const existingQuestion of existingQuestions) {
+				const similarity1 = calculateSimilarity(question, existingQuestion.question);
+				if (similarity1 >= 0.75 ) {
+					return true;
+				}
 				for(const comment of existingQuestion.comments){
-					const similarity = calculateSimilarity(question, comment);
-					if (similarity >= 0.75 ) {
-						return true;
+					if(comment){
+						const similarity = calculateSimilarity(question, comment);
+						if (similarity >= 0.75 ) {
+							return true;
+						}
 					}
 				}
 			}
@@ -1851,37 +1857,31 @@ export async function checkDuplicate(type, course, month, section, topic, questi
 				statusQ11 = await QuestionModel.exists(filter);
 			}
 			
-			if(section){
-				const filter2 = {
-					course: course,
-					section: section,
-					$or: [
-						{ comments: { $regex: new RegExp(q1, "i") } }
-					]
-				};
-				statusQ12 = await FollowupModel.exists(filter2);
-			}else{
-				const filter2 = {
-					course: course,
-					$or: [
-						{ comments: { $regex: new RegExp(q1, "i") } }
-					]
-				};
-				statusQ12 = await FollowupModel.exists(filter2);
-			}
-			
-			if (statusQ11 || statusQ12) {
+			if (statusQ11) {
 				return { error: "Question Already Exists!" };
 			}
 
 			const statusQ21 = await checkSimilarity(type, course, month, section, topic, q1, 1);
-			const statusQ22 = await checkSimilarity(type, course, month, section, topic, q1, 2);
 
-			if(statusQ21 || statusQ22){
+			if(statusQ21){
 				return { error: "Similar Question Already Exists!"};
 			}
 			return { success: "No duplicates found" };
 		} catch (error) {
+			return { error: "Error checking general duplicates: " + error.message };
+		}
+	}
+
+	if(type == "palta") {
+		try{
+			const comments = questions;
+			const statusQ22 = await checkSimilarity("general", course, month, section, topic, comments, 2);
+			
+			if(statusQ22){
+				return { error: "Similar Question Already Exists!"};
+			}
+			return { success: "No duplicates found" };
+		}catch(error){
 			return { error: "Error checking general duplicates: " + error.message };
 		}
 	}
@@ -2031,7 +2031,8 @@ export async function checkSimilarity2(type, course, section, topic, question){
 	}
 }
 
-export async function adminCommand(req, res){
+//Removes similarity
+export async function adminCommand2(req, res){
 	try{
 		console.log("Admin command running");
 
@@ -2071,6 +2072,49 @@ export async function adminCommand(req, res){
 
 		return res.status(200);
 	}catch(error){
+		console.log(error);
+		return res.status(500);
+	}
+}
+
+//Fixes section and course
+export async function adminCommand(req, res) {
+	try {
+		console.log("Executing new admin function...");
+		// Get all users
+		const users = await UserModel.find();
+
+		// Iterate through each user
+		for (const user of users) {
+			const { username, course, section } = user;
+
+			// Search for all questions asked by the user
+			const questions = await QuestionModel.find({ username });
+
+			// Iterate through each question
+			for (const question of questions) {
+				const { course: questionCourse, section: questionSection } = question;
+
+				// Ignore if the question's course is "general" or section is "none"
+				if (questionCourse === "General" || questionSection === "") {
+					continue;
+				}
+
+				// Check if the question's course and section don't match the user's course and section
+				if (questionCourse !== course || questionSection !== section) {
+					// Update the question's course and section to match the user's course and section
+					console.log("User: ", username, "course: ", questionCourse, "section: ", questionSection, "updated to: course: ", course, "section: ", section)
+					question.course = course;
+					question.section = section;
+
+					// Save the updated question
+					await question.save();
+				}
+			}
+		}
+
+		return res.status(200).json({ message: "Admin command executed successfully." });
+	} catch (error) {
 		console.log(error);
 		return res.status(500);
 	}
@@ -2299,7 +2343,7 @@ export async function validateQuestion(req, res, next) {
 			if (values.comments.length < 10) {
 				return res.status(500).send({ error: "Question too Short!" });
 			} else if (containsBloomQuestion) {
-				const result = await checkDuplicate("general", values.course, values.month, values.section, values.comments);
+				const result = await checkDuplicate("palta", values.course, values.month, values.section, values.topic, values.comments);
 				console.log(result);
 				if (result.error) {
 					return res.status(500).json({ error: result.error });
