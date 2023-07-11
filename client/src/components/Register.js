@@ -16,7 +16,7 @@ export default function Register() {
   const [file, setFile] = useState()
 
   const [sections] = useState({
-		CIS101: ['10', '11'],
+		CIS101: ['3','10', '11'],
 		CSC101: ['5'],
 		CSC203: ['10']
 	});
