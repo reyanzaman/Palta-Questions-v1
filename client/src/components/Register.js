@@ -98,9 +98,10 @@ export default function Register() {
               </span>
               <input {...formik.getFieldProps('id')} type="number" placeholder="IUB ID" className={styles.textbox} min="1000" max="9999999" onWheel={(e) => e.target.blur()}/>
               <input {...formik.getFieldProps('email')} type="number" placeholder="Confirm IUB ID" className={styles.textbox} min="1000" max="99999999" onWheel={(e) => e.target.blur()}/>
+              <p className="text-xs text-center text-gray-500">Try not to use space character in your username</p>
               <input {...formik.getFieldProps('username')} type="text" placeholder="Username" className={styles.textbox}/>
               <input {...formik.getFieldProps('password')} type="password" placeholder="Password" className={styles.textbox}/>
-              
+              <p className="text-xs text-center text-gray-500">Check your course carefully. Are you are in CSC or CIS?</p>
               <select {...formik.getFieldProps('course')} className={styles.textbox}>
                 <option value="CIS101">CIS101</option>
                 <option value="CSC101">CSC101</option>
