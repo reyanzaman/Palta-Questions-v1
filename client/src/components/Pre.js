@@ -15,7 +15,7 @@ export default function Pre() {
     const navigate = useNavigate()
 
     const [topics] = useState({
-      CIS101: [' Thinking', 'Documentation', 'Data', 'Graphs', 'Excel', 'Ideas', 'G-Slides',
+      CIS101: [' Thinking', 'Documentation', 'Data', 'Graphs', 'Research Question', 'Excel', 'Ideas', 'Presentation', 'G-Slides',
         'Questionnaire', 'Referencing', 'Computing Mechanism', 'Python Coding',
         'Final Project'],
       CSC101: ['Coding Environment (IDE)', 'Trace Table', 'Flow Chart', 'Variables', 'Data Types', 'Operators', 'Print', 'Conditional Statements', 'Loops', 'Nested Conditions', 'Nested Loops', 'Lists', 'Tuples', 'Functions', 'File Handling'],
