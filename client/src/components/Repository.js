@@ -96,8 +96,8 @@ export default function Repository() {
         <div className={styles.glass}>
 
           <div className="title flex flex-col items-center">
-            <h4 className="text-4xl font-bold text-center">Question Repository</h4>
-            <span className="py-4 text-lg w-2/3 text-center text-gray-500">
+            <h4 className="text-4xl font-bold text-center">Palta Questions</h4>
+            <span className="py-4 text-lg w-7/8 text-center text-gray-500">
               Learn deeper using palta questions!
             </span>
           </div>

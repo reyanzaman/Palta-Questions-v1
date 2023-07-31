@@ -227,6 +227,7 @@ export default function Rules() {
 
               <div className='relative text-center py-2'>
                 <span className='text-gray-500'>©IUB-QuBAN Team 2023</span>
+                <p className='text-gray-500 text-xs'>PaltaQ Version-1.80</p>
               </div>
   
             </div>
