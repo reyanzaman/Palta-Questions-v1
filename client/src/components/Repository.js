@@ -20,7 +20,7 @@ export default function Repository() {
   const [user, setUser] = useState({ section: '', course: '' });
 
   const [topics] = useState({
-    CIS101: [' Thinking', 'Documentation', 'Data', 'Graphs', 'Research Question', 'Excel', 'Ideas', 'Presentation', 'G-Slides',
+    CIS101: ['All Topics','Thinking', 'Documentation', 'Data', 'Graphs', 'Research Question', 'Excel', 'Ideas', 'Presentation', 'G-Slides',
         'Questionnaire', 'Referencing', 'Computing Mechanism', 'Python Coding',
         'Final Project'],
     CSC101: ['All Topics', 'Coding Environment (IDE)', 'Trace Table', 'Flow Chart', 'Variables', 'Data Types', 'Operators', 'Print', 'Conditional Statements', 'Loops', 'Nested Conditions', 'Nested Loops', 'Lists', 'Tuples', 'Functions', 'File Handling'],
