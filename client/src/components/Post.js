@@ -21,7 +21,7 @@ export default function Post() {
         'Final Project'],
       CSC101: ['Coding Environment (IDE)', 'Trace Table', 'Flow Chart',  'Variables', 'Data Types', 'Operators', 'Print', 'Conditional Statements', 'Loops', 'Nested Conditions', 'Nested Loops', 'Lists', 'Tuples', 'Functions', 'File Handling'],
       CSC203: ['Python Review', 'Stacks', 'Queues', 'Pointers', 'Nodes', 'Singly Linked List',
-      'Doubly Linked List', 'Recursion', 'Recursion', 'Binary Search Tree', 'Graph', 'Hashing'],
+      'Doubly Linked List', 'Recursion', 'Binary Search Tree', 'Graph', 'Hashing'],
     });
 
     useEffect(() => {
