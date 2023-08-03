@@ -11,7 +11,8 @@ import natural from 'natural';
 /** middleware for verify user */
 export async function verifyUser(req, res, next) {
 	try {
-		const { username } = req.method == "GET" ? req.query : req.body;
+		var { username } = req.method == "GET" ? req.query : req.body;
+		username = username.trim();
 
 		// check the user existance
 		let exist = await UserModel.findOne({ username });
@@ -29,7 +30,9 @@ export async function verifyUser(req, res, next) {
  * }
  */
 export async function login(req, res) {
-	const { username, password } = req.body;
+	var { username, password } = req.body;
+
+	username = username.trim();
 
 	try {
 		const user = await UserModel.findOne({ username });
@@ -95,7 +98,7 @@ export async function getUser(req, res) {
  */
 export async function register(req, res) {
 	try {
-		const { username, password, id, email, profile, questions, rank, course, section } =
+		var { username, password, id, email, profile, questions, rank, course, section } =
 			req.body;
 
 		const new_email = email + "@iub.edu.bd";
@@ -118,6 +121,8 @@ export async function register(req, res) {
 		if (usernameExists) {
 			console.log("username exists")
 			return res.status(400).json({ error: "Account already exists with this ID" });
+		}else{
+			username = username.trim();
 		}
 
 		if (idExists) {

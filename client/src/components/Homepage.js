@@ -6,6 +6,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { postGeneral, findGeneralAll } from '../helper/helper';
 import avatar from '../assets/profile_blank.png';
 import useFetch from '../hooks/fetch.hook';
+import global from '../global';
 
 export default function Homepage() {
   const navigate = useNavigate();
@@ -198,7 +199,7 @@ export default function Homepage() {
           <hr className="border-t-2 border-gray-300"></hr>
           <div className='relative text-center py-2'>
             <span className='text-gray-500'>©IUB-QuBAN Team 2023</span>
-            <p className='text-gray-500 text-xs'>PaltaQ Version-1.80</p>
+            <p className='text-gray-500 text-xs'>PaltaQ Version-{global.version}</p>
           </div>
         </div>
       </div>

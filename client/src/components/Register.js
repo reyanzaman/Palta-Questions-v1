@@ -22,9 +22,9 @@ export default function Register() {
 	});
 
 	const handleChange = event => {
-	const selectedCourse = event.target.value;
-	formik.setFieldValue('course', selectedCourse);
-	formik.setFieldValue('section', sections[selectedCourse][0]);
+    const selectedCourse = event.target.value;
+    formik.setFieldValue('course', selectedCourse);
+    formik.setFieldValue('section', sections[selectedCourse][0]);
 	};
 
   const formik = useFormik({
@@ -38,7 +38,7 @@ export default function Register() {
       score: 0,
       rank: 'Novice Questioneer',
       course: 'CSC101',
-      section: '5'
+      section: '',
     },
     validate : registerValidation,
     validateOnBlur: false,
@@ -102,7 +102,7 @@ export default function Register() {
               <input {...formik.getFieldProps('username')} type="text" placeholder="Username" className={styles.textbox}/>
               <input {...formik.getFieldProps('password')} type="password" placeholder="Password" className={styles.textbox}/>
               <p className="text-xs text-center text-gray-500">Check your course carefully. Are you are in CSC or CIS?</p>
-              <select {...formik.getFieldProps('course')} className={styles.textbox}>
+              <select {...formik.getFieldProps('course')} onChange={handleChange} className={styles.textbox}>
                 <option value="CIS101">CIS101</option>
                 <option value="CSC101">CSC101</option>
                 <option value="CSC203">CSC203</option>
