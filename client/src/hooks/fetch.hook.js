@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { getUsername } from '../helper/helper';
-import global from '../global';
 
-axios.defaults.baseURL = global.baseURL;
+axios.defaults.baseURL = 'https://iub-qbl.onrender.com';
+// axios.defaults.baseURL = 'http://localhost:8081/';
 
 /** custom hook */
 export default function useFetch(query){

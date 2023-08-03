@@ -446,7 +446,9 @@ export async function getAllComments(req, res){
 export async function leaderboard(req, res) {
     try {
 		const { section, course } = req.query;
-        var rankings = await UserModel.find({ section, course }).sort({ score: -1 }).limit(10);
+        var rankings = await UserModel.find({ section, course, score: { $gte: 0 } })
+			.sort({ score: -1 })
+			.limit(10);
         return res.json(rankings);
     } catch (error) {
         console.log(error);
