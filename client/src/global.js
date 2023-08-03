@@ -1,11 +1,10 @@
-const version = "1.86"
-const baseURL = 'http://localhost:8081/';
-const alternateURL = 'https://iub-qbl.onrender.com';
+const version = "1.88"
+// const baseURL = 'http://localhost:8081/';
+const baseURL = 'https://iub-qbl.onrender.com';
 
 const global = {
     version,
-    baseURL,
-    alternateURL
+    baseURL
 }
 
 export default global;

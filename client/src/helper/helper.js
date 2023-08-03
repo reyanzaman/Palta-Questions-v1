@@ -2,7 +2,7 @@ import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import global from '../global';
 
-axios.defaults.baseURL = global.baseURL || global.alternateURL;
+axios.defaults.baseURL = global.baseURL;
 
 // Make API Requests
 
