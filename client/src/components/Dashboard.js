@@ -18,6 +18,7 @@ export default function Dashboard() {
   const { username } = useAuthStore(state => state.auth);
   const [file, setFile] = useState();
   const [user, setUser] = useState({ section: '', course: '' });
+  const facultyUsernames = ["reyanzaman", "NN", "ymislam", "asyed"];
 
   //Getting User Data
   const [{ isLoading, apiData, serverError }] = useFetch(username ? `/user/${username}` : null);
@@ -195,6 +196,15 @@ export default function Dashboard() {
                 <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-lime-800 rounded-3xl group-hover:w-full group-hover:h-80 block"></span>
                   <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
                   <span className="relative text-center text-yellow-500">Admin Function</span>
+                </Link>
+                </>
+              ):null} */}
+              {/* {facultyUsernames.includes(user?.username) ? (
+								<>
+                <Link to="/result" className="relative inline-flex items-center justify-center px-10 py-5 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-900 rounded-lg group">
+                <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-lime-800 rounded-3xl group-hover:w-full group-hover:h-80 block"></span>
+                  <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
+                  <span className="relative text-center text-yellow-500">Student Bonus Marks</span>
                 </Link>
                 </>
               ):null} */}

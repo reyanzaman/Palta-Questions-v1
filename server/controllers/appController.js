@@ -2085,7 +2085,7 @@ export async function adminCommand2(req, res){
 }
 
 //Fixes section and course
-export async function adminCommand(req, res) {
+export async function adminCommand3(req, res) {
 	try {
 		console.log("Executing new admin function...");
 		// Get all users
@@ -2122,6 +2122,50 @@ export async function adminCommand(req, res) {
 
 		return res.status(200).json({ message: "Admin command executed successfully." });
 	} catch (error) {
+		console.log(error);
+		return res.status(500);
+	}
+}
+
+export async function adminCommand(req, res){
+	try{
+		const users = await UserModel.find({});
+        const questions = await QuestionModel.find({});
+		var count = 0;
+        
+        for (const question of questions) {
+            for (const user of users) {
+                if (question.username.toString() === user.username.toString()) {
+                    if (question.course !== "General" && (question.course.toString() !== user.course.toString() || question.section.toString() !== user.section.toString())) {
+                        console.log(question.course, "updated to ", user.course)
+						console.log(question.section, "updated to ", user.section)
+						question.course = user.course.toString();
+                        question.section = parseInt(user.section);
+                        await question.save();
+						count++;
+						console.log(count, " Questions updated");
+                    }
+					else{
+						console.log("Skipping")
+						break; // No need to check other users for this question
+					}
+                }
+            }
+        }
+
+		console.log(count, " Total questions updated");
+
+        return res.status(200).json({ message: "Questions updated successfully." });
+	}catch(error){
+		console.log(error);
+		return res.status(500);
+	}
+}
+
+export async function searchBonusMarks(req, res){
+	try{
+		
+	}catch(error){
 		console.log(error);
 		return res.status(500);
 	}

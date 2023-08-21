@@ -127,11 +127,6 @@ export default function ViewPre() {
       }
     });      
 
-    // Add a check for data here
-    if (!data || !data.myData) {
-        return <div className="h-screen items-center text-red-500 text-2xl">No questions found!</div>;
-    }
-
     if(isLoading) return <div className="flex justify-center items-center h-screen">
         <h1 className="text-center text-2xl font-bold">Loading...</h1>
       </div>
@@ -192,7 +187,7 @@ export default function ViewPre() {
               <div className="title flex flex-col items-center p-4">
                 <h4 className="text-lg font-bold w-[90%] text-center">{data.myData[index][id]}</h4>
                 <span className="py-4 w-5/6 text-center text-gray-900">
-                      <p className='text-sm text-gray-700'>Posted by <b>{data.myData[index]['isAnonymous']==='true' ? 'Anonymous User' : data.myData[index]['username']}</b></p>
+                      <p className='text-sm text-gray-700'>Posted by <b>{data.myData[index]['isAnonymous']==='true' ? 'Anonymous Usr' : data.myData[index]['username']}</b></p>
                       {/* <p className='text-sm'>{data.myData[index]['date']}</p>
                       <p className='text-sm'>{data.myData[index]['semester'] + " " + data.myData[index]['year'] + " " + "Section: " + data.myData[index]['section']}</p> */}
                       <p className='text-md pt-2 text-indigo-500 font-bold'>Question Score: {quesScore}</p>

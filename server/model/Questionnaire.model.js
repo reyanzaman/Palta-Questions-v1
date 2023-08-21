@@ -81,6 +81,41 @@ export const QuestionnaireSchema = new mongoose.Schema({
         required: [false],
         unique: false
     },
+    feature: {
+        type: String,
+        required: [false],
+        unique: false
+    },
+    study_method: {
+        type: String,
+        required: [false],
+        unique: false
+    },
+    course_motivation: {
+        type: String,
+        required: [false],
+        unique: false
+    },
+    app_motivation: {
+        type: String,
+        required: [false],
+        unique: false
+    },
+    further_courses: {
+        type: String,
+        required: [false],
+        unique: false
+    },
+    questioning_learn: {
+        type: String,
+        required: [false],
+        unique: false
+    },
+    recommend: {
+        type: String,
+        required: [false],
+        unique: false
+    }
 });
 
 export default mongoose.model.Questionnaires || mongoose.model('Questionnaire', QuestionnaireSchema);

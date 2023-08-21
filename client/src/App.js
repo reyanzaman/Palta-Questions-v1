@@ -25,6 +25,8 @@ import Rules from './components/Rules';
 import ViewQuestionnaire from "./components/ViewQuestionnaire";
 import RecoverUsername from "./components/RecoverUsername";
 import Leaderboard from "./components/Leaderboard";
+import Result from "./components/Result";
+import ResultDisplay from "./components/ResultDisplay";
 
 // auth middleware
 import { AuthorizeUser,ProtectRoute } from './middleware/auth';
@@ -118,6 +120,14 @@ const router = createBrowserRouter([
     {
         path: '/leaderboard',
         element: <AuthorizeUser><Leaderboard/></AuthorizeUser>
+    },
+    {
+        path: '/result',
+        element: <AuthorizeUser><Result/></AuthorizeUser>
+    },
+    {
+        path: '/resultdisplay',
+        element: <AuthorizeUser><ResultDisplay/></AuthorizeUser>
     }
 ])
 

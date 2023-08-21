@@ -2,7 +2,7 @@ import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
 axios.defaults.baseURL = 'https://iub-qbl.onrender.com';
-//axios.defaults.baseURL = 'http://localhost:8081/';
+// axios.defaults.baseURL = 'http://localhost:8081/';
 
 // Make API Requests
 
@@ -256,6 +256,17 @@ export async function postQuestion(values){
 export async function preQuestion(values){
     try{
         const { data: { msg } } = await axios.post(`/api/pre`, values);
+
+        return Promise.resolve(msg)
+    }catch(error){
+        console.log(error)
+        return Promise.reject({ error });
+    }
+}
+
+export async function searchBonusMarks(values){
+    try{
+        const { data: { msg } } = await axios.get(`/api/searchBonusMarks`, values);
 
         return Promise.resolve(msg)
     }catch(error){
