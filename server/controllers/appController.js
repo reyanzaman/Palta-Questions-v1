@@ -2504,6 +2504,13 @@ export async function postQuestionnaire(req, res){
 			questionsAskedYoung,
 			questionsAskDaily,
 			questionsHelpLearn,
+			feature,
+			study_method,
+			course_motivation,
+			app_motivation,
+			furhter_courses,
+			questioning_learn,
+			recommend
 		} = req.body;
 
 		const exists = QuestionnaireModel.exists({ username: username, type: type });
@@ -2534,6 +2541,13 @@ export async function postQuestionnaire(req, res){
 			}
 		}else{
 			//Post-Questionnaire Validation
+			if(confidence=="" || topic_motivation=="" || app_motivation=="" || further_courses=="" ||
+			questionsAskDaily==""){
+				return res.status(500).json({ msg: `Information Missing!` });
+			}
+			if(study_method.length < 10 || feature.length < 10 || learnt_new.length < 10 || questioning_learn.length < 10){
+				return res.status(500).json({ msg: `Response too short!` });
+			}
 		}
 
 		const questionnaire = new QuestionnaireModel({
@@ -2553,7 +2567,14 @@ export async function postQuestionnaire(req, res){
 			whyChooseCourse,
 			questionsAskedYoung,
 			questionsAskDaily,
-			questionsHelpLearn
+			questionsHelpLearn,
+			feature,
+			study_method,
+			course_motivation,
+			app_motivation,
+			furhter_courses,
+			questioning_learn,
+			recommend
 		});
 
 		const result = await questionnaire.save();

@@ -11,14 +11,13 @@ import { updateRank, uploadPhoto, getUserDetails, setSection, setCourse, runAdmi
 import convertToBase64 from '../helper/convert';
 import { Toaster } from 'react-hot-toast';
 import { useFormik } from 'formik';
-import global from '../global';
 
 export default function Dashboard() {
 
   const { username } = useAuthStore(state => state.auth);
   const [file, setFile] = useState();
   const [user, setUser] = useState({ section: '', course: '' });
-  const facultyUsernames = ["reyanzaman", "NN", "ymislam", "asyed"];
+  // const facultyUsernames = ["reyanzaman", "NN", "ymislam", "asyed"];
 
   //Getting User Data
   const [{ isLoading, apiData, serverError }] = useFetch(username ? `/user/${username}` : null);
@@ -280,7 +279,7 @@ export default function Dashboard() {
 
           <div className='relative text-center py-2'>
             <span className='text-gray-500'>©IUB-QuBAN Team 2023</span>
-            <p className='text-gray-500 text-xs'>PaltaQ Version-{global.version}</p>
+            <p className='text-gray-500 text-xs'>PaltaQ Version-1.93</p>
           </div>
 
         </div>

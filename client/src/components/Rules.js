@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import home_icon from '../assets/home.png';
 import dashboard_icon from '../assets/dashboard.png';
 import bloom_table from '../assets/blooms.png';
-import global from '../global'
 
 export default function Rules() {
     return (
@@ -228,7 +227,6 @@ export default function Rules() {
 
               <div className='relative text-center py-2'>
                 <span className='text-gray-500'>©IUB-QuBAN Team 2023</span>
-                <p className='text-gray-500 text-xs'>PaltaQ Version-{global.version}</p>
               </div>
   
             </div>

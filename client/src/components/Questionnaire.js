@@ -28,8 +28,8 @@ export default function Questionnaire() {
 		initialValues: {
 			username: "",
             type: localStorage.getItem("selectedType") || "pre",
-			course: "CIS101",
-			section: "10",
+			course: "",
+			section: "",
 			date: "",
 			semester: "Summer",
 			attitude: "",
