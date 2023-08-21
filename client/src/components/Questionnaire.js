@@ -393,7 +393,7 @@ export default function Questionnaire() {
 										{/* Post-Questionnaire */}
 
 										<label className="pt-1 text-gray-600 font-bold w-[90%]">
-											Would you consider questioning and the use of palta questions as your study method? Please explain why.
+											Would you consider questioning and the use of palta questions as your study method? If yes, please explain why.
 										</label>
 										<textarea
 											cols="30"
@@ -405,7 +405,7 @@ export default function Questionnaire() {
 										/>
 
 										<label className="pt-1 text-gray-600 font-bold">
-											Are you confident with the contents of the course now?
+											How confident are you with the contents of the course now?
 										</label>
 										<div className="w-4/5">
 											<ul className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
@@ -469,7 +469,7 @@ export default function Questionnaire() {
 										</div>
 										
 										<label className="pt-2 text-gray-600 font-bold w-5/6">
-											Did you enjoy using palta questions for your course?
+											Did you enjoy using palta questions method of studying for your course?
 										</label>
 										<div className="w-4/5">
 											<ul className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
@@ -513,7 +513,7 @@ export default function Questionnaire() {
 										/>
 
 										<label className="pt-2 text-gray-600 font-bold w-5/6">
-											Would you like to use palta questions app for further courses?
+											Would you like to use palta questions method of studying for other courses?
 										</label>
 										<div className="w-4/5">
 											<ul className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
