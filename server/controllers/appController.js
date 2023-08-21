@@ -2508,7 +2508,7 @@ export async function postQuestionnaire(req, res){
 			study_method,
 			course_motivation,
 			app_motivation,
-			furhter_courses,
+			further_courses,
 			questioning_learn,
 			recommend
 		} = req.body;
@@ -2572,7 +2572,7 @@ export async function postQuestionnaire(req, res){
 			study_method,
 			course_motivation,
 			app_motivation,
-			furhter_courses,
+			further_courses,
 			questioning_learn,
 			recommend
 		});
