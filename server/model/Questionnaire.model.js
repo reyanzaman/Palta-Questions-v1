@@ -91,7 +91,17 @@ export const QuestionnaireSchema = new mongoose.Schema({
         required: [false],
         unique: false
     },
+    post_confidence: {
+        type: String,
+        required: [false],
+        unique: false
+    },
     course_motivation: {
+        type: String,
+        required: [false],
+        unique: false
+    },
+    electSimilar: {
         type: String,
         required: [false],
         unique: false
@@ -106,7 +116,17 @@ export const QuestionnaireSchema = new mongoose.Schema({
         required: [false],
         unique: false
     },
+    learnt_new: {
+        type: String,
+        required: [false],
+        unique: false
+    },
     questioning_learn: {
+        type: String,
+        required: [false],
+        unique: false
+    },
+    questionsAskNow: {
         type: String,
         required: [false],
         unique: false

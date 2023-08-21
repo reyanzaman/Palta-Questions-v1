@@ -2506,10 +2506,14 @@ export async function postQuestionnaire(req, res){
 			questionsHelpLearn,
 			feature,
 			study_method,
+			post_confidence,
+			electSimilar,
+			learnt_new,
 			course_motivation,
 			app_motivation,
 			further_courses,
 			questioning_learn,
+			questionsAskNow,
 			recommend
 		} = req.body;
 
@@ -2529,6 +2533,9 @@ export async function postQuestionnaire(req, res){
 		if(!section){
 			return res.status(500).json({ msg: `Section Missing!` });
 		}
+
+		var questionnaire = {}
+
 		if(type==="pre"){
 			//Pre-Questionnaire Validation
 			if(attitude=="" || confidence=="" || topic_motivation=="" || teaching_method=="" ||
@@ -2539,45 +2546,57 @@ export async function postQuestionnaire(req, res){
 			if(attitude.length < 10 || questionsHelpLearn.length < 10 || teaching_method.length < 10 || justification.length < 10){
 				return res.status(500).json({ msg: `Response too short!` });
 			}
+			questionnaire = {
+				username,
+				type,
+				course,
+				section,
+				date,
+				semester,
+				attitude,
+				confidence,
+				topic_motivation,
+				teaching_method,
+				new_method,
+				learning_motivation,
+				justification,
+				whyChooseCourse,
+				questionsAskedYoung,
+				questionsAskDaily,
+				questionsHelpLearn,
+			};
 		}else{
 			//Post-Questionnaire Validation
-			if(confidence=="" || topic_motivation=="" || app_motivation=="" || further_courses=="" ||
-			questionsAskDaily==""){
+			if(!post_confidence || !electSimilar || !app_motivation || !further_courses ||
+			!questionsAskNow){
 				return res.status(500).json({ msg: `Information Missing!` });
 			}
 			if(study_method.length < 10 || feature.length < 10 || learnt_new.length < 10 || questioning_learn.length < 10){
 				return res.status(500).json({ msg: `Response too short!` });
 			}
+			questionnaire = {
+				username,
+				type,
+				course,
+				section,
+				date,
+				semester,
+				post_confidence,
+				electSimilar,
+				questionsAskNow,
+				feature,
+				study_method,
+				course_motivation,
+				app_motivation,
+				further_courses,
+				learnt_new,
+				questioning_learn,
+				recommend
+			};
 		}
 
-		const questionnaire = new QuestionnaireModel({
-			username,
-			type,
-			course,
-			section,
-			date,
-			semester,
-			attitude,
-			confidence,
-			topic_motivation,
-			teaching_method,
-			new_method,
-			learning_motivation,
-			justification,
-			whyChooseCourse,
-			questionsAskedYoung,
-			questionsAskDaily,
-			questionsHelpLearn,
-			feature,
-			study_method,
-			course_motivation,
-			app_motivation,
-			further_courses,
-			questioning_learn,
-			recommend
-		});
-
-		const result = await questionnaire.save();
+		const questionnaire2 = new QuestionnaireModel(questionnaire);
+		const result = await questionnaire2.save();
 
 		return res.status(201).json({ msg: `Questionnaire Posted` });
 	}catch(error){

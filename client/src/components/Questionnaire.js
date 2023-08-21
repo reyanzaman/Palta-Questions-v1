@@ -43,11 +43,15 @@ export default function Questionnaire() {
 			questionsAskedYoung: "",
 			questionsAskDaily: "",
 			questionsHelpLearn: "",
+			post_confidence: "",
+			electSimilar: "",
+			questionsAskNow: "",
 			feature: "",
 			study_method: "",
 			course_motivation: "",
 			app_motivation: "",
 			further_courses: "",
+			learnt_new: "",
 			questioning_learn: "",
 			recommend: ""
 		},
@@ -411,25 +415,25 @@ export default function Questionnaire() {
 											<ul className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
 												<li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
 													<div className="flex items-center pl-3">
-														<input type="radio" id="q1r1" {...formik.getFieldProps("confidence")} name="confidence" value="not at all" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+														<input type="radio" id="q1r1" {...formik.getFieldProps("post_confidence")} name="post_confidence" value="not at all" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
 															<label className="text-left w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Not at all</label>
 													</div>
 												</li>
 												<li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
 													<div className="flex items-center pl-3">
-														<input type="radio" id="q1r2" {...formik.getFieldProps("confidence")} name="confidence" value="not much" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+														<input type="radio" id="q1r2" {...formik.getFieldProps("post_confidence")} name="post_confidence" value="not much" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
 															<label className="text-left w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Not much</label>
 													</div>
 												</li>
 												<li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
 													<div className="flex items-center pl-3">
-														<input type="radio" id="q1r3" {...formik.getFieldProps("confidence")} name="confidence" value="somewhat" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+														<input type="radio" id="q1r3" {...formik.getFieldProps("post_confidence")} name="post_confidence" value="somewhat" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
 															<label className="text-left w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Somewhat</label>
 													</div>
 												</li>
 												<li className="w-full dark:border-gray-600">
 													<div className="flex items-center pl-3">
-														<input type="radio" id="q1r4" {...formik.getFieldProps("confidence")} name="confidence" value="very much" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+														<input type="radio" id="q1r4" {...formik.getFieldProps("post_confidence")} name="post_confidence" value="very much" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
 															<label className="text-left w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Very much</label>
 													</div>
 												</li>
@@ -443,25 +447,25 @@ export default function Questionnaire() {
 											<ul className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
 												<li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
 													<div className="flex items-center pl-3">
-														<input type="radio" id="q2r1" {...formik.getFieldProps("topic_motivation")} name="topic_motivation" value="not at all" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+														<input type="radio" id="q2r1" {...formik.getFieldProps("electSimilar")} name="electSimilar" value="not at all" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
 															<label className="text-left w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Not at all</label>
 													</div>
 												</li>
 												<li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
 													<div className="flex items-center pl-3">
-														<input type="radio" id="q2r2" {...formik.getFieldProps("topic_motivation")} name="topic_motivation" value="not much" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+														<input type="radio" id="q2r2" {...formik.getFieldProps("electSimilar")} name="electSimilar" value="not much" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
 															<label className="text-left w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Not much</label>
 													</div>
 												</li>
 												<li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
 													<div className="flex items-center pl-3">
-														<input type="radio" id="q2r3" {...formik.getFieldProps("topic_motivation")} name="topic_motivation" value="somewhat" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+														<input type="radio" id="q2r3" {...formik.getFieldProps("electSimilar")} name="electSimilar" value="somewhat" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
 															<label className="text-left w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Somewhat</label>
 													</div>
 												</li>
 												<li className="w-full dark:border-gray-600">
 													<div className="flex items-center pl-3">
-														<input type="radio" id="q2r4" {...formik.getFieldProps("topic_motivation")} name="topic_motivation" value="very much" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+														<input type="radio" id="q2r4" {...formik.getFieldProps("electSimilar")} name="electSimilar" value="very much" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
 															<label className="text-left w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Very Much</label>
 													</div>
 												</li>
@@ -563,25 +567,25 @@ export default function Questionnaire() {
 											<ul className="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
 												<li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
 													<div className="flex items-center pl-3">
-														<input type="radio" id="q5r1" {...formik.getFieldProps("questionsAskDaily")} name="questionsAskDaily" value="0 to 10" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+														<input type="radio" id="q5r1" {...formik.getFieldProps("questionsAskNow")} name="questionsAskNow" value="0 to 10" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
 															<label className="text-left w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">0 to 10</label>
 													</div>
 												</li>
 												<li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
 													<div className="flex items-center pl-3">
-														<input type="radio" id="q5r2" {...formik.getFieldProps("questionsAskDaily")} name="questionsAskDaily" value="10 to 20" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+														<input type="radio" id="q5r2" {...formik.getFieldProps("questionsAskNow")} name="questionsAskNow" value="10 to 20" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
 															<label className="text-left w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">10 to 20</label>
 													</div>
 												</li>
 												<li className="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
 													<div className="flex items-center pl-3">
-														<input type="radio" id="q5r3" {...formik.getFieldProps("questionsAskDaily")} name="questionsAskDaily" value="20 to 50" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+														<input type="radio" id="q5r3" {...formik.getFieldProps("questionsAskNow")} name="questionsAskNow" value="20 to 50" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
 															<label className="text-left w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">20 to 50</label>
 													</div>
 												</li>
 												<li className="w-full dark:border-gray-600">
 													<div className="flex items-center pl-3">
-														<input type="radio" id="q5r4" {...formik.getFieldProps("questionsAskDaily")} name="questionsAskDaily" value="more than 50" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
+														<input type="radio" id="q5r4" {...formik.getFieldProps("questionsAskNow")} name="questionsAskNow" value="more than 50" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
 															<label className="text-left w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">More than 50</label>
 													</div>
 												</li>
