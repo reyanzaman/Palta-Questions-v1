@@ -344,7 +344,7 @@ export default function PreQuestions() {
                       </h1>
                       <br />
                       <p className="w-fit text-sm lg:float-right sm:float-left">
-                        Posted by <b>{question.isAnonymous === 'true' ? 'Anonymous User' : question.username}</b>
+                        Posted by <b>{question.isAnonymous === 'true' ?  "Anonymous User" : question.username}</b>
                       </p>
                       <br />
                       <h1 className="w-fit text-sm lg:float-right sm:float-left font-bold text-indigo-800">

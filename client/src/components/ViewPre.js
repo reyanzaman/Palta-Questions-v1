@@ -187,7 +187,7 @@ export default function ViewPre() {
               <div className="title flex flex-col items-center p-4">
                 <h4 className="text-lg font-bold w-[90%] text-center">{data.myData[index][id]}</h4>
                 <span className="py-4 w-5/6 text-center text-gray-900">
-                      <p className='text-sm text-gray-700'>Posted by <b>{data.myData[index]['isAnonymous']==='true' ? 'Anonymous Usr' : data.myData[index]['username']}</b></p>
+                      <p className='text-sm text-gray-700'>Posted by <b>{data.myData[index]['isAnonymous']==='true' ? "Anonymous User" : data.myData[index]['username']}</b></p>
                       {/* <p className='text-sm'>{data.myData[index]['date']}</p>
                       <p className='text-sm'>{data.myData[index]['semester'] + " " + data.myData[index]['year'] + " " + "Section: " + data.myData[index]['section']}</p> */}
                       <p className='text-md pt-2 text-indigo-500 font-bold'>Question Score: {quesScore}</p>
@@ -210,7 +210,7 @@ export default function ViewPre() {
                       return reversedComments.slice(current_question - 1, current_question + questionPerPage - 1).map((commentText, commentIndex) => (
                         <div key={commentIndex} className="mb-6 flex flex-col items-center text-center rounded-2xl p-6 bg-slate-700 text-neutral-100">
                           <p>{commentText}</p>
-                          <p className='text-xs pt-2 text-indigo-100'>Posted by {reversedIsAnonymous[commentIndex] ? 'Anonymous User' : reversedUsernames[commentIndex]}</p>
+                          <p className='text-xs pt-2 text-indigo-100'>Posted by {reversedIsAnonymous[commentIndex] ? "Anonymous User" : reversedUsernames[commentIndex]}</p>
                           <p className='text-xs text-indigo-100'>{reversedDates[commentIndex]}</p>
                           <p className='text-sm pt-2 font-bold text-indigo-200'>Score: {reversedCScores[commentIndex]}</p>
                         </div>

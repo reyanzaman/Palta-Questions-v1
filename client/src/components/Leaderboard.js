@@ -19,9 +19,9 @@ export default function Leaderboard() {
   const [{ apiData }] = useFetch(username ? `/user/${username}` : null);
 
   const [sections] = useState({
-		CIS101: ['3','10', '11'],
+    CIS101: ['3','10', '11', '5', '6'],
 		CSC101: ['5'],
-		CSC203: ['10']
+		CSC203: ['10', '9']
 	});
 
   useEffect(() => {
