@@ -38,7 +38,7 @@ export default function Register() {
       score: 0,
       rank: 'Novice Questioneer',
       course: 'CSC101',
-      section: '',
+      section: '5',
     },
     validate : registerValidation,
     validateOnBlur: false,
