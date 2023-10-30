@@ -1,7 +1,5 @@
 # Getting Started with Query Based Access To Neurons Through Palta Questions
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
 ## Available Scripts
 
 In the project directory, you can run:
@@ -44,9 +42,36 @@ Mongo DB hosted on Mongo DB Atlas Servers
 
 ## Screenshots
 
+Home Page
+
 ![Home Page](client/public/Screenshots/1.png?raw=true "Home Page")
+
+Dashboard
+
 ![Dashboard](client/public/Screenshots/2.png?raw=true "Dashboard")
+
+Leaderboard
+
 ![Leaderboard](client/public/Screenshots/3.png?raw=true "Leaderboard")
+
+Questionnaire
+
 ![Questionnaire](client/public/Screenshots/4.png?raw=true "Questionnaire")
+
+Palta Questions
+
 ![Palta Questions Page](client/public/Screenshots/5.png?raw=true "Palta Questions Page")
+
+Rules Page
+
 ![Rules Page](client/public/Screenshots/6.png?raw=true "Rules Page")
+
+# Dataset
+
+Dataset curated through the app on Summer 2023 semester is available at:
+
+## https://doi.org/10.5281/zenodo.10051055
+
+Demo of proposed AI for further technology augmentation and automation is available at:
+
+## https://github.com/reyanzaman/QuBAN-AI-Classifier/tree/main
